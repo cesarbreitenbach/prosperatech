@@ -7,8 +7,7 @@ import { AuthProvider, useAuthContext } from '../hooks/auth';
 
 
 export function Routes() {
- // const { logged } = useAuthContext();
-  const logged = true;
+  const { logged } = useAuthContext();
   useEffect(() => {
     console.log(`estou logado?? ${logged}`)
   }, [logged])
