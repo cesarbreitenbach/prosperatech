@@ -1,9 +1,12 @@
 import { useNavigation } from '@react-navigation/native';
 //import {useAsyncStorage} from '@react-native-async-storage/async-storage';
-import { createContext, ReactNode, useContext, useState } from 'react';
+import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import { showMessage } from 'react-native-flash-message';
 import useAxios from  '../services/axios'
-// import jwtDecode from 'jwt-decode';
+import { jwtDecode } from "jwt-decode";
+import { decode } from "base-64";
+
+global.atob = decode;
 
 interface AuthProviderProps {
     children: ReactNode;
@@ -22,16 +25,13 @@ interface IAuthContextData {
 }
 
 interface ITokenProps {
-    id: number;
-    cpf: string;
-    name: string;
+    id: number; 
+    ame: string;
     email: string;
-    admin: boolean;
-    useradmin: boolean;
-    type: 'multi' | 'driver' | 'customer';
-    idEstabelecimento: number;
-    iat: number;
-  }
+    admin: boolean; 
+    walletAddres: string;
+    iat:number
+}
 
 const AuthContext = createContext({} as IAuthContextData);
 
@@ -44,6 +44,10 @@ function AuthProvider({children}: AuthProviderProps) {
 
     const { axiosClient: client } = useAxios();
 
+    useEffect(() => {
+      console.log(`mudei logged para ${logged}`)
+    }, [logged])
+
     async function login(value: LoginProps) {
         setLoading(true);
         console.log(`peguei ${JSON.stringify(value)}`)
@@ -51,11 +55,16 @@ function AuthProvider({children}: AuthProviderProps) {
             
            const resp = await client.post('/sessions', value)
 
-           console.log(`peguei o resp ${JSON.stringify(resp.data)}`)
-
-           setLogged(true)
+           const {token} = resp.data;
+         //  const decoded = jwtDecode(token);
+         
+         const decodedToken = decodeToken(token)
+         
+         console.log(`peguei o resp ${JSON.stringify(decodedToken)}`)
+         setLogged(true)
 
         }catch(e) {
+            console.log(`erro ${JSON.stringify(e)}`)
             showMessage({
                 message: "Credenciais invalidas",
                 type: "danger",
@@ -71,15 +80,15 @@ function AuthProvider({children}: AuthProviderProps) {
 
     }
 
-    // function decodeToken(token: string): ITokenProps | null {
-    //     try {
-    //       const decodedToken: ITokenProps = jwtDecode(token);
-    //       return decodedToken;
-    //     } catch (error) {
-    //       console.error('Erro ao decodificar o token:', error);
-    //       return null;
-    //     }
-    //   }
+    function decodeToken(token: string): ITokenProps | null {
+        try {
+          const decodedToken: ITokenProps = jwtDecode(token);
+          return decodedToken;
+        } catch (error) {
+          console.error('Erro ao decodificar o token:', error);
+          return null;
+        }
+      }
 
     return (
         <AuthContext.Provider value={{  

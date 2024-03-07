@@ -7,6 +7,7 @@ export interface Props {
     title: string;
     loading?: boolean;
     color?: string;
+    textColor?: string;
     fontFamily?: string;
     onPress: () => void;
     light?: boolean;
@@ -16,6 +17,7 @@ export default function Button({
     title, 
     loading,
     color,
+    textColor,
     fontFamily,
     onPress,
     light=false,

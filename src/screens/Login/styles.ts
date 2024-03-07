@@ -37,7 +37,7 @@ export const Input = styled.TextInput`
     width: 100%;
     padding: 14px 20px;
     font-family: ${({theme}) => theme.fonts.regular };
-    color: ${({theme}) => theme.colors.text};
+    color: ${({theme}) => theme.colors.gold};
     font-size: ${RFValue(14)}px;
     border-width: 1px;
     border-radius: 5px;

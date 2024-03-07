@@ -24,14 +24,14 @@ return (
    <Container> 
       <TextInput
         placeholder='Digite a senha'
-        placeholderTextColor={theme.colors.text_detail}
+        placeholderTextColor={theme.colors.white}
         value={value}
         onChangeText={setValue}
         autoCorrect={false}
         secureTextEntry={visible}
       />
       <IconContainer onPress={() => setVisible(!visible)}>
-         <Icon name={visible ? "eye" : "eye-slash"} size={25} color={theme.colors.white} />
+         <Icon name={visible ? "eye" : "eye-slash"} size={25} color={theme.colors.gold} />
       </IconContainer>
    </Container> 
 );}

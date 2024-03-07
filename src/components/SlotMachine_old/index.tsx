@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { View, Platform } from 'react-native';
 import { WebView } from 'react-native-webview';
-import { API_ANDROID, API_URL, WEB_PORT, ENV, API_DEV } from '@env';
+import { API_ANDROID, API_URL, WEB_PORT, ENV, API_DEV, WEB_ENV } from '@env';
 
 interface IParams {
   token: string;
@@ -13,7 +13,7 @@ const SlotMachine = () => {
     token: 'aldfkjalkdfjalkdfakldjfakldf'
   };
   
-  const siteUrl = ENV === 'dev' ? Platform.OS === 'android' ? `${API_ANDROID}:${WEB_PORT}` : `${API_DEV}:${WEB_PORT}` : `${API_URL}`;
+  const siteUrl = WEB_ENV === 'dev' ? Platform.OS === 'android' ? `${API_ANDROID}:${WEB_PORT}` : `${API_DEV}:${WEB_PORT}` : `${API_URL}`;
 
   console.log(`peguei siteUrl: ${siteUrl}`)
   

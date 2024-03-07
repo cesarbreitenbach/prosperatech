@@ -17,7 +17,7 @@ export const Container = styled.View`
     border-color: ${({theme}) => theme.colors.text_detail};
     margin-top: ${RFValue(12)}px; 
     width: 100%;
-    height: ${RFValue(46)}px;
+    height: ${RFValue(60)}px;
     align-items: center;
     justify-content: space-between;
     padding: 14px 20px;
@@ -27,9 +27,10 @@ export const Container = styled.View`
 
 export const TextInput = styled.TextInput`
     width: 90%;
-    color: ${({theme}) => theme.colors.text_detail};
+    color: ${({theme}) => theme.colors.gold};
     font-family: ${({theme}) => theme.fonts.regular };
     font-size: ${RFValue(14)}px;
+    height: ${RFValue(60)}px;
   
 `
 

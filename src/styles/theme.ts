@@ -26,7 +26,8 @@ export default {
         shape_dark: '#29292E',
         floatButton: '#1EA000',
         white: '#FFFFFF',
-        gold: '#FFBD59',
+        gold: '#FFD700',
+        dark_gold: '#b89e14',
         roxo_real: '#6A0DAD', // Roxo Real
         verde_esmeralda: '#007A5E', // Verde Esmeralda Vibrante
         borgonha_intenso: '#800020', // Borgonha Intenso

@@ -8,16 +8,16 @@ import { AuthProvider, useAuthContext } from '../hooks/auth';
 
 export function Routes() {
   const { logged } = useAuthContext();
+  // const logged = true;
   useEffect(() => {
     console.log(`estou logado?? ${logged}`)
   }, [logged])
+
   return (
   
-      <NavigationContainer>
-         <AuthProvider>
-            { logged ? <StackRoutes /> : <AuthRoutes /> }
-         </AuthProvider>
-      </NavigationContainer>
+      <>
+        { logged ? <StackRoutes /> : <AuthRoutes /> }
+      </>
  
     
   );

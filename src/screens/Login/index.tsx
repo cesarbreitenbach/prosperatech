@@ -16,8 +16,8 @@ export default function LoginScreen(){
     const theme = useTheme();
     // const {verifyUser, loading, getUserPasswordOnStorage, login} = useAuthContext();
     const {login} = useAuthContext();
-    const [email, setEmail] = useState<string>("")
-    const [password, setPassword] = useState<string>("")
+    const [email, setEmail] = useState<string>("cesar@teste.com")
+    const [password, setPassword] = useState<string>("123456")
     const [visibleEye, setVisibleEye] = useState<boolean>(true);
 
     function handleClick(){
@@ -34,7 +34,7 @@ return (
             <Title>Email:</Title>
             <Input 
             placeholder='seu@email.com'
-            placeholderTextColor={theme.colors.text_detail}
+            placeholderTextColor={theme.colors.gold}
             value={email}
             onChangeText={setEmail}
             keyboardType='email-address'
