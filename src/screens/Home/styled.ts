@@ -5,6 +5,7 @@ export const Container = styled.SafeAreaView`
    flex: 1;
    justify-content: center;
    align-items: center;
+   padding: ${RFValue(20)}px ${RFValue(20)}px;
    background-color: ${({theme}) => theme.colors.background_secondary};
 `
 

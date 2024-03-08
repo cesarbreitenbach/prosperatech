@@ -1,7 +1,6 @@
 // import { useNavigation } from '@react-navigation/native';
 import { useTheme } from 'styled-components';
 import { Container, Header, Label } from './styled';
-import SlotMachine from '../../components/SlotMachine';
 import SlotMachineRunner from '../../components/SlotMachineRunner';
 import { useWalletContext } from '../../hooks/wallet';
 import { useEffect } from 'react';
@@ -18,9 +17,6 @@ export default function Home() {
 
   return (
     <Container>
-      <Header>
-          <Label>SlotMachine!!!!</Label>
-      </Header>
       <SlotMachineRunner />
     </Container>
   );
