@@ -5,6 +5,7 @@ import { showMessage } from 'react-native-flash-message';
 import useAxios from  '../services/axios'
 import { jwtDecode } from "jwt-decode";
 import { decode } from "base-64";
+import { ITokenProps, IUser, LoginProps } from '../@types/auth';
 
 global.atob = decode;
 
@@ -12,25 +13,12 @@ interface AuthProviderProps {
     children: ReactNode;
 }
 
-interface LoginProps {
-    email: string;
-    password: string;
-}
-
 interface IAuthContextData {
     logged: boolean;
     loading: boolean;
+    user: IUser;
     login: (value: LoginProps) => void;
     logout: () => void;
-}
-
-interface ITokenProps {
-    id: number; 
-    ame: string;
-    email: string;
-    admin: boolean; 
-    walletAddres: string;
-    iat:number
 }
 
 const AuthContext = createContext({} as IAuthContextData);
@@ -41,16 +29,12 @@ function AuthProvider({children}: AuthProviderProps) {
     const { navigate } = useNavigation<any>();
     const [logged, setLogged] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [user, setUser] = useState({} as IUser)
 
     const { axiosClient: client } = useAxios();
 
-    useEffect(() => {
-      console.log(`mudei logged para ${logged}`)
-    }, [logged])
-
     async function login(value: LoginProps) {
         setLoading(true);
-        console.log(`peguei ${JSON.stringify(value)}`)
         try{
             
            const resp = await client.post('/sessions', value)
@@ -59,8 +43,24 @@ function AuthProvider({children}: AuthProviderProps) {
          //  const decoded = jwtDecode(token);
          
          const decodedToken = decodeToken(token)
+
+         if (!decodedToken) {
+            showMessage({
+              message: "Erro ao pegar token!",
+              type: "danger",
+            });
+            return;
+         }
+
+         setUser({
+          id: decodedToken.id,
+          name: decodedToken.name,
+          walletAddress: decodedToken.walletAddress,
+          admin: decodedToken.admin,
+          email: decodedToken.email
+         })
          
-         console.log(`peguei o resp ${JSON.stringify(decodedToken)}`)
+         console.log(`Logado com sucesso: ${JSON.stringify(decodedToken)}`)
          setLogged(true)
 
         }catch(e) {
@@ -77,7 +77,7 @@ function AuthProvider({children}: AuthProviderProps) {
     }
 
     async function logout() {
-
+      setLogged(false);  
     }
 
     function decodeToken(token: string): ITokenProps | null {
@@ -92,6 +92,7 @@ function AuthProvider({children}: AuthProviderProps) {
 
     return (
         <AuthContext.Provider value={{  
+                                       user,
                                        loading,
                                        logged, 
                                        login,

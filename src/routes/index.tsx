@@ -3,7 +3,8 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import { StackRoutes } from './app.routes';
 import { AuthRoutes } from './auth.routes';
-import { AuthProvider, useAuthContext } from '../hooks/auth';
+import { useAuthContext } from '../hooks/auth';
+import { WalletProvider } from '../hooks/wallet';
 
 
 export function Routes() {
@@ -15,9 +16,9 @@ export function Routes() {
 
   return (
   
-      <>
+      <WalletProvider>
         { logged ? <StackRoutes /> : <AuthRoutes /> }
-      </>
+      </WalletProvider>
  
     
   );

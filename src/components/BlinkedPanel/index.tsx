@@ -8,7 +8,7 @@ interface BlinkedPanelProps {
   children: ReactElement;
 }
 
-const BlinkedPanel: React.FC<BlinkedPanelProps> = ({ children, blinking = true, invertedBlink = false }) => {
+const BlinkedPanel: React.FC<BlinkedPanelProps> = ({ children, blinking = true, invertedBlink = false}) => {
   const opacity = useSharedValue(0);
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -46,7 +46,8 @@ const BlinkedPanel: React.FC<BlinkedPanelProps> = ({ children, blinking = true, 
 
 const styles = StyleSheet.create({
   container: {
-    // Estilos adicionais podem ser aplicados aqui
+    
+    height: 200,
   },
 });
 
