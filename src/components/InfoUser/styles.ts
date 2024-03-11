@@ -1,0 +1,35 @@
+import { RFValue } from 'react-native-responsive-fontsize';
+import styled from 'styled-components/native';
+
+export const Container = styled.View`
+    flex: 1;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+`;
+
+export const AmountArea = styled.View`
+    flex-direction: row;
+    align-items: center;
+`;
+
+export const Title = styled.Text`
+   font-family: ${({theme}) => theme.fonts.SemiBold };
+   font-size: ${RFValue(9)}px;
+   color: ${({theme}) => theme.colors.white};
+`
+
+export const BankBalance = styled.Text`
+   font-family: ${({theme}) => theme.fonts.SemiBold };
+   font-size: ${RFValue(14)}px;
+   color: ${({theme}) => theme.colors.gold};
+   margin:  ${RFValue(12)}px;
+`
+
+export const Item = styled.TouchableOpacity <{active: boolean}>`
+    border-color: ${({theme, active}) => active ? theme.colors.gold : theme.colors.black};
+    border-width: 1px;
+    width: 36%;
+    border-radius: 8px;
+    padding: 12px;
+`;
