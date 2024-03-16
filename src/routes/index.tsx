@@ -5,6 +5,7 @@ import { StackRoutes } from './app.routes';
 import { AuthRoutes } from './auth.routes';
 import { useAuthContext } from '../hooks/auth';
 import { WalletProvider } from '../hooks/wallet';
+import { SlotMachineProvider } from '../hooks/slotmachine';
 
 
 export function Routes() {
@@ -17,7 +18,9 @@ export function Routes() {
   return (
   
       <WalletProvider>
+        <SlotMachineProvider>
         { logged ? <StackRoutes /> : <AuthRoutes /> }
+        </SlotMachineProvider>
       </WalletProvider>
  
     

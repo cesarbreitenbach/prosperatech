@@ -1,9 +1,9 @@
 
 import { createStackNavigator } from '@react-navigation/stack';
 
-import { AuthRoutes } from '../routes/auth.routes';
 import Splash from '../screens/SplashScreen';
-import Home from '../screens/Home';
+import {MyTabs} from '../routes/tab.routes';
+import InvestmentScreen from '../screens/InvestmentScreen';
 
 const {Navigator, Screen} = createStackNavigator();
 
@@ -16,11 +16,11 @@ export function StackRoutes(){
         />
          <Screen 
             name="home"
-            component={Home}
+            component={MyTabs}
         />
-        <Screen 
-            name="logout"
-            component={AuthRoutes}
+         <Screen 
+            name="investment"
+            component={InvestmentScreen}
         />
     </Navigator>
 )}

@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from 'react';
 
-import logo from '../../assets/images/prospera.png';
+import logo from '../../assets/images/ceasarsLogo2.png';
 
 import { showMessage } from 'react-native-flash-message';
 import { useTheme } from 'styled-components';
@@ -28,7 +28,7 @@ export default function LoginScreen(){
 return (
    <Container> 
         <LogoArea>
-            <Logo source={logo} />
+            <Logo source={logo} style={{height: 400}} />
         </LogoArea>
         <ContentArea>
             <Title>Email:</Title>

@@ -4,6 +4,7 @@ export interface IUser {
     email: string;
     admin: boolean; 
     walletAddress: string;
+    token: string;
   }
 
 export interface ITokenProps {

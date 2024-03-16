@@ -6,28 +6,30 @@ export const Container = styled.KeyboardAvoidingView`
   flex: 1;
   background-color: ${({theme}) => theme.colors.background_secondary};
   
-  align-items: center;
 `
 
 export const ButtonText = styled.Text<{cor?: string}>`
     font-family: ${({theme}) => theme.fonts.SemiBold };
     font-size: ${RFValue(14)}px;
     color: ${({theme, cor}) => cor ? cor : theme.colors.black};
+    margin-left: 12px;
+    margin-right: 12px;
 `
 
 export const ButtonArea = styled.TouchableOpacity<{disable: boolean, winner: boolean}>` 
-   padding: 12px ;
-   height: ${RFValue(60)}px;
    background-color: ${({theme, disable, winner}) => winner ? theme.colors.verde_esmeralda :  disable ?  theme.colors.borgonha_intenso : theme.colors.dark_gold};
+   margin-top: ${RFValue(30)}px;
+   border-radius: 8px;
    justify-content: center;
    align-items: center;
-   margin-top: ${RFValue(60)}px;
-   border-radius: 10px;
+   height: ${RFValue(70)}px;
+   width: 70%;
+   align-self: center;
 `
 
 export const Header = styled.View`
-   width: 400px;
-   height: ${RFValue(120)}px;
+   width: 100%;
+   height: ${RFValue(80)}px;
 `
 
 export const InfoArea = styled.View`
@@ -39,19 +41,15 @@ export const InfoArea = styled.View`
 
 export const Title = styled.Text<{cor?: string}>`
     font-family: ${({theme}) => theme.fonts.SemiBold };
-    font-size: ${RFValue(12)}px;
+    font-size: ${RFValue(8)}px;
     color: ${({theme, cor}) => cor ? cor : theme.colors.black};
 `
 
 export const Chicken = styled.Image``
 
-export const HeaderImageArea = styled.View`
- 
-`
 
-export const ImageHeader = styled.Image`
-   height: 150px;
-`
+
+
 
 
 

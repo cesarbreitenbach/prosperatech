@@ -46,8 +46,9 @@ const BlinkedPanel: React.FC<BlinkedPanelProps> = ({ children, blinking = true, 
 
 const styles = StyleSheet.create({
   container: {
-    
-    height: 200,
+    justifyContent: "center",
+    alignItems: "center",
+    height: 150,
   },
 });
 

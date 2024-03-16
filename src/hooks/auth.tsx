@@ -52,12 +52,15 @@ function AuthProvider({children}: AuthProviderProps) {
             return;
          }
 
+         console.log(`peguei o token ${token}`)
+
          setUser({
           id: decodedToken.id,
           name: decodedToken.name,
           walletAddress: decodedToken.walletAddress,
           admin: decodedToken.admin,
-          email: decodedToken.email
+          email: decodedToken.email,
+          token
          })
          
          console.log(`Logado com sucesso: ${JSON.stringify(decodedToken)}`)
@@ -92,7 +95,7 @@ function AuthProvider({children}: AuthProviderProps) {
 
     return (
         <AuthContext.Provider value={{  
-                                       user,
+                                       user: user!,
                                        loading,
                                        logged, 
                                        login,
