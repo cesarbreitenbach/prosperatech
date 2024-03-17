@@ -31,5 +31,6 @@ export default {
         roxo_real: '#6A0DAD', // Roxo Real
         verde_esmeralda: '#007A5E', // Verde Esmeralda Vibrante
         borgonha_intenso: '#800020', // Borgonha Intenso
+        azulFck: '#4851b8',
     },
 }

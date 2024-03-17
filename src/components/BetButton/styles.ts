@@ -18,6 +18,6 @@ export const Title = styled.Text`
    font-size: ${RFValue(10)}px;
 `;
 export const Coin = styled.Image`   
-   width: 100px;
-   height: 100px;
+   width: ${RFValue(80)}px;
+   height: ${RFValue(80)}px;
 `

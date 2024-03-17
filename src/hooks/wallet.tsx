@@ -3,7 +3,7 @@ import { createContext, ReactNode, useContext, useEffect, useState } from 'react
 import { showMessage } from 'react-native-flash-message';
 import useAxios from  '../services/axios'
 import { decode } from "base-64";
-import { AmountProps, IInvestments, IPerks, IPerksTypes } from '../@types/wallet';
+import { AmountProps, IBuyUserPercs, IInvestments, IPerks, IPerksTypes } from '../@types/wallet';
 
 global.atob = decode;
 
@@ -16,6 +16,7 @@ interface IWalletContextData {
     getSaldo: () => void;
     getInvestiments: () => void;
     getPerkTypes: () => void;
+    buyUserPerks: ({idPerk, totalItems}: IBuyUserPercs) => Promise<Boolean> ;
     investments: IInvestments[];
     perkList: IPerks[];
     perkTypes: IPerksTypes[];
@@ -45,8 +46,8 @@ function WalletProvider({children}: WalletProviderProps) {
           
             const {endereco, amountBonus, amountReal, saldo, taxaGanho } = res.data;
 
-            const fixedBonus = Number(amountBonus).toFixed(3);
-            const fixedAmountReal = Number(amountReal).toFixed(3);
+            const fixedBonus = Number(amountBonus).toFixed(2);
+            const fixedAmountReal = Number(amountReal).toFixed(2);
 
             setAmount({
                 endereco,
@@ -99,9 +100,41 @@ function WalletProvider({children}: WalletProviderProps) {
         }
     }
 
+    async function buyUserPerks({idPerk, totalItems}: IBuyUserPercs): Promise<Boolean> {
+        try {
+            const res = await client.post(`/userminning/${idPerk}`, {totalItems});
+          
+            const { data } = res;
+            
+            if(res.status === 200) {
+                showMessage({
+                    message: "Compra efetuada com sucesso!",
+                    type: "success",
+                    duration: 3000
+                });
+                return true
+            } else {
+                console.log(`erro: ${data?.error}`)
+                showMessage({
+                    message: "Erro ao comprar perk!",
+                    type: "danger",
+                    duration: 3000
+                });
+                return false
+            }
+            
+            
+           
+        } catch (e) {
+            console.log(`deu pau ao pegar perks ${JSON.stringify(e)}`)
+            return false
+        }
+    }
+
 
     return (
         <WalletContext.Provider value={{  
+                                       buyUserPerks,    
                                        getSaldo,
                                        getInvestiments,
                                        getPerkTypes,

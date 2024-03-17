@@ -28,3 +28,12 @@ font-family: ${({theme}) => theme.fonts.SemiBold};
 font-size: ${RFValue(9)}px;
 color: ${({theme}) => theme.colors.dark_gold};
 `;
+export const QtdItems = styled.Text`
+font-family: ${({theme}) => theme.fonts.SemiBold};
+font-size: ${RFValue(9)}px;
+color: ${({theme}) => theme.colors.dark_gold};
+`;
+
+export const Header = styled.View`
+    flex-direction: row;
+`;

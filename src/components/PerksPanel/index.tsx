@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { MinningTax, PerkArea, PerkName, ValidUntil } from './styled';
+import { Header, MinningTax, PerkArea, PerkName, QtdItems, ValidUntil } from './styled';
 import { Image, ImageSourcePropType } from 'react-native';
 import { mapPerkImages } from '../../services/perkImages';
 
@@ -11,12 +11,16 @@ interface PerksPanelProps{
     descricao: string;
     tax: string;
     finalizaEm: string;
+    count: number;
 }
 
-const PerksPanel = ({perkImage, descricao, tax, finalizaEm}: PerksPanelProps) => {
+const PerksPanel = ({perkImage, descricao, tax, finalizaEm, count}: PerksPanelProps) => {
 
   return  <PerkArea>
-            <Image source={perkImage} style={{width: 35, height: 35}}/>
+            <Header>
+               <Image source={perkImage} style={{width: 35, height: 35}}/>
+               <QtdItems>Total {count}</QtdItems>
+            </Header>
             <PerkName numberOfLines={2}>{descricao}</PerkName>
             <MinningTax>Adiciona {tax} % à mineração</MinningTax>
             <ValidUntil>Finaliza em {finalizaEm} dias</ValidUntil>

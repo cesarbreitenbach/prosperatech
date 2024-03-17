@@ -11,6 +11,9 @@ export interface Props {
     fontFamily?: string;
     onPress: () => void;
     light?: boolean;
+    width?: number;
+    height?: number;
+    radius?: number;
 }
 
 export default function Button({
@@ -21,11 +24,14 @@ export default function Button({
     fontFamily,
     onPress,
     light=false,
+    width,
+    height,
+    radius
 }: Props){
     const theme = useTheme();
 
 return (
-   <Container color={color ? color : theme.colors.primary } onPress={loading ? () => {} : onPress}> 
+   <Container color={color ? color : theme.colors.primary } onPress={loading ? () => {} : onPress} width={width} height={height} radius={radius}> 
       {loading ? <ActivityIndicator size='small' color="#fff"/> :  <Title light={light} fontFamily={fontFamily}>{title}</Title>} 
    </Container> 
 );}

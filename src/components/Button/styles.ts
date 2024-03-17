@@ -4,22 +4,27 @@ import styled from 'styled-components/native';
 
 interface ButtonProps {
     color?: string;
+    width?: number;
+    height?: number;
+    radius?: number;
 }
 
 interface TextButtonProps {
     light: boolean;
     fontFamily: string|undefined;
+    
 }
 
 
 export const Container = styled.TouchableHighlight<ButtonProps>`
-    width: 70%;
-    padding: 19px;
+    width: ${({ width }) => width ? `${width}px` : `70%` };
+    height: ${({ height }) => height ? `${height}px` : `60px` };
+    padding: ${({ width }) => width ? `0` : `16px` };
     justify-content: center;
     align-items: center;
     background-color: ${({color }) => color}; 
     margin-bottom: 8px;
-    border-radius: 15px;
+    border-radius: ${({ radius }) => radius ? `${radius}px` : `10px` };
     flex-direction: row;
 `;
 

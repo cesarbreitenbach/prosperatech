@@ -22,6 +22,7 @@ export interface IPerks {
     taxPerk: string;
     efficiency_level: number;
     finalizaEm: string;
+    count: number;
 }
 
 export interface IPerksTypes {
@@ -33,3 +34,14 @@ export interface IPerksTypes {
     allowCoin: string;
     createAt: string;
 }
+
+export interface IActivePerk {
+    id: number;
+    name: string;
+    cost: string;
+  }
+
+  export interface IBuyUserPercs{
+    idPerk: number;
+    totalItems: number;
+  }
