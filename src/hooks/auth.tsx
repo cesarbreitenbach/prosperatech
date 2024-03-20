@@ -5,7 +5,7 @@ import { showMessage } from 'react-native-flash-message';
 import useAxios from  '../services/axios'
 import { jwtDecode } from "jwt-decode";
 import { decode } from "base-64";
-import { ITokenProps, IUser, LoginProps } from '../@types/auth';
+import { ChangePasswordProps, ITokenProps, IUser, LoginProps, SignupProps } from '../@types/auth';
 
 global.atob = decode;
 
@@ -19,6 +19,9 @@ interface IAuthContextData {
     user: IUser;
     login: (value: LoginProps) => void;
     logout: () => void;
+    signup: (body: SignupProps) => void;
+    changePassword: (body: ChangePasswordProps) => void;
+    recoveryPassword: (email: string) => void;
 }
 
 const AuthContext = createContext({} as IAuthContextData);
@@ -40,46 +43,46 @@ function AuthProvider({children}: AuthProviderProps) {
            const resp = await client.post('/sessions', value)
 
            const {token} = resp.data;
-         //  const decoded = jwtDecode(token);
          
-         const decodedToken = decodeToken(token)
+            const decodedToken = decodeToken(token)
 
-         if (!decodedToken) {
-            showMessage({
-              message: "Erro ao pegar token!",
-              type: "danger",
-            });
-            return;
-         }
+            if (!decodedToken) {
+                showMessage({
+                  message: "Erro ao pegar token!",
+                  type: "danger",
+                });
+                return;
+            }
 
-         console.log(`peguei o token ${token}`)
+            setUser({
+              id: decodedToken.id,
+              name: decodedToken.name,
+              walletAddress: decodedToken.walletAddress,
+              admin: decodedToken.admin,
+              email: decodedToken.email,
+              token,
+              active: decodedToken.active,
+              resetPassword: decodedToken.resetPassword
+            })
+            
+            console.log(`Logado com sucesso: ${JSON.stringify(decodedToken)}`)
+            setLogged(true)
 
-         setUser({
-          id: decodedToken.id,
-          name: decodedToken.name,
-          walletAddress: decodedToken.walletAddress,
-          admin: decodedToken.admin,
-          email: decodedToken.email,
-          token
-         })
-         
-         console.log(`Logado com sucesso: ${JSON.stringify(decodedToken)}`)
-         setLogged(true)
-
-        }catch(e) {
-            console.log(`erro ${JSON.stringify(e)}`)
-            showMessage({
-                message: "Credenciais invalidas",
-                type: "danger",
-              });
-            return;
-        }finally{
+          }catch(e) {
+              console.log(`erro ${JSON.stringify(e)}`)
+              showMessage({
+                  message: "Credenciais invalidas",
+                  type: "danger",
+                });
+              return;
+          }finally{
             setLoading(false);
             
         }
     }
 
     async function logout() {
+      setUser({} as IUser);
       setLogged(false);  
     }
 
@@ -91,7 +94,75 @@ function AuthProvider({children}: AuthProviderProps) {
           console.error('Erro ao decodificar o token:', error);
           return null;
         }
+    }
+
+    async function signup(body: SignupProps){
+      setLoading(true)
+      try{
+            
+        const resp = await client.post('/usuarios', body)
+      
+        const {id, name, token, endereco} = resp.data;
+        setUser({
+          id,
+          name,
+          admin: false,
+          email: body.email,
+          token: token,
+          walletAddress: endereco,
+          active: false,
+          resetPassword: false
+        })
+
+        setLogged(true)
+
+     }catch(e: any) {
+        const {error} = e.response.data ?  e.response.data : 'Erro desconhecido';
+        showMessage({
+          message: error,
+          type: "danger",
+        });
+    return;
+     }finally{
+         setLoading(false);
+         
+     }
+    }
+
+    async function changePassword(body: ChangePasswordProps) {
+      setLoading(true)
+      try{
+        const resp = await client.patch('/usuarios/', body, {headers: { Auth: `Bearer ${user.token}`} })
+        showMessage({
+          message: "Senha alterada com sucesso!",
+          type: "success",
+        });
+        navigate('home');
+      }catch (e: any){
+        console.log(`fucking error`, e.response.headers)
+        showMessage({
+          message: "Erro ao atualizar senha!",
+          type: "danger",
+        });
+        return;
+      } finally {
+        setLoading(false)
       }
+    }
+
+    async function recoveryPassword(email: string) {
+      setLoading(true)
+      try{
+        await client.get(`/recovery/${email}`)
+      }catch(e){
+        showMessage({
+          message: "Erro ao recuperar senha!",
+          type: "danger",
+        });
+      }finally{
+        setLoading(false)
+      }
+    }
 
     return (
         <AuthContext.Provider value={{  
@@ -99,7 +170,10 @@ function AuthProvider({children}: AuthProviderProps) {
                                        loading,
                                        logged, 
                                        login,
-                                       logout
+                                       logout, 
+                                       signup,
+                                       changePassword,
+                                       recoveryPassword
                                         }}> 
             {children}
         </AuthContext.Provider> 

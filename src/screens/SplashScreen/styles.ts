@@ -10,10 +10,10 @@ export const Container = styled.View`
 `
 
 export const Brand = styled(Animated.Text)`
-  font-size: ${RFValue(12)}px;
+  font-size: ${RFValue(16)}px;
   font-family: ${({theme}) => theme.fonts.regular };
   text-align: center;
-  color: ${({theme}) => theme.colors.white}
+  color: ${({theme}) => theme.colors.gold}
 `;
 
 export const LogoPng = styled(Animated.Image)`

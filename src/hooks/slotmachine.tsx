@@ -39,7 +39,7 @@ function SlotMachineProvider({children}: SlotMachineProviderProps) {
             });
             console.log(`peguei ${JSON.stringify(res.data)}`)
         } catch (e) {
-            console.log(`deu pau ao pegar saldo ${JSON.stringify(e)}`)
+            console.log(`deu pau ao roll ${JSON.stringify(e)}`)
         }
     }
 
@@ -50,7 +50,7 @@ function SlotMachineProvider({children}: SlotMachineProviderProps) {
             });
             console.log(`peguei ${JSON.stringify(res.data)}`)
         } catch (e) {
-            console.log(`deu pau ao pegar saldo ${JSON.stringify(e)}`)
+            console.log(`deu pau ao klan ${JSON.stringify(e)}`)
         }
     }
 

@@ -6,12 +6,10 @@ import { useAuthContext } from '../../hooks/auth';
 const URL: string =
   ENV === 'dev' ? (Platform.OS === 'android' ? `${API_ANDROID}:${API_PORT}` : `${API_DEV}:${API_PORT}`) : API_URL;
 
-console.log(`essas sao variaveis de ambiente ENV: ${ENV} API_URL:${URL}/api `);
+console.log(`essas sao variaveis de ambiente ENV: ${ENV} API:${URL}/api `);
  
 export default () => {
   const { user } = useAuthContext();
-
-  
 
   const getHeaders = () => {
       const headers = {

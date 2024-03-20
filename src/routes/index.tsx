@@ -6,6 +6,7 @@ import { AuthRoutes } from './auth.routes';
 import { useAuthContext } from '../hooks/auth';
 import { WalletProvider } from '../hooks/wallet';
 import { SlotMachineProvider } from '../hooks/slotmachine';
+import { SettingsProvider } from '../hooks/settings';
 
 
 export function Routes() {
@@ -17,11 +18,13 @@ export function Routes() {
 
   return (
   
-      <WalletProvider>
-        <SlotMachineProvider>
-        { logged ? <StackRoutes /> : <AuthRoutes /> }
-        </SlotMachineProvider>
-      </WalletProvider>
+    <SettingsProvider>
+        <WalletProvider>
+          <SlotMachineProvider>
+          { logged ? <StackRoutes /> : <AuthRoutes /> }
+          </SlotMachineProvider>
+        </WalletProvider>
+    </SettingsProvider>
  
     
   );

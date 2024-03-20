@@ -28,9 +28,10 @@ export const BankBalance = styled.Text`
 
 export const Item = styled.TouchableOpacity <{active: boolean}>`
     border-color: ${({theme, active}) => active ? theme.colors.gold : theme.colors.black};
-    border-width: 1px;
-    width: 33%;
+    border-width: 2px;
+    width: 35%;
     border-radius: 7px;
-    padding: 3px;
-    
+    padding: ${RFValue(1)}px 0;
+    justify-content: center;
+    align-items: center;
 `;

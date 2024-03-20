@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Header, Input, InputArea, Title } from './styles';
+import { ButtonClearArea, Container, Header, Input, InputArea, Title } from './styles';
 import { useTheme } from 'styled-components';
-import fichaCem from '../../assets/images/fichaBonus.png'
-import fichaGold from '../../assets/images/fichaGold.png'
-import { Image, Platform } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { betValues } from './betsValue';
 import BetButton from '../BetButton';
 
 interface BetPanelProps{
+    title: string;
     setBetValue: (value: number) => void;
     betValue: number;
+    selectedBetCoin: string;
 }
 
-const BetPanel: React.FC<BetPanelProps> = ({setBetValue, betValue}) => {
+const BetPanel: React.FC<BetPanelProps> = ({setBetValue, betValue, title, selectedBetCoin}) => {
 
   const theme = useTheme();
 
@@ -28,13 +27,21 @@ const BetPanel: React.FC<BetPanelProps> = ({setBetValue, betValue}) => {
 
     // Atualize o estado com o novo valor
     setBetValue(isNaN(newValue) ? 0 : newValue);
-};
+  };
+
+  const handleClear = () => {
+    setBetValue(0)
+  }
+
   return <Container > 
         
                 
                 <InputArea>
                     <Header>
-                      <Title>Valor da aposta:</Title>
+                      <Title>{title}</Title>
+                      <ButtonClearArea onPress={handleClear}>
+                         <Title>Zerar</Title>
+                      </ButtonClearArea>
                       <Input value={formatBetValue(betValue)} onChangeText={handleInputChange} keyboardType='number-pad'/>
                     </Header>
 
@@ -46,7 +53,7 @@ const BetPanel: React.FC<BetPanelProps> = ({setBetValue, betValue}) => {
                        }}
                        renderItem={({item}) => { 
                          return (
-                          <BetButton label={item.label} img={item.img} setBetValue={setBetValue} value={item.value}/>
+                          <BetButton selectedBetCoin={selectedBetCoin} label={item.label} img={item.img} setBetValue={setBetValue} value={item.value}/>
                          )
                         }}
                     

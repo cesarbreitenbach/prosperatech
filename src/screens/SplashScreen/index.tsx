@@ -4,17 +4,17 @@ import { useEffect, useState } from 'react';
 import Animated, { Extrapolate, interpolate, runOnJS, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 
-import logo from '../../assets/images/prospera.png';
+import logo from '../../assets/images/ceasarsLogo2.png';
 
 
 import { Brand, Container, LogoPng } from './styles';
-// import { useAuthContext } from '../../hooks/auth';
+import { useAuthContext } from '../../hooks/auth';
 
 
 export default function Splash(){
     
     const navigation = useNavigation<any>();
-   // const {setUserType} = useAuthContext()
+    const {user} = useAuthContext()
     const splashAnimation = useSharedValue(0);
 
 
@@ -47,8 +47,16 @@ export default function Splash(){
 
     async function startApp(){
 
+      if(user.active){
+        if(user.resetPassword) {
+          navigation.navigate('changePassword')
+        } else {
+          navigation.navigate('home');
+        }
+      } else {
+        navigation.navigate('activate');
+      }
 
-      navigation.navigate('home');
     }
 
     useEffect(() => {
@@ -64,7 +72,7 @@ export default function Splash(){
 return (
    <Container> 
       <Animated.View style={[brandStyle, {position: 'absolute'}]}>
-        <Brand>Invista, ganhe e saque!</Brand>
+        <Brand>Jogue, lucre e divirta-se!!</Brand>
       </Animated.View>
       <Animated.View style={[logoStyle, {position: 'absolute'}]}> 
         <LogoPng source={logo} />

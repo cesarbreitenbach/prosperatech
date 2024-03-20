@@ -9,7 +9,6 @@ export const Container = styled.View`
 export const Title = styled.Text`
    font-family: ${({theme}) => theme.fonts.regular};
    color: ${({theme}) => theme.colors.white};
-   margin-top: 12px
 `
 
 export const Input = styled.TextInput`
@@ -33,3 +32,12 @@ export const Header = styled.View`
     align-items: center;
     
 `;
+
+export const ButtonClearArea = styled.TouchableOpacity`
+   background-color:  ${({theme}) => theme.colors.borgonha_intenso};
+   width: ${RFValue(80)}px;
+   padding: ${RFValue(4)}px;
+   justify-content: center;
+   align-items: center;
+   border-radius: 6px;
+`

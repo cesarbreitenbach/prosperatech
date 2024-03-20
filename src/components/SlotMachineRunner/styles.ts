@@ -47,10 +47,24 @@ export const Title = styled.Text<{cor?: string}>`
 
 export const Chicken = styled.Image``
 
+export const AreaWinner = styled.View`
+   flex-direction: row;
+   height: ${RFValue(80)}px;
+   justify-content: center;
+   align-items: center;
+`
 
 
+export const AreaGain = styled.View`
+   justify-content: center;
+   align-items: center;
+`
 
-
+export const Amount = styled.Text`
+    font-family: ${({theme}) => theme.fonts.SemiBold };
+    font-size: ${RFValue(18)}px;
+    color: ${({theme}) => theme.colors.success};
+`
 
 
 

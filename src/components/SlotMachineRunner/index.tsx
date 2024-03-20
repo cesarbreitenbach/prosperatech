@@ -1,7 +1,7 @@
 import {useState, useEffect, useRef, useId} from 'react';
 import { Image, Platform, Text, View } from 'react-native';
 import SlotMachine from '../SlotMachine';
-import { ButtonArea, ButtonText, Chicken, Container, Header, InfoArea, Title } from './styles';
+import { Amount, AreaGain, AreaWinner, ButtonArea, ButtonText, Chicken, Container, Header, InfoArea, Title } from './styles';
 import { RFValue } from 'react-native-responsive-fontsize';
 import BlinkedPanel from '../BlinkedPanel';
 import winner from '../../assets/images/winner.png'
@@ -17,6 +17,7 @@ import { useSlotMachineContext } from '../../hooks/slotmachine';
 import { showMessage } from 'react-native-flash-message';
 import { useAuthContext } from '../../hooks/auth';
 import { ScrollView } from 'react-native-gesture-handler';
+import { useSettingsContext } from '../../hooks/settings';
 
 
 
@@ -26,7 +27,8 @@ export default function SlotMachineRunner ({symbols}:ISlotMachine) {
 
     const {amount, getSaldo} = useWalletContext();
     const {roll, syncSaldo} = useSlotMachineContext();
-    const {user} = useAuthContext()
+    const {difficult} = useSettingsContext();
+    const {user} = useAuthContext();
     
     const [slotSettings, setSlotSettings] = useState({duration: 100, slot1: '000'});
     const [counter, setCounter] = useState(0)
@@ -38,6 +40,7 @@ export default function SlotMachineRunner ({symbols}:ISlotMachine) {
     const useRandom = machineService();
     const [selectedCoin, setSelectedCoin] = useState("bonus");
     const [betValue, setBetValue] = useState(0);
+    const [premio, setPremio] = useState("")
 
     const handlePlay = () => {
 
@@ -75,7 +78,7 @@ export default function SlotMachineRunner ({symbols}:ISlotMachine) {
             return
         }
         setLock(true);
-        let randomNum = useRandom.generateRandomNumber(3, 9, lastGeneratedNumber, counter);
+        let randomNum = useRandom.generateRandomNumber(3, 9, lastGeneratedNumber, counter, difficult);
         lastGeneratedNumber = randomNum;
         setRandomico(randomNum)
         roll({bet: betValue, randomNumber: randomNum, type: selectedCoin})
@@ -91,8 +94,7 @@ export default function SlotMachineRunner ({symbols}:ISlotMachine) {
             getSaldo();
         }, 1000)
 
-        if(useRandom.verifyWinniner(randomNum)){
-            
+        if(useRandom.verifyWinniner(randomNum, betValue, setPremio)){
             setLock(true);
             setTimeout(() => {
               setLock(false);
@@ -124,7 +126,17 @@ export default function SlotMachineRunner ({symbols}:ISlotMachine) {
                 </InfoArea>
                 <Header>
                     {!isWinner && <InfoUser bonusAmount={amount.amountBonus} realAmount={amount.amountReal} selectedCoin={selectedCoin} setSelectedCoin={setSelectedCoin}/>}
-                    {isWinner &&  <Chicken source={winner} style={{width: 230, height: 130, alignSelf: 'center'}}/>}
+                    {isWinner &&  
+                    <AreaWinner>
+                        <Chicken source={winner} style={{width: 230, height: 130, alignSelf: 'center'}}/>
+                        <AreaGain>
+                           <Amount>PRÊMIO</Amount>
+                           <Amount>$ {premio}</Amount>
+                        </AreaGain>
+                    </AreaWinner>
+                    
+                    
+                    }
                 </Header>
                 <BlinkedPanel blinking={isWinner} invertedBlink={false} >
                     <SlotMachine 
@@ -137,7 +149,7 @@ export default function SlotMachineRunner ({symbols}:ISlotMachine) {
                         duration={slotSettings.duration} />
                     
                 </BlinkedPanel>
-                <BetPanel setBetValue={setBetValue} betValue={betValue} />
+                <BetPanel selectedBetCoin={selectedCoin} title="Valor da aposta:" setBetValue={setBetValue} betValue={betValue} />
                 <ButtonArea 
                         onPress={handlePlay}
                         activeOpacity={0.5}

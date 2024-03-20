@@ -1,13 +1,13 @@
  
 export default () => {
-    const generateRandomNumber = (numDigits: number, possibilities: number, lastGeneratedNumber: string, counter: number) => {
-   
+    const generateRandomNumber = (numDigits: number, possibilities: number, lastGeneratedNumber: string, counter: number, dificult: number) => {
+        console.log(`peguei dificuldate: ${dificult}`)
         let digits = Array.from({ length: possibilities }, (_, i) => i);
 
         let randomNumber = '';
     
         // Modifica porcentagem de ganho. 
-        const allEqual = Math.random() < 0.7;
+        const allEqual = Math.random() < dificult;
     
         if (allEqual) {
             // Escolhe um dígito aleatório
@@ -50,13 +50,23 @@ export default () => {
         return randomNumber;
     }
     
-    const verifyWinniner = (randomNumber: string) => {
+    const verifyWinniner = (randomNumber: string, amount: number, setPremio: (value: string) => void) => {
 
         const char1 = randomNumber[0];
         const char2 = randomNumber[1];
         const char3 = randomNumber[2];
         
         if (char1 === char2 && char2 === char3) {
+            let premio = 0;
+            const sum = Number(char1) + Number(char2) + Number(char3) 
+            if (sum > 25) {
+              premio = (Number(amount) * 10); 
+            } else if (sum > 21) {
+              premio = Number(amount) * 5; 
+            } else {
+              premio = Number(amount) * 3;
+            }
+            setPremio(premio.toFixed(2))
         return true;
         }
         return false;

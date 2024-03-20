@@ -3,7 +3,7 @@
 export interface AmountProps{
     amountReal: string;
     amountBonus: string;
-    saldo: number;
+    saldo: string;
     endereco: string;
     taxaGanho: number;
 }
@@ -14,6 +14,7 @@ export interface IInvestments {
     valorInvestido: string;
     taxaBase: string;
     nivelBoost: number;
+    finalizaEm: string;
 }
 
 export interface IPerks {
@@ -44,4 +45,9 @@ export interface IActivePerk {
   export interface IBuyUserPercs{
     idPerk: number;
     totalItems: number;
+  }
+
+  export interface ILastCalculate {
+    lastTimeCalculated: string;
+    nextTimeToCalculate: string;
   }

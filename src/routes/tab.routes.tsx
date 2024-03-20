@@ -2,8 +2,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import Home from '../screens/Home';
 import SlotMachineScreen from '../screens/SlotMachineScreen';
+import SettingsScreen from '../screens/SettingsScreen';
 
-import FontAwesome from 'react-native-vector-icons/FontAwesome5'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import theme from '../styles/theme';
 
@@ -16,17 +16,16 @@ export function MyTabs() {
         headerShown: false,
         tabBarActiveTintColor: theme.colors.verde_esmeralda,
         tabBarInactiveTintColor: theme.colors.dark_gold,
-        tabBarLabelStyle: { marginBottom: 6},
-        tabBarStyle: { backgroundColor: theme.colors.shape_dark, height: 80},
+        tabBarStyle: { backgroundColor: theme.colors.shape_dark, paddingTop: 8},
       }}
       initialRouteName='Wallet'
        >
       <Tab.Screen name="Wallet" 
                   component={Home} 
                   options={{
-                    tabBarLabel: 'Wallet',
+                    tabBarLabel: '',
                     tabBarIcon: ({ color, size }) => (
-                      <FontAwesome name="wallet" color={color} size={30} />
+                      <MaterialCommunityIcons name="piggy-bank" color={color} size={30} />
                     ),
                   }}
                   
@@ -35,9 +34,19 @@ export function MyTabs() {
                   name="Machine" 
                   component={SlotMachineScreen} 
                   options={{
-                    tabBarLabel: 'Machine',
+                    tabBarLabel: '',
                     tabBarIcon: ({ color, size }) => (
-                      <MaterialCommunityIcons name="slot-machine" color={color} size={38} />
+                      <MaterialCommunityIcons name="robot" color={color} size={30} />
+                    ),
+                  }}
+                  />
+      <Tab.Screen 
+                  name="Settings" 
+                  component={SettingsScreen} 
+                  options={{
+                    tabBarLabel: '',
+                    tabBarIcon: ({ color, size }) => (
+                      <MaterialCommunityIcons name="account-settings" color={color} size={30} />
                     ),
                   }}
                   />

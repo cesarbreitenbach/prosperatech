@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 
-import { ButtonArea, ButtonText, BuyInfoArea, ConfirmArea, Container, Cost, CostsArea, Item, Label, MineTaxes, MineTaxesTitle, Title, TitlePerkList, TitlePerksBuy } from './styled';
+import {  Container, MineTaxes, MineTaxesTitle, Title, TitlePerkList, TitlePerksBuy } from './styled';
 import { useWalletContext } from '../../hooks/wallet';
 import BuyPerks from '../../components/BuyPerks';
 
@@ -17,14 +17,6 @@ import BuyInfoPanel from '../../components/BuyInfoPanel';
 import { IActivePerk, IPerks } from '../../@types/wallet';
 import { showMessage } from 'react-native-flash-message';
 
-interface PerkListItem {
-    idPerk: number;
-    namePerk: string;
-    finalizaEm: number;
-    taxPerk: string;
-    efficiency_level: number;
-}
-
 interface GroupedData {
     [key: string]: {
         idPerk: number;
@@ -37,7 +29,7 @@ interface GroupedData {
 }
 
 const InvestmentScreen: React.FC = () => {
-    const {getPerkTypes, perkTypes, amount, perkList, buyUserPerks, getInvestiments} = useWalletContext();
+    const {getPerkTypes, perkTypes, amount, perkList, buyUserPerks, getInvestiments, getSaldo} = useWalletContext();
     const [selectedPerk, setSelectedPerk] = useState<IActivePerk>({} as IActivePerk);
     const [qtdSelectedItems, SetQtdSelectedItems] = useState(0)
     const [grupedPerkList, setGrupedPerkList] = useState<IPerks[]>([]);
@@ -100,6 +92,7 @@ const InvestmentScreen: React.FC = () => {
             SetQtdSelectedItems(0)
             setSelectedPerk({} as IActivePerk)
             getInvestiments()
+            getSaldo()
         }
         
 
@@ -117,12 +110,12 @@ const InvestmentScreen: React.FC = () => {
 
   return <Container> 
            <Header hasGoBack backgroundImage={backgroundImage} height={140}/>
-           <ScrollView style={{padding: 12}}>
-                <Title>Gerêncie sua mina e updates!</Title>
+           <ScrollView style={{padding: 12}} contentContainerStyle={{paddingBottom: 30}}>
+                <Title>Gerêncie sua CryptoMina!</Title>
                 
                 <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
                     <View style={{padding: 12}}>
-                        <MineTaxesTitle>Taxas de ganho:</MineTaxesTitle>
+                        <MineTaxesTitle>Poder de mineração Perks</MineTaxesTitle>
                         <MineTaxes>{mineTaxes} %</MineTaxes>
                     </View>
                     <SaldoPanel amountBonus={amount.amountBonus} amountReal={amount.amountReal} width={20} height={20} />

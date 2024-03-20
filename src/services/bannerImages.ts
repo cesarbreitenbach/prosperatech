@@ -1,0 +1,23 @@
+import { ImageSourcePropType } from "react-native";
+import Banner1 from "../assets/images/banner1.png" 
+import Banner2 from "../assets/images/banner2.png"
+import Banner3 from "../assets/images/banner3.png"
+import Banner4 from "../assets/images/banner4.png"
+import Banner5 from "../assets/images/banner5.png"
+import Banner6 from "../assets/images/banner6.png"
+
+// Interface para definir a estrutura dos objetos de imagem
+interface IBannerImage {
+    image: ImageSourcePropType; // Tipo da imagem
+    route: string; // Propriedade de rota
+}
+
+// Array de objetos de imagem com suas respectivas rotas
+export const banners: IBannerImage[] = [
+    { image: Banner1, route: "Machine" },
+    { image: Banner2, route: "" },
+    { image: Banner3, route: "" },
+    { image: Banner4, route: "Machine" },
+    { image: Banner5, route: "Machine" },
+    { image: Banner6, route: "" }
+];

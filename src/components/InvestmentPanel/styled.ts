@@ -1,9 +1,11 @@
 import { RFValue } from 'react-native-responsive-fontsize';
 import styled from 'styled-components/native';
 
-export const InvestMentArea = styled.View`
-  width: 100%;
-
+export const InvestMentArea = styled.TouchableOpacity`
+margin: 5px;
+background-color: ${({theme}) => theme.colors.black};
+padding: ${RFValue(8)}px;
+border-radius: 8px;
 `;
 
 export const InvestMentTitle = styled.Text`
@@ -25,9 +27,8 @@ color: ${({theme}) => theme.colors.selected};
 `;
 
 export const TypeArea = styled.View`
-   width: 100px;
-   justify-content: center;
-   align-items: center;
+   flex-direction: row;
+   justify-content: space-between;
 `;
 
 export const TypeText = styled.Text`

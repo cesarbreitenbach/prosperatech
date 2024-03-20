@@ -2,14 +2,18 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>LSApplicationCategoryType</key>
+	<string></string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>MaterialCommunityIcons.ttf</string>
 		<string>FontAwesome.ttf</string>
 		<string>MaterialIcons.ttf</string>
 		<string>Poppins-Light.ttf</string>
 		<string>Poppins-SemiBold.ttf</string>
 		<string>Poppins-Regular.ttf</string>
 		<string>Poppins-Medium.ttf</string>
+		<string>FontAwesome5.ttf</string>
 	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>

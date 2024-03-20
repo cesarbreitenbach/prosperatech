@@ -24,7 +24,7 @@ return (
    <Container> 
       <TextInput
         placeholder='Digite a senha'
-        placeholderTextColor={theme.colors.white}
+        placeholderTextColor={theme.colors.text}
         value={value}
         onChangeText={setValue}
         autoCorrect={false}

@@ -17,31 +17,32 @@ export const ContentArea = styled.View`
 `
 
 export const SaldoArea = styled.View`
-
-  
-`
-
-export const EnderecoWalletArea = styled.View`
- 
-  
+   padding: ${RFValue(4)}px;
+   align-items: flex-end;
 `
 
 export const Saldo = styled.Text`
 font-family: ${({theme}) => theme.fonts.medium};
-font-size: ${RFValue(16)}px;
+font-size: ${RFValue(18)}px;
 color: ${({theme}) => theme.colors.gold};
 `;
 
-export const EnderecoWallet = styled.Text`
+export const TitleTax = styled.Text`
+text-align: center;
 font-family: ${({theme}) => theme.fonts.regular};
-font-size: ${RFValue(9)}px;
-color: ${({theme}) => theme.colors.borgonha_intenso};
-max-width: 300px;
+font-size: ${RFValue(12)}px;
+color: ${({theme}) => theme.colors.verde_esmeralda};
 `;
 
 export const Title = styled.Text`
 font-family: ${({theme}) => theme.fonts.medium};
-font-size: ${RFValue(8)}px;
+font-size: ${RFValue(10)}px;
+color: ${({theme}) => theme.colors.borgonha_intenso};
+`;
+
+export const TitleSaldo = styled.Text`
+font-family: ${({theme}) => theme.fonts.medium};
+font-size: ${RFValue(14)}px;
 color: ${({theme}) => theme.colors.borgonha_intenso};
 `;
 
@@ -84,9 +85,34 @@ export const Item = styled.View`
   
 `
 
-export const ButtonArea = styled.View`
+export const BetArea = styled.View`
    flex: 1;
    justify-content: center;
    align-items: center;
    margin-top: ${RFValue(12)}px;
 `
+
+
+export const InvestmentTitle = styled.Text`
+text-align: center;
+font-family: ${({theme}) => theme.fonts.SemiBold};
+font-size: ${RFValue(16)}px;
+color: ${({theme}) => theme.colors.white};
+margin-top: ${RFValue(6)}px;
+`;
+
+export const NewMineArea = styled.TouchableOpacity`
+   background-color: ${({theme}) => theme.colors.dark_gold};
+   justify-content: center;
+   align-items: center;
+   padding: ${RFValue(6)}px;
+   margin-top: ${RFValue(6)}px;
+   margin-bottom: ${RFValue(6)}px;
+   border-radius: 8px;
+`
+
+export const TitleNewMine = styled.Text`
+font-family: ${({theme}) => theme.fonts.medium};
+font-size: ${RFValue(12)}px;
+color: ${({theme}) => theme.colors.borgonha_intenso};
+`;

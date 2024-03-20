@@ -1,6 +1,8 @@
 import React from 'react';
 
 import { ButtonArea, Coin, Title } from './styles';
+import { useWalletContext } from '../../hooks/wallet';
+import { showMessage } from 'react-native-flash-message';
 
 
 interface BetButtonProps {
@@ -8,11 +10,11 @@ interface BetButtonProps {
     id?: number,
     value: number,
     label: string,
-    img: any
+    img: any,
+    selectedBetCoin: string;
 }
 
-const BetButton = ({label, img, value, setBetValue}: BetButtonProps) => {
-
+const BetButton = ({label, img, value, setBetValue, selectedBetCoin}: BetButtonProps) => {
   const handleBet = (value: number) => {
     setBetValue((old: number) => old + value);
   }

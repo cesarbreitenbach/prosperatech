@@ -1,9 +1,7 @@
 import { useTheme } from 'styled-components';
-import {  ButtonArea, Container, ContentArea, EnderecoWallet, EnderecoWalletArea, ImageArea, Item, LastPayment, MinningTitle, NextPayment, PaymentArea, Saldo, SaldoArea, Title } from './styled';
+import {  BetArea,  Container, InvestmentTitle, Item, LastPayment, MinningTitle, NewMineArea, NextPayment, PaymentArea, Saldo, SaldoArea, Title, TitleNewMine, TitleSaldo, TitleTax } from './styled';
 import { useWalletContext } from '../../hooks/wallet';
-import { useEffect } from 'react';
-import { useAuthContext } from '../../hooks/auth';
-import { Image } from 'react-native';
+import { useEffect, useState } from 'react';
 import Header from '../../components/Header';
 import backgroundImage from '../../assets/images/monteMoedas.png'
 
@@ -13,77 +11,153 @@ import fichaCem from '../../assets/images/fichaBonus.png'
 import fichaGold from '../../assets/images/fichaGold.png'
 import mine from '../../assets/images/mine.png'
 
-import picareta from '../../assets/images/picaretaFerro.png'
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import InvestmentPanel from '../../components/InvestmentPanel';
-import PerksPanel from '../../components/PerksPanel';
 import Button from '../../components/Button';
-import BuyPerks from '../../components/BuyPerks';
 import { useNavigation } from '@react-navigation/native';
-import SaldoPanel from '../../components/SaldoPanel';
+import NewMine from '../../components/NewMine';
+import BetPanel from '../../components/BetPanel';
+import InfoUser from '../../components/InfoUser';
+import { showMessage } from 'react-native-flash-message';
+import BannerSlider from '../../components/BannerSlider';
 
 export default function Home() {
   const theme = useTheme();
-  const {getSaldo, amount, getInvestiments, investments, perkList } = useWalletContext();
+  const {getSaldo, amount, getInvestiments, investments, buyCriptoMine, perkList, getLastCalculated, lastCalculated } = useWalletContext();
+
+  const [investmentValue, setInvestmentValue] = useState(0);
+  const [selectedCoin, setSelectedCoin] = useState("bonus");
+  const [mineTaxes, setMineTaxes] = useState(0)
 
   const navigation = useNavigation<any>();
 
   useEffect(() => {
     getSaldo();
     getInvestiments();
+    getLastCalculated();
   }, [])
+
+  useEffect(() => {
+    calculateMineHate();
+  }, [perkList])
+
+  const calculateMineHate = () => {
+    const sumTaxPerk = perkList.reduce((acc, obj) => {
+      const taxPerk = parseFloat(obj.taxPerk);
+      return acc + taxPerk;
+    }, 0);
+
+    setMineTaxes(sumTaxPerk)
+  }
+
+  const handleBuyMine = () => {
+
+    if(investmentValue === 0 || selectedCoin === '') {
+      showMessage({
+        message: "Investimento deve ser maior que zero e moeda investida deve ser selecionada!",
+        type: "warning",
+        duration: 3000
+      });
+      return;
+    }
+
+  
+    if(selectedCoin === 'bonus' ) {
+      if(investmentValue > Number(amount.amountBonus)) {
+        showMessage({
+          message: "Você não tem saldo suficiente!",
+          type: "warning",
+          duration: 3000
+      });
+      return;
+      }
+    } else {
+      if(investmentValue > Number(amount.amountReal)) {
+        showMessage({
+          message: "Você não tem saldo suficiente!",
+          type: "warning",
+          duration: 3000
+      });
+      return;
+      }
+    }
+
+
+
+    buyCriptoMine({
+      amount: investmentValue,
+      type: selectedCoin,
+      idEarnType: 1 // por enquanto nao temos outros investimentos
+    })
+
+    setInvestmentValue(0);
+    setSelectedCoin("");
+
+
+  }
+
+  const handleGoToInvestment = () => {
+    navigation.navigate('investment')
+  }
 
   return (
     <Container>
-      <ScrollView>
+      <ScrollView contentContainerStyle={{paddingBottom: 30}}>
           <Header backgroundImage={backgroundImage} height={140}/>
+
+          <BannerSlider />
         
-        <SaldoArea>
-            <Title>Saldo:</Title>
-            <Saldo>$ {amount.saldo}</Saldo>
-        </SaldoArea>
-        <EnderecoWalletArea>
-            <Title>Endereço Wallet</Title>
-            <EnderecoWallet numberOfLines={2} >{amount.endereco}</EnderecoWallet>
-        </EnderecoWalletArea>
+      <SaldoArea>
+          <TitleSaldo>Saldo Total:</TitleSaldo>
+          <Saldo>$ {amount.saldo}</Saldo>
+      </SaldoArea>
 
-      <SaldoPanel amountBonus={amount.amountBonus} amountReal={amount.amountReal} width={40} height={40} />
-
+      
+      
+      <InfoUser size={20} bonusAmount={amount.amountBonus} realAmount={amount.amountReal} selectedCoin={selectedCoin} setSelectedCoin={setSelectedCoin}/>
       <MinningArea>
-        <MinningTitle>Rendimentos e Ganhos </MinningTitle>
+          <MinningTitle>Rendimentos e Ganhos </MinningTitle>
         
-        <PaymentArea>
-          <Item>
-            <Title>Ultimo pagamento:</Title>
-            <LastPayment> 12:00 01/01/2024</LastPayment>
-          </Item>
-          <Item>
-            <Title>Proximo pagamento:</Title>
-            <NextPayment> 12:00 01/01/2024</NextPayment>
-          </Item>
-        </PaymentArea>
-        
+          <PaymentArea>
+            <Item>
+              <Title>Ultimo pagamento:</Title>
+              <LastPayment>{lastCalculated.lastTimeCalculated}</LastPayment>
+            </Item>
+            <Item>
+              <Title>Proximo pagamento:</Title>
+              <NextPayment>{lastCalculated.nextTimeToCalculate}</NextPayment>
+            </Item>
+          </PaymentArea>
+          {investments?.length <= 0 && <NewMineArea onPress={handleBuyMine}>
+              <NewMine />
+              <TitleNewMine>Toque para Adicionar</TitleNewMine>
+          </NewMineArea>}
+          
 
-        <FlatList 
-           horizontal
-           data={investments}
-           contentContainerStyle={{backgroundColor: theme.colors.primary ,width: '100%', padding: 12, borderRadius: 12}}
-           renderItem={({item}) => <InvestmentPanel 
-                                       coinTypeImage={item.type === 'bonus' ? fichaCem : fichaGold } 
-                                       earnedAmount={item.valorInvestido}
-                                       name={item.descricao}
-                                       resourceImage={mine}
-                                       tax={item.taxaBase}
-                                       />}
-        />
+          {investments?.length > 0 && <>
+              <InvestmentTitle>Investimento em Cryptomina:</InvestmentTitle>
+              <TitleTax>Poder de mineração em {mineTaxes} %</TitleTax>
+          </>}
+          <FlatList 
+            horizontal
+            data={investments}
+            contentContainerStyle={{backgroundColor: theme.colors.dark_gold, borderRadius: 8, marginTop: 8,}}
+            renderItem={({item}) => <InvestmentPanel 
+                                        onPress={handleGoToInvestment}
+                                        coinTypeImage={item.type === 'bonus' ? fichaCem : fichaGold } 
+                                        earnedAmount={item.valorInvestido}
+                                        name={item.descricao}
+                                        resourceImage={mine}
+                                        tax={item.taxaBase}
+                                        finalizaEm={item.finalizaEm}
+                                        />}
+          />
 
-       
-
-        {/* <BuyPkerks /> */}
-
-        <ButtonArea>
-            <Button title='Adicionar Perk' onPress={() => navigation.navigate('investment')} color={theme.colors.dark_gold} />
-        </ButtonArea>
+          
+          <BetArea>
+              <BetPanel selectedBetCoin={selectedCoin} title="Valor à aplicar" setBetValue={setInvestmentValue} betValue={investmentValue} />
+              {investments?.length > 0 && <Button height={55} title='Investir na CryptoMina' onPress={handleBuyMine} color={theme.colors.dark_gold} />}
+          </BetArea>
         
       </MinningArea>
 

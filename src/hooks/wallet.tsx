@@ -3,9 +3,18 @@ import { createContext, ReactNode, useContext, useEffect, useState } from 'react
 import { showMessage } from 'react-native-flash-message';
 import useAxios from  '../services/axios'
 import { decode } from "base-64";
-import { AmountProps, IBuyUserPercs, IInvestments, IPerks, IPerksTypes } from '../@types/wallet';
+import { AmountProps, IBuyUserPercs, IInvestments, ILastCalculate, IPerks, IPerksTypes } from '../@types/wallet';
+import { addMinutes, format } from 'date-fns';
+import { useSettingsContext } from './settings';
+import { useAuthContext } from './auth';
 
 global.atob = decode;
+
+interface IPostEarns {
+    idEarnType: Number;
+    amount: Number;
+    type: string;
+}
 
 interface WalletProviderProps {
     children: ReactNode;
@@ -14,12 +23,15 @@ interface WalletProviderProps {
 interface IWalletContextData {
     amount: AmountProps;
     getSaldo: () => void;
+    getLastCalculated: () => void;
     getInvestiments: () => void;
     getPerkTypes: () => void;
     buyUserPerks: ({idPerk, totalItems}: IBuyUserPercs) => Promise<Boolean> ;
+    buyCriptoMine: (body: IPostEarns) => void;
     investments: IInvestments[];
     perkList: IPerks[];
     perkTypes: IPerksTypes[];
+    lastCalculated: ILastCalculate;
 }
 
 // const valueInCents: number = Math.round(valueFromDatabase * 100);
@@ -30,6 +42,11 @@ const WALLETKEY = '@prosperatech:wallet';
 
 function WalletProvider({children}: WalletProviderProps) {
     const { navigate } = useNavigation<any>();
+
+    const {user} = useAuthContext();
+
+    const {calculateTime} = useSettingsContext();
+
     const [amount, setAmount] = useState<AmountProps>({} as AmountProps);
 
     const [investments, setInvestments] = useState<IInvestments[]>([])
@@ -37,23 +54,50 @@ function WalletProvider({children}: WalletProviderProps) {
 
     const [perkTypes, setPerkTypes] = useState<IPerksTypes[]>([]);
 
+    const [lastCalculated, setLastCalculated] = useState<ILastCalculate>({} as ILastCalculate)
+
     const { axiosClient: client } = useAxios();
+
+    useEffect(() => {
+        // Função que será chamada a cada 15 minutos
+        const fetchData = async () => {
+            await getSaldo();
+            await getLastCalculated();
+            console.log(`atualizando saldos`)
+        };
+
+        // Chama a função fetchData assim que o componente for montado
+        fetchData();
+
+        // Configura o setInterval para chamar a função fetchData a cada 15 minutos
+        const interval = setInterval(fetchData, 1 * 60 * 1000);
+
+        // Retorna uma função de limpeza que limpará o intervalo quando o componente for desmontado
+        return () => clearInterval(interval);
+    }, []); // A dependência vazia [] garante que o useEffect só será executado uma vez, quando o componente for montado
+
 
 
     async function getSaldo() {
         try {
+
+            if(!user.token) {
+                return;
+            }
+
             const res = await client.get(`/wallet`);
           
             const {endereco, amountBonus, amountReal, saldo, taxaGanho } = res.data;
 
             const fixedBonus = Number(amountBonus).toFixed(2);
             const fixedAmountReal = Number(amountReal).toFixed(2);
+            const fixedAmountSaldo = Number(saldo).toFixed(2);
 
             setAmount({
                 endereco,
                 amountBonus: fixedBonus,
                 amountReal: fixedAmountReal,
-                saldo,
+                saldo: fixedAmountSaldo,
                 taxaGanho,
             })
 
@@ -65,6 +109,31 @@ function WalletProvider({children}: WalletProviderProps) {
 
     async function syncSaldo() {
 
+    }
+
+    async function getLastCalculated() {
+        try {
+            if(!user.token) {
+                return;
+            }
+            const res = await client.get(`/calculatedlog`);
+          
+            const {createdAt} = res.data;
+
+            console.log(`calculateTime: ${calculateTime}`)
+
+            const nextCalc = addMinutes(new Date(createdAt), calculateTime);
+
+            const parsedLast = format(new Date(createdAt), 'dd/MM/yyyy HH:mm');
+            const parsedNext = format(nextCalc, 'dd/MM/yyyy HH:mm');
+
+            setLastCalculated({
+                lastTimeCalculated: parsedLast,
+                nextTimeToCalculate: parsedNext
+            })
+        } catch (e) {
+            console.log(`deu pau ao pegar ultimo calculo ${JSON.stringify(e)}`)
+        }
     }
 
     async function getInvestiments() {
@@ -97,6 +166,16 @@ function WalletProvider({children}: WalletProviderProps) {
            
         } catch (e) {
             console.log(`deu pau ao pegar perks ${JSON.stringify(e)}`)
+        }
+    }
+
+    async function buyCriptoMine(body:IPostEarns) {
+        try {
+            const res = await client.post(`/earns`, body);
+            getSaldo();
+            getInvestiments();
+        } catch (e) {
+            console.log(`deu pau ao comprar criptomines ${JSON.stringify(e)}`)
         }
     }
 
@@ -138,6 +217,9 @@ function WalletProvider({children}: WalletProviderProps) {
                                        getSaldo,
                                        getInvestiments,
                                        getPerkTypes,
+                                       buyCriptoMine,
+                                       getLastCalculated,
+                                       lastCalculated,
                                        amount,
                                        investments,
                                        perkList,
