@@ -9,6 +9,7 @@ export const Container = styled.View`
 export const Title = styled.Text`
    font-family: ${({theme}) => theme.fonts.regular};
    color: ${({theme}) => theme.colors.white};
+   font-size: ${RFValue(14)}px;
 `
 
 export const Input = styled.TextInput`

@@ -1,5 +1,5 @@
 import {useState, useEffect, useRef, useId} from 'react';
-import { Image, Platform, Text, View } from 'react-native';
+import { Image, Platform, Text, View, Appearance } from 'react-native';
 import SlotMachine from '../SlotMachine';
 import { Amount, AreaGain, AreaWinner, ButtonArea, ButtonText, Chicken, Container, Header, InfoArea, Title } from './styles';
 import { RFValue } from 'react-native-responsive-fontsize';
@@ -42,6 +42,17 @@ export default function SlotMachineRunner ({symbols}:ISlotMachine) {
     const [betValue, setBetValue] = useState(0);
     const [premio, setPremio] = useState("")
 
+    const [colorScheme, setColorScheme] = useState(
+        Appearance.getColorScheme(),
+      );
+    
+      useEffect(() => {
+        const interval = setInterval(() => {
+          setColorScheme(Appearance.getColorScheme());
+        }, 10000);
+        return () => clearInterval(interval);
+      }, []);
+    
     const handlePlay = () => {
 
         if (betValue <= 0) {
@@ -114,6 +125,7 @@ export default function SlotMachineRunner ({symbols}:ISlotMachine) {
 
    const updateWallet = () => {
    }
+   const isDarkMode = colorScheme === 'dark'
 
     return (
         <Container behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -140,6 +152,7 @@ export default function SlotMachineRunner ({symbols}:ISlotMachine) {
                 </Header>
                 <BlinkedPanel blinking={isWinner} invertedBlink={false} >
                     <SlotMachine 
+                        isDarkMode
                         padding={3}
                         width={120}
                         height={130}

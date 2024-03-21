@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-//import {useAsyncStorage} from '@react-native-async-storage/async-storage';
+import {useAsyncStorage} from '@react-native-async-storage/async-storage';
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import { showMessage } from 'react-native-flash-message';
 import useAxios from  '../services/axios'
@@ -24,9 +24,14 @@ interface IAuthContextData {
     recoveryPassword: (email: string) => void;
 }
 
+interface ISaveUser {
+  decodedToken: ITokenProps;
+  token: string;
+}
+
 const AuthContext = createContext({} as IAuthContextData);
 
-const AUTHKEY = '@prosperatech:userPassword';
+const AUTHKEY = '@prosperatech:logged';
 
 function AuthProvider({children}: AuthProviderProps) {
     const { navigate } = useNavigation<any>();
@@ -35,9 +40,43 @@ function AuthProvider({children}: AuthProviderProps) {
     const [user, setUser] = useState({} as IUser)
 
     const { axiosClient: client } = useAxios();
+    const {setItem, getItem, removeItem} = useAsyncStorage(AUTHKEY);
+
+    useEffect(() => {
+      getUserIsLogged();
+    }, [])
+
+  const getUserIsLogged = async () => {
+    const user = await getUserPasswordOnStorage();
+    const isConnected = Object.keys(user).length > 0;
+    if(isConnected){
+      setUser(user);
+      setLogged(true);
+    }
+  }
+
+    async function getUserPasswordOnStorage(): Promise<IUser>{
+      const storageUser = await getItem();
+      return storageUser ? JSON.parse(storageUser) : {} as IUser;
+  }
+
+    async function saveUserPasswordOnStorage({decodedToken, token}: ISaveUser){
+      const userToSave: IUser = {
+          id: decodedToken!.id,
+          name: decodedToken!.name,
+          walletAddress: decodedToken!.walletAddress,
+          admin: decodedToken!.admin,
+          email: decodedToken!.email,
+          token,
+          active: decodedToken!.active,
+          resetPassword: decodedToken!.resetPassword
+      };
+      await setItem(JSON.stringify(userToSave));
+  }
 
     async function login(value: LoginProps) {
         setLoading(true);
+      
         try{
             
            const resp = await client.post('/sessions', value)
@@ -53,7 +92,7 @@ function AuthProvider({children}: AuthProviderProps) {
                 });
                 return;
             }
-
+           
             setUser({
               id: decodedToken.id,
               name: decodedToken.name,
@@ -64,6 +103,8 @@ function AuthProvider({children}: AuthProviderProps) {
               active: decodedToken.active,
               resetPassword: decodedToken.resetPassword
             })
+
+            await saveUserPasswordOnStorage({decodedToken, token})
             
             console.log(`Logado com sucesso: ${JSON.stringify(decodedToken)}`)
             setLogged(true)
@@ -84,6 +125,7 @@ function AuthProvider({children}: AuthProviderProps) {
     async function logout() {
       setUser({} as IUser);
       setLogged(false);  
+      setItem(JSON.stringify({} as IUser))
     }
 
     function decodeToken(token: string): ITokenProps | null {

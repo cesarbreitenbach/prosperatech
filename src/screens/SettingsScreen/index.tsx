@@ -17,8 +17,8 @@ const SettingsScreen: React.FC = () => {
   }
 
   return <Container> 
-            <Button title='Comprar Fichas' onPress={handleBuyFichas} color={theme.colors.dark_gold}/>
-            <Button title='Logout' onPress={handleLogout} color={theme.colors.dark_gold}/>
+            {/* <Button title='Comprar Fichas' onPress={handleBuyFichas} color={theme.colors.dark_gold}/> */}
+            <Button title='Sair' onPress={handleLogout} color={theme.colors.dark_gold}/>
          </Container>
 }
 

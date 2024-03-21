@@ -3,6 +3,7 @@ import fiftyCents from '../../assets/images/fiftyCents.png'
 import fiftyPound from '../../assets/images/fiftyTip.png'
 import onePound from '../../assets/images/oneTip.png'
 import tenPound from '../../assets/images/tenTip.png'
+import fivePound from '../../assets/images/fiveTip.png'
 import hundred from '../../assets/images/hundred.png'
 
 export const betValues = [
@@ -29,7 +30,7 @@ export const betValues = [
         id: 4,
         value: 5,
         label: '5.00',
-        img: fiveCents
+        img: fivePound
     },
     {
         id: 5,

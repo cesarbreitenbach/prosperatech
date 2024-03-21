@@ -39,10 +39,10 @@ const BetPanel: React.FC<BetPanelProps> = ({setBetValue, betValue, title, select
                 <InputArea>
                     <Header>
                       <Title>{title}</Title>
+                      <Input value={formatBetValue(betValue)} onChangeText={handleInputChange} keyboardType='number-pad' editable={false}/>
                       <ButtonClearArea onPress={handleClear}>
                          <Title>Zerar</Title>
                       </ButtonClearArea>
-                      <Input value={formatBetValue(betValue)} onChangeText={handleInputChange} keyboardType='number-pad'/>
                     </Header>
 
                     <FlatList 

@@ -20,6 +20,7 @@ import BetPanel from '../../components/BetPanel';
 import InfoUser from '../../components/InfoUser';
 import { showMessage } from 'react-native-flash-message';
 import BannerSlider from '../../components/BannerSlider';
+import PlayNow from '../../components/PlayNow';
 
 export default function Home() {
   const theme = useTheme();
@@ -54,8 +55,8 @@ export default function Home() {
 
     if(investmentValue === 0 || selectedCoin === '') {
       showMessage({
-        message: "Investimento deve ser maior que zero e moeda investida deve ser selecionada!",
-        type: "warning",
+        message: "Parametros da compra invalidos, verifique moeda selecionada e valor investido!",
+        type: "danger",
         duration: 3000
       });
       return;
@@ -66,7 +67,7 @@ export default function Home() {
       if(investmentValue > Number(amount.amountBonus)) {
         showMessage({
           message: "Você não tem saldo suficiente!",
-          type: "warning",
+          type: "danger",
           duration: 3000
       });
       return;
@@ -75,7 +76,7 @@ export default function Home() {
       if(investmentValue > Number(amount.amountReal)) {
         showMessage({
           message: "Você não tem saldo suficiente!",
-          type: "warning",
+          type: "danger",
           duration: 3000
       });
       return;
@@ -91,13 +92,16 @@ export default function Home() {
     })
 
     setInvestmentValue(0);
-    setSelectedCoin("");
 
 
   }
 
   const handleGoToInvestment = () => {
     navigation.navigate('investment')
+  }
+
+  const handlePlaynow = () => {
+    navigation.navigate('Machine')
   }
 
   return (
@@ -116,8 +120,11 @@ export default function Home() {
       
       <InfoUser size={20} bonusAmount={amount.amountBonus} realAmount={amount.amountReal} selectedCoin={selectedCoin} setSelectedCoin={setSelectedCoin}/>
       <MinningArea>
-          <MinningTitle>Rendimentos e Ganhos </MinningTitle>
-        
+          {/* <MinningTitle>Rendimentos e Ganhos </MinningTitle> */}
+          <NewMineArea onPress={handlePlaynow}>
+              <PlayNow />
+              <TitleNewMine>Jogue Agora!</TitleNewMine>
+          </NewMineArea>
           <PaymentArea>
             <Item>
               <Title>Ultimo pagamento:</Title>
@@ -128,7 +135,7 @@ export default function Home() {
               <NextPayment>{lastCalculated.nextTimeToCalculate}</NextPayment>
             </Item>
           </PaymentArea>
-          {investments?.length <= 0 && <NewMineArea onPress={handleBuyMine}>
+          {investments?.length >= 0 && <NewMineArea onPress={handleBuyMine}>
               <NewMine />
               <TitleNewMine>Toque para Adicionar</TitleNewMine>
           </NewMineArea>}
@@ -156,7 +163,7 @@ export default function Home() {
           
           <BetArea>
               <BetPanel selectedBetCoin={selectedCoin} title="Valor à aplicar" setBetValue={setInvestmentValue} betValue={investmentValue} />
-              {investments?.length > 0 && <Button height={55} title='Investir na CryptoMina' onPress={handleBuyMine} color={theme.colors.dark_gold} />}
+              {/* {investments?.length > 0 && <Button height={55} title='Investir na CryptoMina' onPress={handleBuyMine} color={theme.colors.dark_gold} />} */}
           </BetArea>
         
       </MinningArea>

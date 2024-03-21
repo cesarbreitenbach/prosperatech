@@ -70,7 +70,7 @@ function WalletProvider({children}: WalletProviderProps) {
         fetchData();
 
         // Configura o setInterval para chamar a função fetchData a cada 15 minutos
-        const interval = setInterval(fetchData, 1 * 60 * 1000);
+        const interval = setInterval(fetchData, 15 * 60 * 1000);
 
         // Retorna uma função de limpeza que limpará o intervalo quando o componente for desmontado
         return () => clearInterval(interval);
@@ -204,10 +204,15 @@ function WalletProvider({children}: WalletProviderProps) {
             
             
            
-        } catch (e) {
-            console.log(`deu pau ao pegar perks ${JSON.stringify(e)}`)
+        } catch (e: any) {
+            console.log(`deu pau ao pegar perks ${JSON.stringify(e.response.data.error)}`)
+            showMessage({
+                message: e?.response?.data?.error || "Erro fatal!",
+                type: "danger",
+                duration: 4000
+            });
             return false
-        }
+        }44
     }
 
 
