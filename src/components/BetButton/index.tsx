@@ -7,6 +7,7 @@ import { showMessage } from 'react-native-flash-message';
 
 interface BetButtonProps {
     setBetValue: (value: any) => void;
+    setLasValue: (value: number) => void;
     id?: number,
     value: number,
     label: string,
@@ -14,9 +15,10 @@ interface BetButtonProps {
     selectedBetCoin: string;
 }
 
-const BetButton = ({label, img, value, setBetValue, selectedBetCoin}: BetButtonProps) => {
+const BetButton = ({label, img, value, setBetValue, selectedBetCoin, setLasValue} : BetButtonProps) => {
   const handleBet = (value: number) => {
     setBetValue((old: number) => old + value);
+    setLasValue(value);
   }
 
   return <ButtonArea onPress={() => handleBet(value)}>

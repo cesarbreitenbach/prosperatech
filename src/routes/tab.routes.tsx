@@ -16,16 +16,16 @@ export function MyTabs() {
         headerShown: false,
         tabBarActiveTintColor: theme.colors.verde_esmeralda,
         tabBarInactiveTintColor: theme.colors.dark_gold,
-        tabBarStyle: { backgroundColor: theme.colors.shape_dark, paddingTop: 8},
+        tabBarStyle: { backgroundColor: theme.colors.shape_dark, paddingBottom: 8},
       }}
       initialRouteName='Wallet'
        >
       <Tab.Screen name="Wallet" 
                   component={Home} 
                   options={{
-                    tabBarLabel: '',
+                    tabBarLabel: 'Cryptominas',
                     tabBarIcon: ({ color, size }) => (
-                      <MaterialCommunityIcons name="piggy-bank" color={color} size={30} />
+                      <MaterialCommunityIcons name="piggy-bank" color={color} size={20} />
                     ),
                   }}
                   
@@ -34,9 +34,9 @@ export function MyTabs() {
                   name="Machine" 
                   component={SlotMachineScreen} 
                   options={{
-                    tabBarLabel: '',
+                    tabBarLabel: 'Jogue na SlotMachine',
                     tabBarIcon: ({ color, size }) => (
-                      <MaterialCommunityIcons name="robot" color={color} size={30} />
+                      <MaterialCommunityIcons name="robot" color={color} size={20} />
                     ),
                   }}
                   />
@@ -44,9 +44,9 @@ export function MyTabs() {
                   name="Settings" 
                   component={SettingsScreen} 
                   options={{
-                    tabBarLabel: '',
+                    tabBarLabel: 'Opções',
                     tabBarIcon: ({ color, size }) => (
-                      <MaterialCommunityIcons name="account-settings" color={color} size={30} />
+                      <MaterialCommunityIcons name="account-settings" color={color} size={20} />
                     ),
                   }}
                   />

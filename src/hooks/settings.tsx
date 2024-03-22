@@ -24,8 +24,24 @@ function SettingsProvider({children}: SettingsProviderProps) {
     const { axiosClient: client } = useAxios();
 
     useEffect(() => {
+   
+        const fetchData = async () => {
+            await getSettings();
+            
+            console.log(`atualizando settings`)
+        };
+
+        fetchData();
+
+        const interval = setInterval(fetchData, 3 * 60 * 1000);
+
+
+        return () => clearInterval(interval);
+    }, []); 
+
+    useEffect(() => {
         getSettings()
-    })
+    }, [])
 
     async function getSettings() {
         try {

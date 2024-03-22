@@ -2,6 +2,7 @@ import React from 'react';
 
 import { AmountAway, ImageInvestArea, InvestMentArea, InvestMentTitle, InvestmentTax, Item, TextArea, Title, TypeArea, TypeText } from './styled';
 import { Image, ImageSourcePropType } from 'react-native';
+import { formatarMoeda } from '../../services/formatService';
 
 interface IvestmentPanelProps {
     onPress: () => void;
@@ -21,17 +22,13 @@ const InvestmentPanel = ({resourceImage, coinTypeImage, earnedAmount, tax, name,
             </ImageInvestArea>
             <TextArea>
                 <Item>
-                    <Title>Mineração base:</Title>
-                    <InvestmentTax>{tax} %</InvestmentTax>
-                </Item>
-                <Item>
                     <Title>Saldo Retido:</Title>
-                    <AmountAway>$ {earnedAmount}</AmountAway>
+                    <AmountAway>$ {formatarMoeda(earnedAmount)}</AmountAway>
                 </Item>
             </TextArea>
             <TypeArea>
                 <Item>
-                    <TypeText>Tipo:</TypeText>
+                    <TypeText>Recurso:</TypeText>
                     <Image  source={coinTypeImage} style={{width: 20, height: 20}} />
                 </Item>
                 <Item>

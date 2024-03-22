@@ -1,10 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
-import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
-import { showMessage } from 'react-native-flash-message';
+import { createContext, ReactNode, useContext } from 'react';
 import useAxios from  '../services/axios'
 import { decode } from "base-64";
-import { useWalletContext } from './wallet';
 import { RollProps, SyncProps } from '../@types/machine';
+import { formatToPostgresDecimal } from '../services/formatService';
 
 global.atob = decode;
 
@@ -12,11 +11,8 @@ interface SlotMachineProviderProps {
     children: ReactNode;
 }
 
-
-
-
 interface ISlotMachineContextData {
-    roll: ({bet, randomNumber, type}:RollProps) => void;
+    roll: ({bet, randomNumber, type}:RollProps) => Promise<void>;
     syncSaldo: ({bet}:SyncProps) => void;
 }
 
@@ -29,7 +25,8 @@ function SlotMachineProvider({children}: SlotMachineProviderProps) {
    
     const { axiosClient: client } = useAxios();
 
-    async function roll({bet, randomNumber, type}: RollProps) {
+    async function roll({bet, randomNumber, type}: RollProps): Promise<void> {
+        console.log(`vou jogar ${bet}`)
 
         try {
             const res = await client.post(`/machine/roll`, {
@@ -37,9 +34,9 @@ function SlotMachineProvider({children}: SlotMachineProviderProps) {
                 type, 
                 randomNumber
             });
-            console.log(`peguei ${JSON.stringify(res.data)}`)
-        } catch (e) {
-            console.log(`deu pau ao roll ${JSON.stringify(e)}`)
+            console.log(`joguei ${bet}`)
+        } catch (e: any) {
+            console.log(`deu pau ao roll ${JSON.stringify(e.response.data)}`)
         }
     }
 
@@ -48,7 +45,7 @@ function SlotMachineProvider({children}: SlotMachineProviderProps) {
             const res = await client.post(`/user/klan`, {
                 value: bet,
             });
-            console.log(`peguei ${JSON.stringify(res.data)}`)
+            console.log(`sincroinzei o valor ${bet}`)
         } catch (e) {
             console.log(`deu pau ao klan ${JSON.stringify(e)}`)
         }

@@ -27,10 +27,11 @@ color: ${({theme}) => theme.colors.dark_gold};
 
 `;
 
-export const TypeCoin = styled.Text`
-font-family: ${({theme}) => theme.fonts.medium};
-font-size: ${RFValue(10)}px;
-color: ${({theme}) => theme.colors.dark_gold};
+export const TypeCoin = styled.View`
+   width: 50px;
+   height: 50px;
+   justify-content: center;
+   
 
 `;
 

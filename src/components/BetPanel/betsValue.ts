@@ -5,6 +5,8 @@ import onePound from '../../assets/images/oneTip.png'
 import tenPound from '../../assets/images/tenTip.png'
 import fivePound from '../../assets/images/fiveTip.png'
 import hundred from '../../assets/images/hundred.png'
+import fiveHundred from '../../assets/images/fiveHundred.png'
+import thousand from '../../assets/images/thousand.png'
 
 export const betValues = [
     {
@@ -50,4 +52,16 @@ export const betValues = [
         label: '100.00',
         img: hundred
     },  
+    {
+        id: 8,
+        value: 500,
+        label: '500.00',
+        img: fiveHundred
+    }, 
+    {
+        id: 9,
+        value: 1000,
+        label: '1000.00',
+        img: thousand
+    }, 
 ]

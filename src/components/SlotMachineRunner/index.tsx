@@ -1,7 +1,7 @@
 import {useState, useEffect, useRef, useId} from 'react';
 import { Image, Platform, Text, View, Appearance } from 'react-native';
 import SlotMachine from '../SlotMachine';
-import { Amount, AreaGain, AreaWinner, ButtonArea, ButtonText, Chicken, Container, Header, InfoArea, Title } from './styles';
+import { Amount, AreaGain, AreaWinner, ButtonArea, ButtonText, Chicken, Container, Header, InfoArea, SlotArea, Title } from './styles';
 import { RFValue } from 'react-native-responsive-fontsize';
 import BlinkedPanel from '../BlinkedPanel';
 import winner from '../../assets/images/winner.png'
@@ -18,6 +18,7 @@ import { showMessage } from 'react-native-flash-message';
 import { useAuthContext } from '../../hooks/auth';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useSettingsContext } from '../../hooks/settings';
+import { formatarMoeda } from '../../services/formatService';
 
 
 
@@ -30,7 +31,7 @@ export default function SlotMachineRunner ({symbols}:ISlotMachine) {
     const {difficult} = useSettingsContext();
     const {user} = useAuthContext();
     
-    const [slotSettings, setSlotSettings] = useState({duration: 100, slot1: '000'});
+    const [slotSettings, setSlotSettings] = useState({duration: 800, slot1: '000'});
     const [counter, setCounter] = useState(0)
     const slotRef: any = useRef(null);
     const [lock, setLock] = useState(false);
@@ -42,18 +43,9 @@ export default function SlotMachineRunner ({symbols}:ISlotMachine) {
     const [betValue, setBetValue] = useState(0);
     const [premio, setPremio] = useState("")
 
-    const [colorScheme, setColorScheme] = useState(
-        Appearance.getColorScheme(),
-      );
+  
     
-      useEffect(() => {
-        const interval = setInterval(() => {
-          setColorScheme(Appearance.getColorScheme());
-        }, 10000);
-        return () => clearInterval(interval);
-      }, []);
-    
-    const handlePlay = () => {
+    const handlePlay = async () => {
 
         if (betValue <= 0) {
             showMessage({
@@ -89,53 +81,47 @@ export default function SlotMachineRunner ({symbols}:ISlotMachine) {
             return
         }
         setLock(true);
-        let randomNum = useRandom.generateRandomNumber(3, 9, lastGeneratedNumber, counter, difficult);
+        let randomNum = await useRandom.generateRandomNumber(3, 9, lastGeneratedNumber, counter, difficult);
         lastGeneratedNumber = randomNum;
         setRandomico(randomNum)
-        roll({bet: betValue, randomNumber: randomNum, type: selectedCoin})
+        await roll({bet: betValue, randomNumber: randomNum, type: selectedCoin})
         setTimeout(() => {
             setSlotSettings({duration: 800, slot1: randomNum})
             setCounter(old => old + 1);
-            syncSaldo({bet: betValue});
+           // syncSaldo({bet: betValue});
             
           }, 
-        200);
+        500);
+        setTimeout(() => {
+            syncSaldo({bet: betValue});
+          }, 
+        800);
 
         setTimeout(() => {
             getSaldo();
-        }, 1000)
+        }, 2000)
 
         if(useRandom.verifyWinniner(randomNum, betValue, setPremio)){
             setLock(true);
             setTimeout(() => {
               setLock(false);
               setIsWinner(false);
-            }, 6000);
+            }, 4000);
 
-            setTimeout(() => setIsWinner(true), 1200)
-
-            updateWallet();
+            setTimeout(() => setIsWinner(true), 1700)
         }
 
         if(!isWinner) {
-            setTimeout(() => setLock(false), 2000)
+            setTimeout(() => setLock(false), 3000)
         } 
         
     }
-
-   const updateWallet = () => {
-   }
-   const isDarkMode = colorScheme === 'dark'
 
     return (
         <Container behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                style={{flex:1}}>
             <ScrollView>
                
-                <InfoArea>
-                    <Title cor={theme.colors.roxo_real}>Numero da sorte: {randomico}</Title>
-                    <Title cor={theme.colors.dark_gold}>Vezes Jogadas: {counter}</Title>
-                </InfoArea>
                 <Header>
                     {!isWinner && <InfoUser bonusAmount={amount.amountBonus} realAmount={amount.amountReal} selectedCoin={selectedCoin} setSelectedCoin={setSelectedCoin}/>}
                     {isWinner &&  
@@ -143,16 +129,16 @@ export default function SlotMachineRunner ({symbols}:ISlotMachine) {
                         <Chicken source={winner} style={{width: 230, height: 130, alignSelf: 'center'}}/>
                         <AreaGain>
                            <Amount>PRÊMIO</Amount>
-                           <Amount>$ {premio}</Amount>
+                           <Amount>$ {formatarMoeda(premio)}</Amount>
                         </AreaGain>
                     </AreaWinner>
                     
                     
                     }
                 </Header>
-                <BlinkedPanel blinking={isWinner} invertedBlink={false} >
+                {/* <BlinkedPanel blinking={isWinner} invertedBlink={false} > */}
+                <SlotArea>
                     <SlotMachine 
-                        isDarkMode
                         padding={3}
                         width={120}
                         height={130}
@@ -160,8 +146,10 @@ export default function SlotMachineRunner ({symbols}:ISlotMachine) {
                         range="0123456789" 
                         renderContent={(c: any) => <Text style={{fontSize: RFValue(35)}}>{symbols[c]}</Text>} 
                         duration={slotSettings.duration} />
+                </SlotArea>
                     
-                </BlinkedPanel>
+                    
+                {/* </BlinkedPanel> */}
                 <BetPanel selectedBetCoin={selectedCoin} title="Valor da aposta:" setBetValue={setBetValue} betValue={betValue} />
                 <ButtonArea 
                         onPress={handlePlay}

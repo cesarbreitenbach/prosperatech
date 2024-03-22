@@ -72,7 +72,6 @@ export default class SlotMachine extends Component {
             styles: {},
             renderTextContent: (currentChar) => currentChar,
             useNativeDriver: false,
-            isDarkMode: '',
         };
     }
 
@@ -82,7 +81,6 @@ export default class SlotMachine extends Component {
         this.startInitialAnimation = this.startInitialAnimation.bind(this);
         this.renderContent = this.renderContent.bind(this);
 
-        console.log(`peguei darkmode ${this.props.isDarkMode}`)
         this.text = props.text;
         let values;
         if (props.initialAnimation) {
@@ -238,8 +236,7 @@ export default class SlotMachine extends Component {
                 <Animated.View
                     key={i}
                     style={[styles.slotInner, {height}, overrideStyles.slotInner, 
-                            {backgroundColor: this.props.isDarkMode ? Theme.colors.white : Theme.colors.black, 
-                             transform: [{translateY: values[position]}]} ]}
+                            {transform: [{translateY: values[position]}]} ]}
                 >
                     {content}
                 </Animated.View>

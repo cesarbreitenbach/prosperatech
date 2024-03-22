@@ -9,8 +9,10 @@ import Button from '../../components/Button';
 import { useNavigation } from '@react-navigation/native';
 import { useAuthContext } from '../../hooks/auth';
 import { showMessage } from 'react-native-flash-message';
+import { ChangePasswordProps } from '../../@types/auth';
 
-const ChangePassword: React.FC = () => {
+
+const ChangePassword = () => {
     
     const navigation = useNavigation<any>();
     const {user, changePassword} = useAuthContext()
@@ -19,6 +21,7 @@ const ChangePassword: React.FC = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [oldPassword, setOldPassword] = useState("");
     const [visibleEye, setVisibleEye] = useState<boolean>(true);
 
     const handleChangePassword = () => {
@@ -29,11 +32,28 @@ const ChangePassword: React.FC = () => {
               });
               return;
         }
-        changePassword({
-            password,
-            confirmPassword
-        })
 
+        let objToChange = {} as ChangePasswordProps;
+        if(user.resetPassword){
+            objToChange = {
+                password,
+                confirmPassword
+            }
+        } else {
+            objToChange = {
+                oldpassword: oldPassword,
+                password,
+                confirmPassword
+            }
+        }
+        console.log(`vou usar o obj ${JSON.stringify(objToChange)}`)
+        changePassword(objToChange)
+    }
+
+
+
+    const handleBack = () => {
+        navigation.goBack();
     }
 
 
@@ -61,6 +81,16 @@ const ChangePassword: React.FC = () => {
                     autoCapitalize='none'
                     editable={false}
                     />
+                    {!user.resetPassword && 
+                    <>
+                        <Title>Senha Antiga:</Title>
+                        <PasswordInput 
+                            setValue={setOldPassword}
+                            value={oldPassword}
+                            setVisible={setVisibleEye}
+                            visible={visibleEye}
+                        />
+                    </>}
                     <Title>Senha:</Title>
                     <PasswordInput 
                         setValue={setPassword}
@@ -78,7 +108,7 @@ const ChangePassword: React.FC = () => {
                    
                     <Footer>
                         <Button loading={false} title='Alterar Senha' color={theme.colors.gold} onPress={handleChangePassword} light={false}/>
-                        <Button loading={false} title='Login' color={theme.colors.gold} onPress={() => navigation.navigate('Signin')} light={false}/>
+                        {!user.resetPassword && <Button loading={false} title='Volta' color={theme.colors.gold} onPress={handleBack} light={false}/>}
                     </Footer>
                 </ContentArea>
             </ScrollView>

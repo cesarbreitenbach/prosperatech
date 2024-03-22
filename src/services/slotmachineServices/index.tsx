@@ -1,6 +1,6 @@
  
 export default () => {
-    const generateRandomNumber = (numDigits: number, possibilities: number, lastGeneratedNumber: string, counter: number, dificult: number) => {
+    const generateRandomNumber = async (numDigits: number, possibilities: number, lastGeneratedNumber: string, counter: number, dificult: number): Promise<string> => {
         console.log(`peguei dificuldate: ${dificult}`)
         let digits = Array.from({ length: possibilities }, (_, i) => i);
 
@@ -43,9 +43,9 @@ export default () => {
             }
         }
 
-        if (counter === 100 || counter === 1000) {
-            randomNumber = '888';
-        }
+        // if (counter === 100 || counter === 1000) {
+        //     randomNumber = '888';
+        // }
 
         return randomNumber;
     }

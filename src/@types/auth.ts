@@ -37,5 +37,5 @@ export interface ChangePasswordProps {
     name?: string;
     password: string;
     confirmPassword: string;
-	oldPassword?: string;
+	oldpassword?: string;
 }

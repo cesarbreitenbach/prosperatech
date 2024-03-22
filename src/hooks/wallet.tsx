@@ -12,7 +12,7 @@ global.atob = decode;
 
 interface IPostEarns {
     idEarnType: Number;
-    amount: Number;
+    amount: Number | string;
     type: string;
 }
 
@@ -59,18 +59,34 @@ function WalletProvider({children}: WalletProviderProps) {
     const { axiosClient: client } = useAxios();
 
     useEffect(() => {
-        // Função que será chamada a cada 15 minutos
+    
         const fetchData = async () => {
             await getSaldo();
             await getLastCalculated();
-            console.log(`atualizando saldos`)
+            
+            console.log(`atualizando saldos e lastCalculate`)
         };
 
-        // Chama a função fetchData assim que o componente for montado
         fetchData();
 
-        // Configura o setInterval para chamar a função fetchData a cada 15 minutos
-        const interval = setInterval(fetchData, 15 * 60 * 1000);
+        const interval = setInterval(fetchData, 5 * 60 * 1000);
+        //const interval = setInterval(fetchData, 20000);
+
+        return () => clearInterval(interval);
+    }, []);
+
+    useEffect(() => {
+
+        const fetchData = async () => {
+            getInvestiments();
+            
+            console.log(`atualizando investimentos`)
+        };
+
+        fetchData();
+
+ 
+        const interval = setInterval(fetchData, 10 * 60 * 1000);
 
         // Retorna uma função de limpeza que limpará o intervalo quando o componente for desmontado
         return () => clearInterval(interval);
@@ -107,10 +123,6 @@ function WalletProvider({children}: WalletProviderProps) {
         }
     }
 
-    async function syncSaldo() {
-
-    }
-
     async function getLastCalculated() {
         try {
             if(!user.token) {
@@ -138,6 +150,9 @@ function WalletProvider({children}: WalletProviderProps) {
 
     async function getInvestiments() {
         try {
+            if(!user.token) {
+                return;
+            }
             const res = await client.get(`/earns`);
           
             const {result, itemsPerks } = res.data;

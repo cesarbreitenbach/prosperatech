@@ -180,8 +180,10 @@ function AuthProvider({children}: AuthProviderProps) {
           type: "success",
         });
         navigate('home');
+        setUser({...user, resetPassword: false})
+        removeItem();
       }catch (e: any){
-        console.log(`fucking error`, e.response.headers)
+        console.log(`fucking error`, e.response.data)
         showMessage({
           message: "Erro ao atualizar senha!",
           type: "danger",

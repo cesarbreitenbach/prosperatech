@@ -30,7 +30,7 @@ export const ButtonArea = styled.TouchableOpacity<{disable: boolean, winner: boo
 export const Header = styled.View`
    width: 100%;
    height: ${RFValue(80)}px;
-`
+   margin-top: ${RFValue(12)}px;`
 
 export const InfoArea = styled.View`
    justify-content: flex-end;
@@ -69,3 +69,7 @@ export const Amount = styled.Text`
 
 
 
+export const SlotArea = styled.View`
+   justify-content: center;
+   align-items: center;
+`

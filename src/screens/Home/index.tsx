@@ -21,6 +21,7 @@ import InfoUser from '../../components/InfoUser';
 import { showMessage } from 'react-native-flash-message';
 import BannerSlider from '../../components/BannerSlider';
 import PlayNow from '../../components/PlayNow';
+import { formatToPostgresDecimal, formatarMoeda } from '../../services/formatService';
 
 export default function Home() {
   const theme = useTheme();
@@ -30,6 +31,14 @@ export default function Home() {
   const [selectedCoin, setSelectedCoin] = useState("bonus");
   const [mineTaxes, setMineTaxes] = useState(0)
 
+  const [saldo, setSaldo] = useState(amount.saldo);
+  const [fichaBonus, setFichaBonus] = useState(amount.amountBonus);
+  const [gold, setGold] = useState(amount.amountReal);
+  const [calculateTimes, setCalculateTimes] = useState({
+    nextCalc: lastCalculated.nextTimeToCalculate,
+    lastCalc: lastCalculated.lastTimeCalculated
+  })
+ 
   const navigation = useNavigation<any>();
 
   useEffect(() => {
@@ -37,6 +46,13 @@ export default function Home() {
     getInvestiments();
     getLastCalculated();
   }, [])
+
+  useEffect(() => {
+    setSaldo(amount.saldo)
+    setFichaBonus(amount.amountBonus)
+    setGold(amount.amountReal)
+    setCalculateTimes({lastCalc: lastCalculated.lastTimeCalculated, nextCalc: lastCalculated.nextTimeToCalculate})
+  }, [amount, lastCalculated])
 
   useEffect(() => {
     calculateMineHate();
@@ -83,7 +99,7 @@ export default function Home() {
       }
     }
 
-
+    console.log(`vou comprar as criptomines ${investmentValue.toString()}`)
 
     buyCriptoMine({
       amount: investmentValue,
@@ -113,12 +129,12 @@ export default function Home() {
         
       <SaldoArea>
           <TitleSaldo>Saldo Total:</TitleSaldo>
-          <Saldo>$ {amount.saldo}</Saldo>
+          <Saldo>$ {formatarMoeda(saldo)}</Saldo>
       </SaldoArea>
 
       
       
-      <InfoUser size={20} bonusAmount={amount.amountBonus} realAmount={amount.amountReal} selectedCoin={selectedCoin} setSelectedCoin={setSelectedCoin}/>
+      <InfoUser size={20} bonusAmount={fichaBonus} realAmount={gold} selectedCoin={selectedCoin} setSelectedCoin={setSelectedCoin}/>
       <MinningArea>
           {/* <MinningTitle>Rendimentos e Ganhos </MinningTitle> */}
           <NewMineArea onPress={handlePlaynow}>
@@ -135,14 +151,18 @@ export default function Home() {
               <NextPayment>{lastCalculated.nextTimeToCalculate}</NextPayment>
             </Item>
           </PaymentArea>
-          {investments?.length >= 0 && <NewMineArea onPress={handleBuyMine}>
+          <NewMineArea onPress={handleBuyMine}>
               <NewMine />
-              <TitleNewMine>Toque para Adicionar</TitleNewMine>
-          </NewMineArea>}
+              <TitleNewMine>Toque para Comprar</TitleNewMine>
+          </NewMineArea>
+          <BetArea>
+              <BetPanel selectedBetCoin={selectedCoin} title="Valor à aplicar" setBetValue={setInvestmentValue} betValue={investmentValue} />
+              {/* {investments?.length > 0 && <Button height={55} title='Investir na CryptoMina' onPress={handleBuyMine} color={theme.colors.dark_gold} />} */}
+          </BetArea>
           
 
           {investments?.length > 0 && <>
-              <InvestmentTitle>Investimento em Cryptomina:</InvestmentTitle>
+              <InvestmentTitle>Suas Cryptomines:</InvestmentTitle>
               <TitleTax>Poder de mineração em {mineTaxes} %</TitleTax>
           </>}
           <FlatList 
@@ -161,10 +181,7 @@ export default function Home() {
           />
 
           
-          <BetArea>
-              <BetPanel selectedBetCoin={selectedCoin} title="Valor à aplicar" setBetValue={setInvestmentValue} betValue={investmentValue} />
-              {/* {investments?.length > 0 && <Button height={55} title='Investir na CryptoMina' onPress={handleBuyMine} color={theme.colors.dark_gold} />} */}
-          </BetArea>
+          
         
       </MinningArea>
 

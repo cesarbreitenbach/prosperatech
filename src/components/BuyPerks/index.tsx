@@ -6,6 +6,9 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import theme from '../../styles/theme';
 import { IActivePerk } from '../../@types/wallet';
 
+import fichaBonus from '../../assets/images/fichaBonus.png'
+import fichaGold from '../../assets/images/fichaGold.png'
+
 
 
 
@@ -28,7 +31,7 @@ const BuyPerks = ({id, description, hasMore, cost, type, tax, image, name, setAc
   }
 
   const formatType = (value: string) => {
-    return value === 'ficha' ? 'Ficha' : 'Bônus'
+    return value === 'ficha' ? <Image source={fichaGold} style={{width: 30, height: 30}} /> : <Image source={fichaBonus} style={{width: 30, height: 30}} />
   }
   
   return <Container active={activePerk.name === name} onPress={handlePress}> 
@@ -42,8 +45,9 @@ const BuyPerks = ({id, description, hasMore, cost, type, tax, image, name, setAc
                     <Cost>$ {cost}</Cost>
                 </Item>
                 <Item>
-                    <Label color={theme.colors.azulFck}>Moeda:</Label>
-                    <TypeCoin>{type === 'all' ? 'Bônus/Ficha' : formatType(type)}</TypeCoin>
+                    <Label color={theme.colors.azulFck}>Compra com:</Label>
+                    <TypeCoin>{formatType(type)}</TypeCoin>
+                    {/* <TypeCoin>{type === 'all' ? 'Bônus/Ficha' : formatType(type)}</TypeCoin> */}
                 </Item>
                 <Item>
                     <Label color={theme.colors.success}>+ Taxa Mineração:</Label>
