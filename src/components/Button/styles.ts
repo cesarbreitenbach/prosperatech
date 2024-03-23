@@ -19,12 +19,12 @@ interface TextButtonProps {
 export const Container = styled.TouchableHighlight<ButtonProps>`
     width: ${({ width }) => width ? `${width}px` : `70%` };
     height: ${({ height }) => height ? `${height}px` : `60px` };
-    padding: ${({ width }) => width ? `0` : `16px` };
+    padding: ${({ width }) => width ? `0` : `12px` };
     justify-content: center;
     align-items: center;
     background-color: ${({color }) => color}; 
     margin-bottom: 8px;
-    border-radius: ${({ radius }) => radius ? `${radius}px` : `10px` };
+    border-radius: ${({ radius }) => radius ? `${radius}px` : `6px` };
     flex-direction: row;
 `;
 

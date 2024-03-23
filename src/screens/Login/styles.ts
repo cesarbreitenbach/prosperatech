@@ -62,3 +62,4 @@ export const ForgetText = styled.Text`
     font-size: ${RFValue(12)}px;
     color: ${({theme}) => theme.colors.gold};
 `
+

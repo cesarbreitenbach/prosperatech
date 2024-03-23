@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 import logo from '../../assets/images/ceasarsLogo2.png';
 
+
 import { useTheme } from 'styled-components';
 import Button from '../../components/Button';
 import { Container, ContentArea, Footer, ForgetArea, ForgetText, Input, Logo, LogoArea, Title } from './styles';
@@ -11,12 +12,14 @@ import { useAuthContext } from '../../hooks/auth';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
-
+import { GoogleSigninButton } from '@react-native-google-signin/google-signin';
+import { Image } from 'react-native';
+import GoogleButton from '../../components/GoogleButton';
 
 export default function LoginScreen(){
     const theme = useTheme();
     const navigation = useNavigation<any>();
-    const {login, recoveryPassword} = useAuthContext();
+    const {login, recoveryPassword, handleGoogleLogin} = useAuthContext();
     const [email, setEmail] = useState<string>("")
     const [password, setPassword] = useState<string>("")
     const [visibleEye, setVisibleEye] = useState<boolean>(true);
@@ -68,9 +71,11 @@ return (
                     <ForgetText>Esqueceu a senha?</ForgetText>
                 </ForgetArea>
                 <Footer>
-                <Button loading={false} title='Login' color={theme.colors.gold} onPress={handleSignIn} light={false}/>
-                <Button loading={false} title='Cadastre-se' color={theme.colors.gold} onPress={handleSignUp} light={false}/>
+                    <Button loading={false} title='Login' color={theme.colors.gold} onPress={handleSignIn} light={false}/>
+                    <Button loading={false} title='Cadastre-se' color={theme.colors.gold} onPress={handleSignUp} light={false}/>
+                    <GoogleButton title='Login Google' onPress={() => handleGoogleLogin(false)} />
                 </Footer>
+                
             </ContentArea>
         </ScrollView>
    </Container> 

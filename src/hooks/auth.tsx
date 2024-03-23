@@ -9,6 +9,21 @@ import { ChangePasswordProps, ITokenProps, IUser, LoginProps, SignupProps } from
 
 global.atob = decode;
 
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import {
+	GOOGLE_WEB_CLIENT_ID,
+	GOOGLE_ANDROID_CLIENT_ID,
+	GOOGLE_IOS_CLIENT_ID
+} from '@env';
+
+// GoogleSignin.configure({
+// 	webClientId: GOOGLE_WEB_CLIENT_ID,
+// 	androidClientId: GOOGLE_ANDROID_CLIENT_ID,
+// 	iosClientId: GOOGLE_IOS_CLIENT_ID,
+// 	scopes: ['profile', 'email'],
+// });
+
+
 interface AuthProviderProps {
     children: ReactNode;
 }
@@ -22,6 +37,7 @@ interface IAuthContextData {
     signup: (body: SignupProps) => void;
     changePassword: (body: ChangePasswordProps) => void;
     recoveryPassword: (email: string) => void;
+    handleGoogleLogin: (isSignup: boolean) => void;
 }
 
 interface ISaveUser {
@@ -44,6 +60,10 @@ function AuthProvider({children}: AuthProviderProps) {
 
     useEffect(() => {
       getUserIsLogged();
+      GoogleSignin.configure({
+      	
+      	scopes: ['profile', 'email'],
+      });
     }, [])
 
   const getUserIsLogged = async () => {
@@ -208,6 +228,39 @@ function AuthProvider({children}: AuthProviderProps) {
       }
     }
 
+    const GoogleLogin = async () => {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      return userInfo;
+    };
+
+    async function handleGoogleLogin(isSignup: boolean) {
+      setLoading(true);
+      try {
+        const response = await GoogleLogin();
+        const { idToken, user } = response;
+        if (isSignup) {
+          await signup({
+            email: user.email,
+            name: user.givenName!,
+            password: user.id,
+            confirmPassword: user.id
+          }) 
+        } else {
+          await login({
+            email: user.email,
+            password: user.id
+          })
+        }
+      } catch (apiError: any) {
+        console.log(
+          `pau do kct ${apiError}`
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
     return (
         <AuthContext.Provider value={{  
                                        user: user!,
@@ -217,7 +270,8 @@ function AuthProvider({children}: AuthProviderProps) {
                                        logout, 
                                        signup,
                                        changePassword,
-                                       recoveryPassword
+                                       recoveryPassword,
+                                       handleGoogleLogin
                                         }}> 
             {children}
         </AuthContext.Provider> 

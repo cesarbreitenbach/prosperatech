@@ -8,11 +8,13 @@ import PasswordInput from '../../components/PasswordInput';
 import Button from '../../components/Button';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
+import { GoogleSigninButton } from '@react-native-google-signin/google-signin';
+import GoogleButton from '../../components/GoogleButton';
 
 const CreateUser: React.FC = () => {
     const theme = useTheme();
     const navigation = useNavigation<any>();
-    const {signup} = useAuthContext();
+    const {signup, handleGoogleLogin} = useAuthContext();
     const [name, setName] = useState<string>("")
     const [email, setEmail] = useState<string>("")
     const [password, setPassword] = useState<string>("")
@@ -27,6 +29,8 @@ const CreateUser: React.FC = () => {
             confirmPassword
         })
     }
+
+
     
   return   <Container> 
             <ScrollView contentContainerStyle={{paddingBottom: 30}}>
@@ -69,7 +73,8 @@ const CreateUser: React.FC = () => {
                    
                     <Footer>
                         <Button loading={false} title='Cadastrar' color={theme.colors.gold} onPress={handleSignUn} light={false}/>
-                        <Button loading={false} title='Login' color={theme.colors.gold} onPress={() => navigation.navigate('Signin')} light={false}/>
+                        <Button loading={false} title='Voltar' color={theme.colors.gold} onPress={() => navigation.navigate('Signin')} light={false}/>
+                        <GoogleButton title="Cadastro Google" onPress={() => handleGoogleLogin(true)} />
                     </Footer>
                 </ContentArea>
             </ScrollView>
