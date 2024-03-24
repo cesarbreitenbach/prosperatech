@@ -10,6 +10,7 @@ export interface Props {
     setValue: (v: string) => void;
     visible: boolean;
     setVisible: (v: boolean) => void;
+    height: number;
 }
 
 export default function PasswordInput({
@@ -17,11 +18,12 @@ export default function PasswordInput({
     setValue,
     visible,
     setVisible,
+    height
 }: Props){
     const theme = useTheme();
 
 return (
-   <Container> 
+   <Container height={height}> 
       <TextInput
         placeholder='Digite a senha'
         placeholderTextColor={theme.colors.text}
@@ -29,6 +31,7 @@ return (
         onChangeText={setValue}
         autoCorrect={false}
         secureTextEntry={visible}
+        autoComplete="off"
       />
       <IconContainer onPress={() => setVisible(!visible)}>
          <Icon name={visible ? "eye" : "eye-slash"} size={25} color={theme.colors.gold} />

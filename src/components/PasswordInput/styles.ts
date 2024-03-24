@@ -10,17 +10,19 @@ interface IconProps {
 }
 
 
-export const Container = styled.View`
+export const Container = styled.View<{height: number}>`
     flex-direction: row;
+    height: ${RFValue(60)}px;
     border-width: 1px;
     border-radius: 5px;
     border-color: ${({theme}) => theme.colors.text_detail};
     margin-top: ${RFValue(12)}px; 
     width: 100%;
-    height: ${RFValue(40)}px;
+    height: ${({height}) => height ? RFValue(height) : RFValue(40)}px;
     align-items: center;
     justify-content: space-between;
     padding: 14px 20px;
+    background-color: transparent;
     
 `;
 

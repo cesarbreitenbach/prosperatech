@@ -29,7 +29,7 @@ const InvestmentPanel = ({resourceImage, coinTypeImage, earnedAmount, tax, name,
             <TypeArea>
                 <Item>
                     <TypeText>Recurso:</TypeText>
-                    <Image  source={coinTypeImage} style={{width: 20, height: 20}} />
+                    <Image  source={coinTypeImage} style={{width: 30, height: 30, alignSelf: 'center'}} />
                 </Item>
                 <Item>
                     <TypeText>Finaliza em:</TypeText>

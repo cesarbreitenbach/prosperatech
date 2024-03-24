@@ -33,6 +33,7 @@ export const Title = styled.Text`
 `
 
 export const Input = styled.TextInput`
+    height: ${RFValue(60)}px;
     width: 100%;
     padding: 14px 20px;
     font-family: ${({theme}) => theme.fonts.regular };

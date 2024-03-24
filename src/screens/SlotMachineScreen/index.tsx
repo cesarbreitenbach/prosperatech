@@ -19,7 +19,7 @@ export default function SlotMachineScreen() {
 
   return (
     <Container>
-      <Header backgroundImage={backgroundImage} width={600} height={120} />
+      <Header backgroundImage={backgroundImage} width={600} height={90} />
       <SlotMachineRunner symbols={symbols} />
     </Container>
   );

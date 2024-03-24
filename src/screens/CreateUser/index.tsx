@@ -58,6 +58,7 @@ const CreateUser: React.FC = () => {
                     />
                     <Title>Senha:</Title>
                     <PasswordInput 
+                        height={60}
                         setValue={setPassword}
                         value={password}
                         setVisible={setVisibleEye}
@@ -65,6 +66,7 @@ const CreateUser: React.FC = () => {
                     />
                     <Title>Confirme a senha:</Title>
                     <PasswordInput 
+                        height={60}
                         setValue={setConfirmPassword}
                         value={confirmPassword}
                         setVisible={setVisibleEye}

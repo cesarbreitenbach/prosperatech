@@ -111,7 +111,7 @@ const InvestmentScreen: React.FC = () => {
   return <Container> 
            <Header hasGoBack backgroundImage={backgroundImage} height={140}/>
            <ScrollView style={{padding: 12}} contentContainerStyle={{paddingBottom: 30}}>
-                <Title>Gerêncie sua CryptoMina!</Title>
+                <Title>Gerêncie poder de mineração!</Title>
                 
                 <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
                     <View style={{padding: 12}}>
@@ -120,7 +120,7 @@ const InvestmentScreen: React.FC = () => {
                     </View>
                     <SaldoPanel amountBonus={amount.amountBonus} amountReal={amount.amountReal} width={20} height={20} />
                 </View>
-                <TitlePerkList>Ativos - bônus de mineração:</TitlePerkList>
+                <TitlePerkList>Perk's ativos nas suas minas:</TitlePerkList>
                 <FlatList 
                     horizontal
                     data={grupedPerkList}
@@ -132,7 +132,7 @@ const InvestmentScreen: React.FC = () => {
                                                 tax={item.taxPerk}
                                                 />}
                     />
-                <TitlePerksBuy>Perks Disponíveis para Investimento</TitlePerksBuy>
+                <TitlePerksBuy>Perks Disponíveis para Compra</TitlePerksBuy>
                 <FlatList 
                     horizontal
                     data={perkTypes}

@@ -34,6 +34,7 @@ export const Title = styled.Text`
 
 export const Input = styled.TextInput`
     width: 100%;
+    height: ${RFValue(60)}px;
     padding: 14px 20px;
     font-family: ${({theme}) => theme.fonts.regular };
     color: ${({theme}) => theme.colors.gold};
@@ -55,7 +56,7 @@ export const Footer = styled.View`
 export const ForgetArea = styled.TouchableOpacity`
    justify-content: center;
    align-items: flex-end;
-`
+   margin-top: ${RFValue(12)}px`
 
 export const ForgetText = styled.Text`
     font-family: ${({theme}) => theme.fonts.medium };

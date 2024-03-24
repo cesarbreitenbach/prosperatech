@@ -7,6 +7,7 @@ export const GoogleButtonArea = styled.TouchableOpacity`
     background-color: ${({theme}) => theme.colors.white};
     justify-content: center;
     align-items: center;
+    border-radius: 6px;
     padding: ${RFValue(12)}px;
 `
 export const TitleGoogle = styled.Text`

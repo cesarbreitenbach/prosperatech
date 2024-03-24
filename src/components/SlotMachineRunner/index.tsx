@@ -3,7 +3,6 @@ import { Image, Platform, Text, View, Appearance } from 'react-native';
 import SlotMachine from '../SlotMachine';
 import { Amount, AreaGain, AreaWinner, ButtonArea, ButtonText, Chicken, Container, Header, InfoArea, SlotArea, Title } from './styles';
 import { RFValue } from 'react-native-responsive-fontsize';
-import BlinkedPanel from '../BlinkedPanel';
 import winner from '../../assets/images/winner.png'
 import trevo from '../../assets/images/trevo.png'
 import theme from '../../styles/theme';
@@ -19,6 +18,8 @@ import { useAuthContext } from '../../hooks/auth';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useSettingsContext } from '../../hooks/settings';
 import { formatarMoeda } from '../../services/formatService';
+import Popup from '../Popup';
+import { usePlaySoundContext } from '../../hooks/usePlaySound';
 
 
 
@@ -26,12 +27,13 @@ let lastGeneratedNumber = '000';
 
 export default function SlotMachineRunner ({symbols}:ISlotMachine) {
 
-    const {amount, getSaldo} = useWalletContext();
+    const {amount, getSaldo, lastCalculated} = useWalletContext();
+    const {soundPlayer} = usePlaySoundContext();
     const {roll, syncSaldo} = useSlotMachineContext();
     const {difficult} = useSettingsContext();
     const {user} = useAuthContext();
     
-    const [slotSettings, setSlotSettings] = useState({duration: 800, slot1: '000'});
+    const [slotSettings, setSlotSettings] = useState({duration: 900, slot1: '000'});
     const [counter, setCounter] = useState(0)
     const slotRef: any = useRef(null);
     const [lock, setLock] = useState(false);
@@ -42,9 +44,12 @@ export default function SlotMachineRunner ({symbols}:ISlotMachine) {
     const [selectedCoin, setSelectedCoin] = useState("bonus");
     const [betValue, setBetValue] = useState(0);
     const [premio, setPremio] = useState("")
-
+    const [showPopup, setShowPopup] = useState(false);
+    const [popupTitle, setPopupTitle] = useState("");
+    const [popupMessage, setPopupMessage] = useState("");
   
-    
+   
+
     const handlePlay = async () => {
 
         if (betValue <= 0) {
@@ -57,22 +62,12 @@ export default function SlotMachineRunner ({symbols}:ISlotMachine) {
         }
 
         
-        if (selectedCoin === 'bonus' && betValue > Number(amount?.amountBonus)) {
-            showMessage({
-                message: "Não possui saldo! Compre fichas ou aguarde por bônus.",
-                type: "info",
-                duration: 5000
-            });
-            setBetValue(0);
-            return;
-        } 
-        
-        if (selectedCoin !== 'bonus' && betValue > Number(amount?.amountReal)) {
-            showMessage({
-                message: "Não possui saldo! Compre fichas ou aguarde por bônus.",
-                type: "info",
-                duration: 5000
-            });
+        let availableAmount = selectedCoin === 'bonus' ? Number(amount?.amountBonus) : Number(amount?.amountReal);
+
+        if (betValue > availableAmount) {
+            setShowPopup(true);
+            setPopupTitle("Você não tem saldo!");
+            setPopupMessage("Compre mais fichas ou aguarde o bônus de sua CryptoMine!");
             setBetValue(0);
             return;
         }
@@ -80,16 +75,20 @@ export default function SlotMachineRunner ({symbols}:ISlotMachine) {
         if(lock || isWinner){
             return
         }
+
         setLock(true);
+        
         let randomNum = await useRandom.generateRandomNumber(3, 9, lastGeneratedNumber, counter, difficult);
+        
         lastGeneratedNumber = randomNum;
+        
         setRandomico(randomNum)
+        
         await roll({bet: betValue, randomNumber: randomNum, type: selectedCoin})
+        
         setTimeout(() => {
-            setSlotSettings({duration: 800, slot1: randomNum})
+            setSlotSettings({duration: 900, slot1: randomNum})
             setCounter(old => old + 1);
-           // syncSaldo({bet: betValue});
-            
           }, 
         500);
         setTimeout(() => {
@@ -108,14 +107,25 @@ export default function SlotMachineRunner ({symbols}:ISlotMachine) {
               setIsWinner(false);
             }, 4000);
 
-            setTimeout(() => setIsWinner(true), 1700)
+            setTimeout(() => { 
+                setIsWinner(true)
+                if(randomNum==='999') {
+                    soundPlayer({type: 'winMed'})
+                } else {
+                    soundPlayer({type: 'winMin'})
+                }
+            }, 1700)
         }
 
         if(!isWinner) {
-            setTimeout(() => setLock(false), 3000)
+            setTimeout(() => {
+                setLock(false)
+            }, 3000)
+            soundPlayer({type: 'lost'})
         } 
         
     }
+
 
     return (
         <Container behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -164,7 +174,14 @@ export default function SlotMachineRunner ({symbols}:ISlotMachine) {
                     </View>
                 </ButtonArea>  
             </ScrollView>
-            
+            <Popup 
+                    setVisible={setShowPopup}
+                    onPress={() => console.log(`comprei`)}
+                    hasBuyButton
+                    visible={showPopup} 
+                    title={popupTitle} 
+                    message={popupMessage}
+                    nextCalc={lastCalculated.nextTimeToCalculate}/>
         </Container>
     );
 }

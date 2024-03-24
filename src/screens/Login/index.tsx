@@ -59,9 +59,11 @@ return (
                 keyboardType='email-address'
                 autoCorrect={false}
                 autoCapitalize='none'
+                autoComplete="off"
                 />
                 <Title>Senha:</Title>
                 <PasswordInput 
+                height={60}
                 setValue={setPassword}
                 value={password}
                 setVisible={setVisibleEye}

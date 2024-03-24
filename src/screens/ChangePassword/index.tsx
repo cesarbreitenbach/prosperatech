@@ -65,26 +65,27 @@ const ChangePassword = () => {
                 <ContentArea>
                     <Title>Nome:</Title>
                     <Input 
-                    placeholderTextColor={theme.colors.text}
-                    value={user.name}
-                    onChangeText={setName}
-                    autoCorrect={false}
-                    editable={false}
+                        placeholderTextColor={theme.colors.text}
+                        value={user.name}
+                        onChangeText={setName}
+                        autoCorrect={false}
+                        editable={false}
                     />
                     <Title>Email:</Title>
                     <Input 
-                    placeholderTextColor={theme.colors.text}
-                    value={user.email}
-                    onChangeText={setEmail}
-                    keyboardType='email-address'
-                    autoCorrect={false}
-                    autoCapitalize='none'
-                    editable={false}
+                        placeholderTextColor={theme.colors.text}
+                        value={user.email}
+                        onChangeText={setEmail}
+                        keyboardType='email-address'
+                        autoCorrect={false}
+                        autoCapitalize='none'
+                        editable={false}
                     />
                     {!user.resetPassword && 
                     <>
                         <Title>Senha Antiga:</Title>
                         <PasswordInput 
+                            height={60}
                             setValue={setOldPassword}
                             value={oldPassword}
                             setVisible={setVisibleEye}
@@ -93,6 +94,7 @@ const ChangePassword = () => {
                     </>}
                     <Title>Senha:</Title>
                     <PasswordInput 
+                        height={60}
                         setValue={setPassword}
                         value={password}
                         setVisible={setVisibleEye}
@@ -100,6 +102,7 @@ const ChangePassword = () => {
                     />
                     <Title>Confirme a senha:</Title>
                     <PasswordInput 
+                        height={60}
                         setValue={setConfirmPassword}
                         value={confirmPassword}
                         setVisible={setVisibleEye}

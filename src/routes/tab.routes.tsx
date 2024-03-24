@@ -6,6 +6,7 @@ import SettingsScreen from '../screens/SettingsScreen';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import theme from '../styles/theme';
+import InvestmentScreen from '../screens/InvestmentScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -25,7 +26,7 @@ export function MyTabs() {
                   options={{
                     tabBarLabel: 'Cryptominas',
                     tabBarIcon: ({ color, size }) => (
-                      <MaterialCommunityIcons name="piggy-bank" color={color} size={20} />
+                      <MaterialCommunityIcons name="hexagon-multiple" color={color} size={20} />
                     ),
                   }}
                   
@@ -34,9 +35,19 @@ export function MyTabs() {
                   name="Machine" 
                   component={SlotMachineScreen} 
                   options={{
-                    tabBarLabel: 'Jogue na SlotMachine',
+                    tabBarLabel: 'Jogue',
                     tabBarIcon: ({ color, size }) => (
                       <MaterialCommunityIcons name="robot" color={color} size={20} />
+                    ),
+                  }}
+                  />
+      <Tab.Screen 
+                  name="investment" 
+                  component={InvestmentScreen} 
+                  options={{
+                    tabBarLabel: "Perk's Mineração",
+                    tabBarIcon: ({ color, size }) => (
+                      <MaterialCommunityIcons name="pickaxe" color={color} size={20} />
                     ),
                   }}
                   />

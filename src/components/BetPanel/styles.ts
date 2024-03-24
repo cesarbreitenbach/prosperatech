@@ -36,7 +36,6 @@ export const Header = styled.View`
 
 export const ButtonClearArea = styled.TouchableOpacity<{color?: string}>`
    background-color:  ${({theme, color}) => color ? color : theme.colors.borgonha_intenso};
-   width: ${RFValue(80)}px;
    padding: ${RFValue(4)}px;
    justify-content: center;
    align-items: center;

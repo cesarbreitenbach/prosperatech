@@ -56,6 +56,7 @@ const BetPanel: React.FC<BetPanelProps> = ({setBetValue, betValue, title, select
   }
 
   const handleDiscount = () => {
+    if(betValue<=0) return;
     setBetValue((old: number) => old - Number(lastValue))
   }
 
@@ -63,6 +64,19 @@ const BetPanel: React.FC<BetPanelProps> = ({setBetValue, betValue, title, select
         
                 
                 <InputArea>
+                    <FlatList 
+                          data={filteredBetValues}
+                          horizontal
+                          contentContainerStyle={{
+                            padding: 12
+                          }}
+                          renderItem={({item}) => { 
+                            return (
+                              <BetButton setLasValue={setLasValue} selectedBetCoin={selectedBetCoin} label={item.label} img={item.img} setBetValue={setBetValue} value={item.value}/>
+                            )
+                            }}
+                        
+                        />
                     <Header>
                       <Title>{title}</Title>
                       <Input>{formatarMoeda(betValue.toString())}</Input>
@@ -80,19 +94,7 @@ const BetPanel: React.FC<BetPanelProps> = ({setBetValue, betValue, title, select
                       
                     </Header>
 
-                    <FlatList 
-                       data={filteredBetValues}
-                       horizontal
-                       contentContainerStyle={{
-                        padding: 12
-                       }}
-                       renderItem={({item}) => { 
-                         return (
-                          <BetButton setLasValue={setLasValue} selectedBetCoin={selectedBetCoin} label={item.label} img={item.img} setBetValue={setBetValue} value={item.value}/>
-                         )
-                        }}
-                    
-                    />
+                   
                     
                 </InputArea>
                 

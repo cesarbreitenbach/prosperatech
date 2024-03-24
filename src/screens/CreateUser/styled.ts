@@ -34,6 +34,7 @@ export const Title = styled.Text`
 
 export const Input = styled.TextInput`
     width: 100%;
+    height: ${RFValue(60)}px;
     padding: 12px 20px;
     font-family: ${({theme}) => theme.fonts.regular };
     color: ${({theme}) => theme.colors.gold};

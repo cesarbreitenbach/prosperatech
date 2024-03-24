@@ -22,6 +22,7 @@ import { showMessage } from 'react-native-flash-message';
 import BannerSlider from '../../components/BannerSlider';
 import PlayNow from '../../components/PlayNow';
 import { formatToPostgresDecimal, formatarMoeda } from '../../services/formatService';
+import Popup from '../../components/Popup';
 
 export default function Home() {
   const theme = useTheme();
@@ -40,6 +41,9 @@ export default function Home() {
   })
  
   const navigation = useNavigation<any>();
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupTitle, setPopupTitle] = useState("");
+  const [popupMessage, setPopupMessage] = useState("");
 
   useEffect(() => {
     getSaldo();
@@ -71,7 +75,7 @@ export default function Home() {
 
     if(investmentValue === 0 || selectedCoin === '') {
       showMessage({
-        message: "Parametros da compra invalidos, verifique moeda selecionada e valor investido!",
+        message: "Você precisa selecionar um valor maior que zero para aplicar!!",
         type: "danger",
         duration: 3000
       });
@@ -79,24 +83,18 @@ export default function Home() {
     }
 
   
-    if(selectedCoin === 'bonus' ) {
-      if(investmentValue > Number(amount.amountBonus)) {
-        showMessage({
-          message: "Você não tem saldo suficiente!",
-          type: "danger",
-          duration: 3000
-      });
-      return;
-      }
+    let availableAmount;
+    if (selectedCoin === 'bonus') {
+      availableAmount = Number(amount.amountBonus);
     } else {
-      if(investmentValue > Number(amount.amountReal)) {
-        showMessage({
-          message: "Você não tem saldo suficiente!",
-          type: "danger",
-          duration: 3000
-      });
+      availableAmount = Number(amount.amountReal);
+    }
+
+    if (investmentValue > availableAmount) {
+      setShowPopup(true);
+      setPopupTitle("Você não tem saldo!");
+      setPopupMessage("Compre mais fichas ou aguarde o bônus de sua CryptoMine!");
       return;
-      }
     }
 
     console.log(`vou comprar as criptomines ${investmentValue.toString()}`)
@@ -122,8 +120,8 @@ export default function Home() {
 
   return (
     <Container>
-      <ScrollView contentContainerStyle={{paddingBottom: 30}}>
-          <Header backgroundImage={backgroundImage} height={140}/>
+      <ScrollView contentContainerStyle={{paddingBottom: 30}} showsVerticalScrollIndicator={false}>
+          <Header backgroundImage={backgroundImage} height={120}/>
 
           <BannerSlider />
         
@@ -139,26 +137,28 @@ export default function Home() {
           {/* <MinningTitle>Rendimentos e Ganhos </MinningTitle> */}
           <NewMineArea onPress={handlePlaynow}>
               <PlayNow />
-              <TitleNewMine>Jogue Agora!</TitleNewMine>
+              <TitleNewMine>Jogue aqui e ganhe</TitleNewMine>
+              <TitleNewMine>de 3x mais fichas!</TitleNewMine>
+          </NewMineArea>
+          <InvestmentTitle>Compre Cryptomines:</InvestmentTitle>
+          <BetArea>
+              <BetPanel selectedBetCoin={selectedCoin} title="Valor à aplicar" setBetValue={setInvestmentValue} betValue={investmentValue} />
+          </BetArea>
+          <NewMineArea onPress={handleBuyMine}>
+              <NewMine />
+              <TitleNewMine>Começe a minerar!</TitleNewMine>
           </NewMineArea>
           <PaymentArea>
             <Item>
-              <Title>Ultimo pagamento:</Title>
+              <Title>Ultima coleta recursos:</Title>
               <LastPayment>{lastCalculated.lastTimeCalculated}</LastPayment>
             </Item>
             <Item>
-              <Title>Proximo pagamento:</Title>
+              <Title>Proxima coleta recursos:</Title>
               <NextPayment>{lastCalculated.nextTimeToCalculate}</NextPayment>
             </Item>
           </PaymentArea>
-          <NewMineArea onPress={handleBuyMine}>
-              <NewMine />
-              <TitleNewMine>Toque para Comprar</TitleNewMine>
-          </NewMineArea>
-          <BetArea>
-              <BetPanel selectedBetCoin={selectedCoin} title="Valor à aplicar" setBetValue={setInvestmentValue} betValue={investmentValue} />
-              {/* {investments?.length > 0 && <Button height={55} title='Investir na CryptoMina' onPress={handleBuyMine} color={theme.colors.dark_gold} />} */}
-          </BetArea>
+         
           
 
           {investments?.length > 0 && <>
@@ -187,7 +187,14 @@ export default function Home() {
 
       </ScrollView>
      
-
+      <Popup 
+            setVisible={setShowPopup}
+            onPress={() => console.log(`comprei`)}
+            hasBuyButton
+            visible={showPopup} 
+            title={popupTitle} 
+            message={popupMessage}
+            nextCalc={lastCalculated.nextTimeToCalculate}/>
       
     </Container>
   );
