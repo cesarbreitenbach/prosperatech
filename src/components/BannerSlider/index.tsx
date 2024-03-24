@@ -51,7 +51,7 @@ const BannerSlider: React.FC = () => {
                         closeIconColor="#fff"
                         localImg
                         showHeader={false}
-                        caroselImageStyle={{height: 100}}
+                        caroselImageStyle={{height: 200, marginTop: -35, marginBottom: -35}}
                         showIndicator={false}
                         preview={false}
                         onClick={(item, index) => handleClick(item, index)}

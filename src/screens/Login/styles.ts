@@ -50,13 +50,13 @@ export const Footer = styled.View`
    width: 100%;
    justify-content: center;
    align-items: center;
-   margin-top: ${RFValue(30)}px;
+   margin-top: ${RFValue(8)}px;
 `
 
 export const ForgetArea = styled.TouchableOpacity`
    justify-content: center;
    align-items: flex-end;
-   margin-top: ${RFValue(12)}px`
+   margin-top: ${RFValue(12)}px;`
 
 export const ForgetText = styled.Text`
     font-family: ${({theme}) => theme.fonts.medium };
@@ -64,3 +64,10 @@ export const ForgetText = styled.Text`
     color: ${({theme}) => theme.colors.gold};
 `
 
+export const Separator = styled.View`
+    border-style: dashed;
+    border-color: #FFF;
+    border-bottom-width: 2px;
+    justify-content: center;
+    align-items: center;
+`

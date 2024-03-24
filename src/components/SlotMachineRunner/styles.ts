@@ -30,7 +30,8 @@ export const ButtonArea = styled.TouchableOpacity<{disable: boolean, winner: boo
 export const Header = styled.View`
    width: 100%;
    height: ${RFValue(80)}px;
-   margin-top: ${RFValue(12)}px;`
+   margin-top: ${RFValue(4)}px;
+   margin-bottom: ${RFValue(8)}px;`
 
 export const InfoArea = styled.View`
    justify-content: flex-end;

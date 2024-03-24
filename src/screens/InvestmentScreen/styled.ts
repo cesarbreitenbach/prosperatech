@@ -4,6 +4,7 @@ import styled from 'styled-components/native';
 export const Container = styled.SafeAreaView`
   flex: 1;
   background-color:  ${({theme}) => theme.colors.black};
+  padding: 0 ${RFValue(12)}px;
 `;
 
 export const Title = styled.Text`
@@ -69,7 +70,7 @@ export const Label = styled.Text`
 font-family: ${({theme}) => theme.fonts.SemiBold};
 font-size: ${RFValue(10)}px;
 color: ${({theme}) => theme.colors.borgonha_intenso};
-margin-right: 12px;
+margin-right: ${RFValue(12)}px;
 `;
 
 export const Cost = styled.Text`

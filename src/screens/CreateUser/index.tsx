@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Container, ContentArea, Footer, Input, Logo, LogoArea, Title } from './styled';
+import { Container, ContentArea, Footer, Input, Logo, LogoArea, Separator, Title } from './styled';
 import logo from '../../assets/images/ceasarsLogo2.png';
 import { useTheme } from 'styled-components';
 import { useAuthContext } from '../../hooks/auth';
@@ -37,6 +37,12 @@ const CreateUser: React.FC = () => {
                 <LogoArea>
                     <Logo source={logo} />
                 </LogoArea>
+                <Footer>
+                    <GoogleButton title="Cadastro Google" onPress={() => handleGoogleLogin(true)} />
+                </Footer>
+                <Separator>
+                    <Title>OU</Title>
+                </Separator>
                 <ContentArea>
                     <Title>Nome:</Title>
                     <Input 
@@ -76,7 +82,6 @@ const CreateUser: React.FC = () => {
                     <Footer>
                         <Button loading={false} title='Cadastrar' color={theme.colors.gold} onPress={handleSignUn} light={false}/>
                         <Button loading={false} title='Voltar' color={theme.colors.gold} onPress={() => navigation.navigate('Signin')} light={false}/>
-                        <GoogleButton title="Cadastro Google" onPress={() => handleGoogleLogin(true)} />
                     </Footer>
                 </ContentArea>
             </ScrollView>

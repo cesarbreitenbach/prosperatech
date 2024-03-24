@@ -6,7 +6,7 @@ import logo from '../../assets/images/ceasarsLogo2.png';
 
 import { useTheme } from 'styled-components';
 import Button from '../../components/Button';
-import { Container, ContentArea, Footer, ForgetArea, ForgetText, Input, Logo, LogoArea, Title } from './styles';
+import { Container, ContentArea, Footer, ForgetArea, ForgetText, Input, Logo, LogoArea, Separator, Title } from './styles';
 import PasswordInput from '../../components/PasswordInput';
 import { useAuthContext } from '../../hooks/auth';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -75,9 +75,10 @@ return (
                 <Footer>
                     <Button loading={false} title='Login' color={theme.colors.gold} onPress={handleSignIn} light={false}/>
                     <Button loading={false} title='Cadastre-se' color={theme.colors.gold} onPress={handleSignUp} light={false}/>
+                </Footer>
+                <Footer>
                     <GoogleButton title='Login Google' onPress={() => handleGoogleLogin(false)} />
                 </Footer>
-                
             </ContentArea>
         </ScrollView>
    </Container> 

@@ -142,8 +142,6 @@ export default function SlotMachineRunner ({symbols}:ISlotMachine) {
                            <Amount>$ {formatarMoeda(premio)}</Amount>
                         </AreaGain>
                     </AreaWinner>
-                    
-                    
                     }
                 </Header>
                 {/* <BlinkedPanel blinking={isWinner} invertedBlink={false} > */}
@@ -169,7 +167,7 @@ export default function SlotMachineRunner ({symbols}:ISlotMachine) {
                     > 
                     <View style={{flexDirection: 'row',  alignItems: 'center'}}>
                         <Image source={trevo} style={{width: 60, height: 60}}/>
-                        <ButtonText>!! RODAR !!</ButtonText>
+                        <ButtonText>RODAR</ButtonText>
                         <Image source={trevo} style={{width: 60, height: 60}}/>
                     </View>
                 </ButtonArea>  

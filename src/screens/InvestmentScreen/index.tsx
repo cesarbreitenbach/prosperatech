@@ -16,6 +16,7 @@ import { mapPerkImages } from '../../services/perkImages';
 import BuyInfoPanel from '../../components/BuyInfoPanel';
 import { IActivePerk, IPerks } from '../../@types/wallet';
 import { showMessage } from 'react-native-flash-message';
+import Popup from '../../components/Popup';
 
 interface GroupedData {
     [key: string]: {
@@ -29,11 +30,14 @@ interface GroupedData {
 }
 
 const InvestmentScreen: React.FC = () => {
-    const {getPerkTypes, perkTypes, amount, perkList, buyUserPerks, getInvestiments, getSaldo} = useWalletContext();
+    const {getPerkTypes, perkTypes, amount, perkList, buyUserPerks, getInvestiments, getSaldo, lastCalculated} = useWalletContext();
     const [selectedPerk, setSelectedPerk] = useState<IActivePerk>({} as IActivePerk);
     const [qtdSelectedItems, SetQtdSelectedItems] = useState(0)
     const [grupedPerkList, setGrupedPerkList] = useState<IPerks[]>([]);
-    const [mineTaxes, setMineTaxes] = useState(0)
+    const [mineTaxes, setMineTaxes] = useState(0);
+    const [showPopup, setShowPopup] = useState(false);
+    const [popupTitle, setPopupTitle] = useState("");
+    const [popupMessage, setPopupMessage] = useState("");
     
    
 
@@ -87,26 +91,38 @@ const InvestmentScreen: React.FC = () => {
             });
             return;
         };
+        let bonus =  Number(amount?.amountBonus);
+        let gold = Number(amount?.amountReal);
+        let totlaCost = Number(selectedPerk.cost) * qtdSelectedItems;
+
+        if (totlaCost > bonus && totlaCost > gold) {
+            setShowPopup(true);
+            setPopupTitle("Você não tem saldo!");
+            setPopupMessage("Compre mais fichas ou aguarde o bônus de sua CryptoMine!");
+            return;
+        }
         const resp = await buyUserPerks({idPerk: selectedPerk.id, totalItems: qtdSelectedItems})
         if (resp) {
             SetQtdSelectedItems(0)
             setSelectedPerk({} as IActivePerk)
             getInvestiments()
             getSaldo()
-        }
-        
-
+        } 
     }
     const handleAdd = () => {
-        if (Object.keys(selectedPerk).length === 0) return;
+        if (Object.keys(selectedPerk).length === 0) {
+            showMessage({
+                message: "Selecione um tipo de perk para adicionar!",
+                type: "warning",
+              });
+              return;
+        };
         SetQtdSelectedItems(old => old + 1)
     }
     const handleDel = () => {
         if(qtdSelectedItems <= 0) return;
         SetQtdSelectedItems(old => old - 1)
     }
-
-    
 
   return <Container> 
            <Header hasGoBack backgroundImage={backgroundImage} height={140}/>
@@ -116,11 +132,11 @@ const InvestmentScreen: React.FC = () => {
                 <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
                     <View style={{padding: 12}}>
                         <MineTaxesTitle>Poder de mineração Perks</MineTaxesTitle>
-                        <MineTaxes>{mineTaxes} %</MineTaxes>
+                        <MineTaxes>{mineTaxes.toFixed(2)} %</MineTaxes>
                     </View>
                     <SaldoPanel amountBonus={amount.amountBonus} amountReal={amount.amountReal} width={20} height={20} />
                 </View>
-                <TitlePerkList>Perk's ativos nas suas minas:</TitlePerkList>
+                {grupedPerkList?.length > 0 && <TitlePerkList>Perk's ativos nas suas minas:</TitlePerkList>}
                 <FlatList 
                     horizontal
                     data={grupedPerkList}
@@ -135,7 +151,7 @@ const InvestmentScreen: React.FC = () => {
                 <TitlePerksBuy>Perks Disponíveis para Compra</TitlePerksBuy>
                 <FlatList 
                     horizontal
-                    data={perkTypes}
+                    data={perkTypes.sort((a, b) => a.id - b.id)}
                     renderItem={({item, index}) => <BuyPerks 
                                                 id={item.id}
                                                 hasMore={perkTypes.length > index + 1}
@@ -159,6 +175,14 @@ const InvestmentScreen: React.FC = () => {
                 />
                
            </ScrollView>
+           <Popup 
+                    setVisible={setShowPopup}
+                    onPress={() => console.log(`comprei`)}
+                    hasBuyButton
+                    visible={showPopup} 
+                    title={popupTitle} 
+                    message={popupMessage}
+                    nextCalc={lastCalculated.nextTimeToCalculate}/>
            
          </Container>
 }

@@ -4,13 +4,13 @@ import { RFValue } from 'react-native-responsive-fontsize';
 export const Container = styled.SafeAreaView`
   flex: 1; 
   background-color: ${({theme}) => theme.colors.background_secondary};
-
+  padding: 0 ${RFValue(12)}px;
 `
 
 export const ContentArea = styled.View`
    flex: 1;
-   margin-left: 12px;
-   margin-right: 12px;
+   margin-left: ${RFValue(12)}px;
+   margin-right: ${RFValue(12)}px;
 `
 
 export const LogoArea = styled.View`
@@ -35,7 +35,7 @@ export const Title = styled.Text`
 export const Input = styled.TextInput`
     width: 100%;
     height: ${RFValue(60)}px;
-    padding: 12px 20px;
+    padding: ${RFValue(12)}px ${RFValue(16)}px;
     font-family: ${({theme}) => theme.fonts.regular };
     color: ${({theme}) => theme.colors.gold};
     font-size: ${RFValue(14)}px;
@@ -62,4 +62,13 @@ export const ForgetText = styled.Text`
     font-family: ${({theme}) => theme.fonts.medium };
     font-size: ${RFValue(12)}px;
     color: ${({theme}) => theme.colors.gold};
+`
+
+export const Separator = styled.View`
+    border-style: dashed;
+    border-color: #FFF;
+    border-bottom-width: 2px;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: ${RFValue(12)}px;
 `

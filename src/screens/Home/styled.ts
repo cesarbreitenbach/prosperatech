@@ -4,7 +4,7 @@ import styled from "styled-components/native";
 export const Container = styled.SafeAreaView`
    flex: 1;
    background-color: ${({theme}) => theme.colors.background_secondary};
-   padding: 6px 14px;
+   padding: 6px 6px;
 
 `
 
@@ -15,6 +15,13 @@ export const ContentArea = styled.View`
    flex-direction: row;
   
 `
+
+
+export const InfoArea = styled.View`
+   flex: 1;
+   margin-bottom: ${RFValue(8)}px;  
+`
+
 
 export const SaldoArea = styled.View`
    padding: ${RFValue(4)}px;

@@ -1,5 +1,5 @@
 import { useTheme } from 'styled-components';
-import {  BetArea,  Container, InvestmentTitle, Item, LastPayment, MinningTitle, NewMineArea, NextPayment, PaymentArea, Saldo, SaldoArea, Title, TitleNewMine, TitleSaldo, TitleTax } from './styled';
+import {  BetArea,  Container, InfoArea, InvestmentTitle, Item, LastPayment, MinningTitle, NewMineArea, NextPayment, PaymentArea, Saldo, SaldoArea, Title, TitleNewMine, TitleSaldo, TitleTax } from './styled';
 import { useWalletContext } from '../../hooks/wallet';
 import { useEffect, useState } from 'react';
 import Header from '../../components/Header';
@@ -68,7 +68,11 @@ export default function Home() {
       return acc + taxPerk;
     }, 0);
 
-    setMineTaxes(sumTaxPerk)
+    const numOfInvestments = investments.length > 0 ? investments.length : 0;
+
+    const baseTax = 0.01 * numOfInvestments;
+
+    setMineTaxes(sumTaxPerk + baseTax)
   }
 
   const handleBuyMine = () => {
@@ -121,7 +125,7 @@ export default function Home() {
   return (
     <Container>
       <ScrollView contentContainerStyle={{paddingBottom: 30}} showsVerticalScrollIndicator={false}>
-          <Header backgroundImage={backgroundImage} height={120}/>
+          <Header backgroundImage={backgroundImage} height={110}/>
 
           <BannerSlider />
         
@@ -131,14 +135,15 @@ export default function Home() {
       </SaldoArea>
 
       
-      
-      <InfoUser size={20} bonusAmount={fichaBonus} realAmount={gold} selectedCoin={selectedCoin} setSelectedCoin={setSelectedCoin}/>
+      <InfoArea>
+         <InfoUser size={20} bonusAmount={fichaBonus} realAmount={gold} selectedCoin={selectedCoin} setSelectedCoin={setSelectedCoin}/>
+      </InfoArea>
       <MinningArea>
           {/* <MinningTitle>Rendimentos e Ganhos </MinningTitle> */}
           <NewMineArea onPress={handlePlaynow}>
               <PlayNow />
               <TitleNewMine>Jogue aqui e ganhe</TitleNewMine>
-              <TitleNewMine>de 3x mais fichas!</TitleNewMine>
+              <TitleNewMine>mais fichas!</TitleNewMine>
           </NewMineArea>
           <InvestmentTitle>Compre Cryptomines:</InvestmentTitle>
           <BetArea>
@@ -163,7 +168,7 @@ export default function Home() {
 
           {investments?.length > 0 && <>
               <InvestmentTitle>Suas Cryptomines:</InvestmentTitle>
-              <TitleTax>Poder de mineração em {mineTaxes} %</TitleTax>
+              <TitleTax>Poder de mineração em {mineTaxes.toFixed(2)} %</TitleTax>
           </>}
           <FlatList 
             horizontal
