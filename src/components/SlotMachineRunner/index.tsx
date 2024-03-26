@@ -67,7 +67,7 @@ export default function SlotMachineRunner ({symbols}:ISlotMachine) {
         if (betValue > availableAmount) {
             setShowPopup(true);
             setPopupTitle("Você não tem saldo!");
-            setPopupMessage("Compre mais fichas ou aguarde o bônus de sua CryptoMine!");
+            setPopupMessage("Compre fichas gold ou aguarde o bônus de sua CryptoMine!");
             setBetValue(0);
             return;
         }
@@ -158,7 +158,7 @@ export default function SlotMachineRunner ({symbols}:ISlotMachine) {
                     
                     
                 {/* </BlinkedPanel> */}
-                <BetPanel selectedBetCoin={selectedCoin} title="Valor da aposta:" setBetValue={setBetValue} betValue={betValue} />
+                <BetPanel mininumValue={0.05} selectedBetCoin={selectedCoin} title="Valor da aposta:" setBetValue={setBetValue} betValue={betValue} />
                 <ButtonArea 
                         onPress={handlePlay}
                         activeOpacity={0.5}

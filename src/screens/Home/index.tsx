@@ -1,5 +1,5 @@
 import { useTheme } from 'styled-components';
-import {  BetArea,  Container, InfoArea, InvestmentTitle, Item, LastPayment, MinningTitle, NewMineArea, NextPayment, PaymentArea, Saldo, SaldoArea, Title, TitleNewMine, TitleSaldo, TitleTax } from './styled';
+import {  BetArea,  Container, InfoArea, InvestmentTitle, Item, LastPayment, NewMineArea, NextPayment, PaymentArea, Saldo, SaldoArea, Title, TitleNewMine, TitleSaldo, TitleTax } from './styled';
 import { useWalletContext } from '../../hooks/wallet';
 import { useEffect, useState } from 'react';
 import Header from '../../components/Header';
@@ -11,9 +11,8 @@ import fichaCem from '../../assets/images/fichaBonus.png'
 import fichaGold from '../../assets/images/fichaGold.png'
 import mine from '../../assets/images/mine.png'
 
-import { FlatList, ScrollView } from 'react-native-gesture-handler';
+import { FlatList, ScrollView, RefreshControl } from 'react-native';
 import InvestmentPanel from '../../components/InvestmentPanel';
-import Button from '../../components/Button';
 import { useNavigation } from '@react-navigation/native';
 import NewMine from '../../components/NewMine';
 import BetPanel from '../../components/BetPanel';
@@ -45,6 +44,8 @@ export default function Home() {
   const [popupTitle, setPopupTitle] = useState("");
   const [popupMessage, setPopupMessage] = useState("");
 
+  const [refreshing, setRefreshing] = useState(false);
+  console.log(`peguei a porra ${amount.amountBonus}`)
   useEffect(() => {
     getSaldo();
     getInvestiments();
@@ -61,6 +62,20 @@ export default function Home() {
   useEffect(() => {
     calculateMineHate();
   }, [perkList])
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await getLastCalculated();
+    await getSaldo();
+    setRefreshing(false);
+  };
+
+  const handleScroll = (event: any) => {
+    const { contentOffset } = event.nativeEvent;
+    if (contentOffset.y <= -40) {
+      onRefresh();
+    }
+  };
 
   const calculateMineHate = () => {
     const sumTaxPerk = perkList.reduce((acc, obj) => {
@@ -97,7 +112,7 @@ export default function Home() {
     if (investmentValue > availableAmount) {
       setShowPopup(true);
       setPopupTitle("Você não tem saldo!");
-      setPopupMessage("Compre mais fichas ou aguarde o bônus de sua CryptoMine!");
+      setPopupMessage("Compre fichas gold ou aguarde o bônus de sua CryptoMine!");
       return;
     }
 
@@ -124,7 +139,16 @@ export default function Home() {
 
   return (
     <Container>
-      <ScrollView contentContainerStyle={{paddingBottom: 30}} showsVerticalScrollIndicator={false}>
+      <ScrollView 
+                  onScroll={handleScroll}
+                  scrollEventThrottle={150}
+                  refreshControl={
+                    <RefreshControl
+                      refreshing={refreshing}
+                      onRefresh={onRefresh}
+                    />}
+                  contentContainerStyle={{paddingBottom: 30}} 
+                  showsVerticalScrollIndicator={false}>
           <Header backgroundImage={backgroundImage} height={110}/>
 
           <BannerSlider />
@@ -147,7 +171,7 @@ export default function Home() {
           </NewMineArea>
           <InvestmentTitle>Compre Cryptomines:</InvestmentTitle>
           <BetArea>
-              <BetPanel selectedBetCoin={selectedCoin} title="Valor à aplicar" setBetValue={setInvestmentValue} betValue={investmentValue} />
+              <BetPanel mininumValue={50} selectedBetCoin={selectedCoin} title="Valor para minerar" setBetValue={setInvestmentValue} betValue={investmentValue} />
           </BetArea>
           <NewMineArea onPress={handleBuyMine}>
               <NewMine />

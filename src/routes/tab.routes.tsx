@@ -37,7 +37,7 @@ export function MyTabs() {
                   options={{
                     tabBarLabel: 'Jogue',
                     tabBarIcon: ({ color, size }) => (
-                      <MaterialCommunityIcons name="robot" color={color} size={20} />
+                      <MaterialCommunityIcons name="slot-machine-outline" color={color} size={20} />
                     ),
                   }}
                   />

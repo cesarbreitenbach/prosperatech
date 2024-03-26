@@ -1,8 +1,6 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import { showMessage } from 'react-native-flash-message';
 import useAxios from  '../services/axios'
-import { jwtDecode } from "jwt-decode";
-import { ITokenProps, IUser, LoginProps } from '../@types/auth';
 
 
 interface SettingsProviderProps {
@@ -33,7 +31,7 @@ function SettingsProvider({children}: SettingsProviderProps) {
 
         fetchData();
 
-        const interval = setInterval(fetchData, 3 * 60 * 1000);
+        const interval = setInterval(fetchData, 5 * 60 * 1000);
 
 
         return () => clearInterval(interval);

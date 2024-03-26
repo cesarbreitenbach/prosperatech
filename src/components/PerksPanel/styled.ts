@@ -20,20 +20,24 @@ color: ${({theme}) => theme.colors.dark_gold};
 export const MinningTax = styled.Text`
 font-family: ${({theme}) => theme.fonts.medium};
 font-size: ${RFValue(9)}px;
-color: ${({theme}) => theme.colors.borgonha_intenso};
+color: ${({theme}) => theme.colors.success};
 `;
 
 export const ValidUntil = styled.Text`
 font-family: ${({theme}) => theme.fonts.SemiBold};
 font-size: ${RFValue(9)}px;
-color: ${({theme}) => theme.colors.dark_gold};
+color: ${({theme}) => theme.colors.borgonha_intenso};
 `;
 export const QtdItems = styled.Text`
 font-family: ${({theme}) => theme.fonts.SemiBold};
-font-size: ${RFValue(9)}px;
-color: ${({theme}) => theme.colors.dark_gold};
+font-size: ${RFValue(11)}px;
+color: ${({theme}) => theme.colors.azulFck};
+margin-left: ${RFValue(8)}px;
 `;
 
 export const Header = styled.View`
     flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: ${RFValue(8)}px;
 `;

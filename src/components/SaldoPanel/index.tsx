@@ -16,7 +16,7 @@ interface SaldoPanelProps {
 const SaldoPanel = ({amountBonus, amountReal, width, height}: SaldoPanelProps) => {
   return <ContentArea>
             <SaldoArea>
-                <Title>Ficha:</Title>
+                <Title>Ficha Gold</Title>
                 <Saldo>$ {amountReal}</Saldo>
                 <ImageArea>
                     <Image source={fichaGold} style={{width: width, height: height}}/> 

@@ -44,7 +44,7 @@ color: ${({theme}) => theme.colors.verde_esmeralda};
 export const Title = styled.Text`
 font-family: ${({theme}) => theme.fonts.medium};
 font-size: ${RFValue(10)}px;
-color: ${({theme}) => theme.colors.borgonha_intenso};
+color: ${({theme}) => theme.colors.white};
 `;
 
 export const TitleSaldo = styled.Text`

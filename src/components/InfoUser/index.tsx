@@ -15,12 +15,12 @@ interface InfoUserProps {
 }
 
 const InfoUser: React.FC<InfoUserProps> = ({realAmount, bonusAmount, selectedCoin, setSelectedCoin, size = 40}) => {
-
+console.log(`esse e o bonus ${bonusAmount}`)
 
 
   return <Container> 
             <Item active={selectedCoin === 'ficha'} onPress={() => setSelectedCoin('ficha')}>
-                <Title>Fichas</Title>
+                <Title>Ficha Gold</Title>
                 <AmountArea>
                     <Image source={fichaGold} style={{width: size, height: size}}  /> 
                     <BankBalance>{formatarMoeda(realAmount)}</BankBalance>
@@ -30,7 +30,7 @@ const InfoUser: React.FC<InfoUserProps> = ({realAmount, bonusAmount, selectedCoi
                 <Title>Bônus</Title>
                 <AmountArea>
                     <Image source={fichaCem} style={{width: size, height: size}}  /> 
-                    <BankBalance>{formatarMoeda(bonusAmount)}</BankBalance>
+                    <BankBalance>{Number(bonusAmount) < 0 ? formatarMoeda('0') : formatarMoeda(bonusAmount)}</BankBalance>
                 </AmountArea>
             </Item>
             

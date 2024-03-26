@@ -7,7 +7,7 @@ export default () => {
         let randomNumber = '';
     
         // Modifica porcentagem de ganho. 
-        const allEqual = Math.random() < dificult;
+        const allEqual = Math.random() < dificult
     
         if (allEqual) {
             // Escolhe um dígito aleatório

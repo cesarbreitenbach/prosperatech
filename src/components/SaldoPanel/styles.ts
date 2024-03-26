@@ -4,7 +4,7 @@ import styled from 'styled-components/native';
 export const Title = styled.Text`
 font-family: ${({theme}) => theme.fonts.medium};
 font-size: ${RFValue(8)}px;
-color: ${({theme}) => theme.colors.borgonha_intenso};
+color: ${({theme}) => theme.colors.white};
 `;
 
 export const ImageArea = styled.View`
