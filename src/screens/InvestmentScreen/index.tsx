@@ -130,7 +130,7 @@ const InvestmentScreen: React.FC = () => {
                 <Title>Gerêncie poder de mineração!</Title>
                 
                 <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-                    <View style={{padding: 12}}>
+                    <View style={{marginLeft: 12}}>
                         <MineTaxesTitle>Poder de mineração Perks</MineTaxesTitle>
                         <MineTaxes>{mineTaxes.toFixed(2)} %</MineTaxes>
                     </View>
@@ -148,7 +148,7 @@ const InvestmentScreen: React.FC = () => {
                                                 tax={item.taxPerk}
                                                 />}
                     />
-                <TitlePerksBuy>Perks Disponíveis para Compra</TitlePerksBuy>
+                <TitlePerksBuy>Perks selecionaveis para mineração</TitlePerksBuy>
                 <FlatList 
                     horizontal
                     data={perkTypes.sort((a, b) => a.id - b.id)}

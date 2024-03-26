@@ -47,7 +47,7 @@ const BuyPerks = ({id, description, hasMore, cost, type, tax, image, name, setAc
                 <Item>
                     <Label color={theme.colors.azulFck}>Compra com:</Label>
                     <TypeCoin>{formatType(type)}</TypeCoin>
-                    {/* <TypeCoin>{type === 'all' ? 'Bônus/Ficha' : formatType(type)}</TypeCoin> */}
+                    
                 </Item>
                 <Item>
                     <Label color={theme.colors.success}>+ Taxa Mineração:</Label>

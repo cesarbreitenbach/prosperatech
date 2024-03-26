@@ -63,36 +63,17 @@ function WalletProvider({children}: WalletProviderProps) {
         const fetchData = async () => {
             await getSaldo();
             await getLastCalculated();
+            await getInvestiments();
             
-            console.log(`atualizando saldos e lastCalculate`)
+            console.log(`atualizando saldo, lastCalculate e investimentos`)
         };
 
         fetchData();
 
-        const interval = setInterval(fetchData, 5 * 60 * 1000);
-        //const interval = setInterval(fetchData, 20000);
+        const interval = setInterval(fetchData, 15 * 60 * 1000);
 
         return () => clearInterval(interval);
     }, []);
-
-    useEffect(() => {
-
-        const fetchData = async () => {
-            getInvestiments();
-            
-            console.log(`atualizando investimentos`)
-        };
-
-        fetchData();
-
- 
-        const interval = setInterval(fetchData, 10 * 60 * 1000);
-
-        // Retorna uma função de limpeza que limpará o intervalo quando o componente for desmontado
-        return () => clearInterval(interval);
-    }, []); // A dependência vazia [] garante que o useEffect só será executado uma vez, quando o componente for montado
-
-
 
     async function getSaldo() {
         try {
@@ -104,10 +85,10 @@ function WalletProvider({children}: WalletProviderProps) {
             const res = await client.get(`/wallet`);
           
             const {endereco, amountBonus, amountReal, saldo, taxaGanho } = res.data;
-
-            const fixedBonus = Number(amountBonus).toFixed(2);
-            const fixedAmountReal = Number(amountReal).toFixed(2);
-            const fixedAmountSaldo = Number(saldo).toFixed(2);
+            console.log(`no hook ${amountBonus}`)
+            const fixedBonus = Number(amountBonus) < 0 ? "0.00" : Number(amountBonus).toFixed(2);
+            const fixedAmountReal = Number(amountReal) < 0 ? "0.00" : Number(amountReal).toFixed(2);
+            const fixedAmountSaldo = Number(saldo) < 0 ? "0.00" : Number(saldo).toFixed(2);
 
             setAmount({
                 endereco,
@@ -129,7 +110,7 @@ function WalletProvider({children}: WalletProviderProps) {
                 return;
             }
             const res = await client.get(`/calculatedlog`);
-          
+            
             const {createdAt} = res.data;
 
             console.log(`calculateTime: ${calculateTime}`)

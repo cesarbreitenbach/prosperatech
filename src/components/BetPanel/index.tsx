@@ -12,9 +12,10 @@ interface BetPanelProps{
     setBetValue: (value: any) => void;
     betValue: number;
     selectedBetCoin: string;
+    mininumValue: number;
 }
 
-const BetPanel: React.FC<BetPanelProps> = ({setBetValue, betValue, title, selectedBetCoin}) => {
+const BetPanel: React.FC<BetPanelProps> = ({setBetValue, betValue, title, selectedBetCoin, mininumValue}) => {
 
   const {amount} = useWalletContext()
  
@@ -27,18 +28,18 @@ const BetPanel: React.FC<BetPanelProps> = ({setBetValue, betValue, title, select
   useEffect(() => {
     if (selectedBetCoin === 'ficha') {
       if(Number(amount.amountReal) > 20000) {
-        const newFilteredList = betValues.filter(item => item.value > 10)
+        const newFilteredList = betValues.filter(item => item.value > 10 && item.value >= mininumValue)
         setFilteredBetValues(newFilteredList);
       } else {
-        const newFilteredList = betValues.filter(item => item.value <= 100)
+        const newFilteredList = betValues.filter(item => item.value >= mininumValue)
         setFilteredBetValues(newFilteredList);
       }
     } else {
       if(Number(amount.amountBonus) > 20000) {
-        const newFilteredList = betValues.filter(item => item.value >= 10)
+        const newFilteredList = betValues.filter(item => item.value >= 10 && item.value >= mininumValue)
         setFilteredBetValues(newFilteredList);
       } else {
-        const newFilteredList = betValues.filter(item => item.value <= 100)
+        const newFilteredList = betValues.filter(item => item.value >= mininumValue)
         setFilteredBetValues(newFilteredList);
       }
     }

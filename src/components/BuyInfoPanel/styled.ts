@@ -39,7 +39,7 @@ export const CostsArea = styled.View`
 export const Label = styled.Text`
 font-family: ${({theme}) => theme.fonts.SemiBold};
 font-size: ${RFValue(9)}px;
-color: ${({theme}) => theme.colors.borgonha_intenso};
+color: ${({theme}) => theme.colors.white};
 margin-right: 8px;
 `;
 

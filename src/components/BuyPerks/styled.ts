@@ -49,8 +49,8 @@ export const ImageArea = styled.View`
 
 export const Content = styled.View`
   justify-content: flex-start;
-  padding-left: 8px;
-  padding-right: 8px;
+  padding:  ${RFValue(8)}px;
+  margin-right: ${RFValue(8)}px;
 `;
 
 export const Text = styled.Text`
@@ -62,7 +62,9 @@ max-width: 220px;
 
 export const Item = styled.View`
    flex-direction: row;
+   justify-content: space-between;
    align-items: center;
+   margin-top: ${RFValue(8)}px;
 `
 
 export const Label = styled.Text<{color: string}>`

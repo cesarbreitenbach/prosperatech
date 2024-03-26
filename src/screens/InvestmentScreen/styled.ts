@@ -26,7 +26,7 @@ margin-bottom: 12px;
 
 export const TitlePerksBuy = styled.Text`
 font-family: ${({theme}) => theme.fonts.regular};
-font-size: ${RFValue(16)}px;
+font-size: ${RFValue(14)}px;
 color: ${({theme}) => theme.colors.gold};
 margin-top: 10px;
 text-align: center;
