@@ -3,7 +3,7 @@ import { createContext, ReactNode, useContext, useEffect, useState } from 'react
 import { showMessage } from 'react-native-flash-message';
 import useAxios from  '../services/axios'
 import { decode } from "base-64";
-import { AmountProps, IBuyUserPercs, IInvestments, ILastCalculate, IPerks, IPerksTypes } from '../@types/wallet';
+import { AmountProps, IBuyUserPercs, IInvestments, ILastCalculate, IPerks, IPerksTypes, IUserMovimentation } from '../@types/wallet';
 import { addMinutes, format } from 'date-fns';
 import { useSettingsContext } from './settings';
 import { useAuthContext } from './auth';
@@ -28,6 +28,8 @@ interface IWalletContextData {
     getPerkTypes: () => void;
     buyUserPerks: ({idPerk, totalItems}: IBuyUserPercs) => Promise<Boolean> ;
     buyCriptoMine: (body: IPostEarns) => void;
+    getMovimentation: () => void;
+    userMovimentation: IUserMovimentation[];
     investments: IInvestments[];
     perkList: IPerks[];
     perkTypes: IPerksTypes[];
@@ -55,6 +57,8 @@ function WalletProvider({children}: WalletProviderProps) {
     const [perkTypes, setPerkTypes] = useState<IPerksTypes[]>([]);
 
     const [lastCalculated, setLastCalculated] = useState<ILastCalculate>({} as ILastCalculate)
+
+    const [userMovimentation, setUserMovimentation] = useState<IUserMovimentation[]>([{} as IUserMovimentation])
 
     const { axiosClient: client } = useAxios();
 
@@ -210,6 +214,17 @@ function WalletProvider({children}: WalletProviderProps) {
         }44
     }
 
+    async function getMovimentation() {
+        try {
+            const res = await client.get(`/movimentation`);
+            const { data } = res;
+            console.log(`esse é o data ${JSON.stringify(data)}`)
+            setUserMovimentation(data);
+        } catch (e: any) {
+            console.log(`erro ao pegar movimentacao ${JSON.stringify(e.response)}`)
+        }
+    }
+
 
     return (
         <WalletContext.Provider value={{  
@@ -219,11 +234,13 @@ function WalletProvider({children}: WalletProviderProps) {
                                        getPerkTypes,
                                        buyCriptoMine,
                                        getLastCalculated,
+                                       getMovimentation,
                                        lastCalculated,
                                        amount,
                                        investments,
                                        perkList,
-                                       perkTypes
+                                       perkTypes,
+                                       userMovimentation
                                     }}> 
             {children}
         </WalletContext.Provider> 

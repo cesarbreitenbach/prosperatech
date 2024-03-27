@@ -24,8 +24,8 @@ const Popup = ({setVisible, visible, title, message, hasBuyButton=false, nextCal
     }
 
     return (
-        <Modal visible={visible} transparent animationType='slide'>
-            <Container onPress={handleClose}  activeOpacity={0.2}> 
+        <Modal visible={visible} transparent animationType='fade'>
+            <Container onPress={handleClose} > 
                 <Content>
                     <Title>{title}</Title>
                     <Message>{message}</Message>

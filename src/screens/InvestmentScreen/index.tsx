@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
 
-import {  Container, MineTaxes, MineTaxesTitle, Title, TitlePerkList, TitlePerksBuy } from './styled';
+import {  Advertise, Container, MineTaxes, MineTaxesTitle, Title, TitlePerkList, TitlePerksBuy } from './styled';
 import { useWalletContext } from '../../hooks/wallet';
 import BuyPerks from '../../components/BuyPerks';
 
 import SaldoPanel from '../../components/SaldoPanel';
-import theme from '../../styles/theme';
 import { FlatList, View } from 'react-native';
 import PerksPanel from '../../components/PerksPanel';
 import Header from '../../components/Header';
@@ -98,7 +97,7 @@ const InvestmentScreen: React.FC = () => {
         if (totlaCost > bonus && totlaCost > gold) {
             setShowPopup(true);
             setPopupTitle("Você não tem saldo!");
-            setPopupMessage("Compre mais fichas ou aguarde o bônus de sua CryptoMine!");
+            setPopupMessage("Compre mais fichas ou aguarde o bônus de sua VirtuaMine!");
             return;
         }
         const resp = await buyUserPerks({idPerk: selectedPerk.id, totalItems: qtdSelectedItems})
@@ -131,12 +130,12 @@ const InvestmentScreen: React.FC = () => {
                 
                 <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
                     <View style={{marginLeft: 12}}>
-                        <MineTaxesTitle>Poder de mineração Perks</MineTaxesTitle>
+                        <MineTaxesTitle>Poder de mineração de Perks</MineTaxesTitle>
                         <MineTaxes>{mineTaxes.toFixed(2)} %</MineTaxes>
                     </View>
                     <SaldoPanel amountBonus={amount.amountBonus} amountReal={amount.amountReal} width={20} height={20} />
                 </View>
-                {grupedPerkList?.length > 0 && <TitlePerkList>Perk's ativos nas suas minas:</TitlePerkList>}
+                {grupedPerkList?.length > 0 && <TitlePerkList>Perk's ativos em VirtuaMines:</TitlePerkList>}
                 <FlatList 
                     horizontal
                     data={grupedPerkList}
@@ -173,6 +172,8 @@ const InvestmentScreen: React.FC = () => {
                     onAdd={handleAdd}
                     onDel={handleDel}
                 />
+
+<Advertise>* Aviso: A "VirtuaMine" é um recurso fictício usado para impulsionar a economia dentro do jogo. Não utilizamos seu dispositivo para realizar qualquer tipo de mineração de criptomoedas.</Advertise>
                
            </ScrollView>
            <Popup 

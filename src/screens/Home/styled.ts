@@ -123,3 +123,31 @@ font-family: ${({theme}) => theme.fonts.medium};
 font-size: ${RFValue(12)}px;
 color: ${({theme}) => theme.colors.borgonha_intenso};
 `;
+
+export const Advertise = styled.Text`
+font-family: ${({theme}) => theme.fonts.medium};
+font-size: ${RFValue(8)}px;
+color: ${({theme}) => theme.colors.attention};
+margin-top: ${RFValue(12)}px;
+text-align: center;
+`;
+
+export const SubTitle = styled.Text`
+font-family: ${({theme}) => theme.fonts.SemiBold};
+font-size: ${RFValue(16)}px;
+color: ${({theme}) => theme.colors.borgonha_intenso};
+text-align: center;
+`;
+
+export const VirtuaArea = styled.View`
+   flex: 1;
+   align-items: center;
+   padding: 0 ${RFValue(12)}px;
+`
+
+export const VirtuaText = styled.Text`
+font-family: ${({theme}) => theme.fonts.SemiBold};
+font-size: ${RFValue(12)}px;
+color: ${({theme}) => theme.colors.azulFck};
+text-align: center;
+`;

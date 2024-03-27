@@ -1,5 +1,5 @@
 import { useTheme } from 'styled-components';
-import {  BetArea,  Container, InfoArea, InvestmentTitle, Item, LastPayment, NewMineArea, NextPayment, PaymentArea, Saldo, SaldoArea, Title, TitleNewMine, TitleSaldo, TitleTax } from './styled';
+import {  Advertise, BetArea,  Container, InfoArea, InvestmentTitle, Item, LastPayment, NewMineArea, NextPayment, PaymentArea, Saldo, SaldoArea, SubTitle, Title, TitleNewMine, TitleSaldo, TitleTax, VirtuaArea, VirtuaText } from './styled';
 import { useWalletContext } from '../../hooks/wallet';
 import { useEffect, useState } from 'react';
 import Header from '../../components/Header';
@@ -111,11 +111,9 @@ export default function Home() {
     if (investmentValue > availableAmount) {
       setShowPopup(true);
       setPopupTitle("Você não tem saldo!");
-      setPopupMessage("Compre fichas gold ou aguarde o bônus de sua CryptoMine!");
+      setPopupMessage("Compre fichas gold ou aguarde o bônus de sua VirtuaMine!");
       return;
     }
-
-    console.log(`vou comprar as criptomines ${investmentValue.toString()}`)
 
     buyCriptoMine({
       amount: investmentValue,
@@ -128,8 +126,8 @@ export default function Home() {
 
   }
 
-  const handleGoToInvestment = () => {
-    navigation.navigate('investment')
+  const handleMovimentation = () => {
+    navigation.navigate('movimentation')
   }
 
   const handlePlaynow = () => {
@@ -162,15 +160,20 @@ export default function Home() {
          <InfoUser size={20} bonusAmount={fichaBonus} realAmount={gold} selectedCoin={selectedCoin} setSelectedCoin={setSelectedCoin}/>
       </InfoArea>
       <MinningArea>
-          {/* <MinningTitle>Rendimentos e Ganhos </MinningTitle> */}
           <NewMineArea onPress={handlePlaynow}>
               <PlayNow />
               <TitleNewMine>Jogue aqui e ganhe</TitleNewMine>
               <TitleNewMine>mais fichas!</TitleNewMine>
           </NewMineArea>
-          <InvestmentTitle>Compre Cryptomines:</InvestmentTitle>
+          <InvestmentTitle>Descubra VirtualMine!</InvestmentTitle>
+          <VirtuaArea>
+            <Title>Com a VirtuaMine, você deposita recursos em uma mina virtual exclusiva que impulsionará seu ganho extra. Aproveite os benefícios imediatos e acelere sua progressão com este recurso único.</Title>
+            <SubTitle>Receba o recurso depositado de volta em 30 dias!</SubTitle>
+            <VirtuaText>Recursos minerados a cada hora vão direto para o saldo do recurso depositado!</VirtuaText> 
+          </VirtuaArea>
+          
           <BetArea>
-              <BetPanel mininumValue={50} selectedBetCoin={selectedCoin} title="Valor para minerar" setBetValue={setInvestmentValue} betValue={investmentValue} />
+              <BetPanel mininumValue={50} selectedBetCoin={selectedCoin} title="Recurso a minerar:" setBetValue={setInvestmentValue} betValue={investmentValue} />
           </BetArea>
           <NewMineArea onPress={handleBuyMine}>
               <NewMine />
@@ -190,7 +193,7 @@ export default function Home() {
           
 
           {investments?.length > 0 && <>
-              <InvestmentTitle>Suas Cryptomines:</InvestmentTitle>
+              <InvestmentTitle>* Suas Minerações:</InvestmentTitle>
               <TitleTax>Poder de mineração em {mineTaxes.toFixed(2)} %</TitleTax>
           </>}
           <FlatList 
@@ -198,7 +201,7 @@ export default function Home() {
             data={investments}
             contentContainerStyle={{backgroundColor: theme.colors.dark_gold, borderRadius: 8, marginTop: 8,}}
             renderItem={({item}) => <InvestmentPanel 
-                                        onPress={handleGoToInvestment}
+                                        onPress={handleMovimentation}
                                         coinTypeImage={item.type === 'bonus' ? fichaCem : fichaGold } 
                                         earnedAmount={item.valorInvestido}
                                         name={item.descricao}
@@ -208,7 +211,7 @@ export default function Home() {
                                         />}
           />
 
-          
+          <Advertise>* Aviso: A "VirtuaMine" é um recurso fictício usado para impulsionar a economia dentro do jogo. Não utilizamos seu dispositivo para realizar qualquer tipo de mineração de criptomoedas.</Advertise>
           
         
       </MinningArea>

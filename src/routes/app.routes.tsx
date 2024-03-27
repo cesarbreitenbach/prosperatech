@@ -6,6 +6,7 @@ import {MyTabs} from '../routes/tab.routes';
 import InvestmentScreen from '../screens/InvestmentScreen';
 import ActivateUserScreen from '../screens/ActivateUserScreen';
 import ChangePassword from '../screens/ChangePassword';
+import MovimentationScreen from '../screens/MovimentationScreen';
 // import FortuneWheelScreen from '../screens/FortuneWheelScreen';
 
 const {Navigator, Screen} = createStackNavigator();
@@ -29,10 +30,10 @@ export function StackRoutes(){
             name="changePassword"
             component={ChangePassword}
         />
-        {/* <Screen 
-            name="WheelScreen"
-            component={FortuneWheelScreen}
-        /> */}
+        <Screen 
+            name="movimentation"
+            component={MovimentationScreen}
+        />
          <Screen 
             name="investment"
             component={InvestmentScreen}
