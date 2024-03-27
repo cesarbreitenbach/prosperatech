@@ -45,7 +45,6 @@ export default function Home() {
   const [popupMessage, setPopupMessage] = useState("");
 
   const [refreshing, setRefreshing] = useState(false);
-  console.log(`peguei a porra ${amount.amountBonus}`)
   useEffect(() => {
     getSaldo();
     getInvestiments();

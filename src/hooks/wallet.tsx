@@ -47,7 +47,7 @@ function WalletProvider({children}: WalletProviderProps) {
 
     const {calculateTime} = useSettingsContext();
 
-    const [amount, setAmount] = useState<AmountProps>({} as AmountProps);
+    const [amount, setAmount] = useState<AmountProps>({amountBonus: "0.00", amountReal: "0.00", saldo: "0.00", endereco: '', taxaGanho: 0});
 
     const [investments, setInvestments] = useState<IInvestments[]>([])
     const [perkList, setPerkList] = useState<IPerks[]>([])
@@ -85,7 +85,6 @@ function WalletProvider({children}: WalletProviderProps) {
             const res = await client.get(`/wallet`);
           
             const {endereco, amountBonus, amountReal, saldo, taxaGanho } = res.data;
-            console.log(`no hook ${amountBonus}`)
             const fixedBonus = Number(amountBonus) < 0 ? "0.00" : Number(amountBonus).toFixed(2);
             const fixedAmountReal = Number(amountReal) < 0 ? "0.00" : Number(amountReal).toFixed(2);
             const fixedAmountSaldo = Number(saldo) < 0 ? "0.00" : Number(saldo).toFixed(2);

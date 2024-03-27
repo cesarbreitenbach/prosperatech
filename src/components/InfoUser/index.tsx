@@ -15,8 +15,6 @@ interface InfoUserProps {
 }
 
 const InfoUser: React.FC<InfoUserProps> = ({realAmount, bonusAmount, selectedCoin, setSelectedCoin, size = 40}) => {
-console.log(`esse e o bonus ${bonusAmount}`)
-
 
   return <Container> 
             <Item active={selectedCoin === 'ficha'} onPress={() => setSelectedCoin('ficha')}>
