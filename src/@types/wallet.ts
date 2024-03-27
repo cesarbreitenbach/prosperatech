@@ -51,3 +51,14 @@ export interface IActivePerk {
     lastTimeCalculated: string;
     nextTimeToCalculate: string;
   }
+
+  export interface IUserMovimentation {
+    id?: number;
+		idWallet?: number;
+		deposito?: string;
+		saque?: string;
+		amountBonus: string;
+		amountReal: string;
+		tipo: string;
+    createdAt: string;
+  }

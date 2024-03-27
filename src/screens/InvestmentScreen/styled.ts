@@ -99,3 +99,11 @@ font-size: ${RFValue(10)}px;
 color: ${({theme}) => theme.colors.gold};
 margin-right: 12px;
 `;
+
+export const Advertise = styled.Text`
+font-family: ${({theme}) => theme.fonts.medium};
+font-size: ${RFValue(8)}px;
+color: ${({theme}) => theme.colors.attention};
+margin-top: ${RFValue(12)}px;
+text-align: center;
+`;

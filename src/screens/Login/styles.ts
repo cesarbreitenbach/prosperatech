@@ -4,7 +4,7 @@ import { RFValue } from 'react-native-responsive-fontsize';
 export const Container = styled.SafeAreaView`
   flex: 1; 
   background-color: ${({theme}) => theme.colors.background_secondary};
-  padding-top: ${RFValue(20)}px;;
+  padding-top: ${RFValue(20)}px;
   `
 
 export const ContentArea = styled.View`

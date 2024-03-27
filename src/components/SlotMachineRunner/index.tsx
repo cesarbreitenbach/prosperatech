@@ -67,7 +67,7 @@ export default function SlotMachineRunner ({symbols}:ISlotMachine) {
         if (betValue > availableAmount) {
             setShowPopup(true);
             setPopupTitle("Você não tem saldo!");
-            setPopupMessage("Compre fichas gold ou aguarde o bônus de sua CryptoMine!");
+            setPopupMessage("Compre fichas gold ou aguarde o bônus de sua VirtuaMine!");
             setBetValue(0);
             return;
         }

@@ -24,7 +24,7 @@ export function MyTabs() {
       <Tab.Screen name="Wallet" 
                   component={Home} 
                   options={{
-                    tabBarLabel: 'Cryptominas',
+                    tabBarLabel: 'VirtuaMine',
                     tabBarIcon: ({ color, size }) => (
                       <MaterialCommunityIcons name="hexagon-multiple" color={color} size={20} />
                     ),
