@@ -165,7 +165,7 @@ export default function Home() {
               <TitleNewMine>Jogue aqui e ganhe</TitleNewMine>
               <TitleNewMine>mais fichas!</TitleNewMine>
           </NewMineArea>
-          <InvestmentTitle>Descubra VirtualMine!</InvestmentTitle>
+          <InvestmentTitle>Descubra VirtuaMine!</InvestmentTitle>
           <VirtuaArea>
             <Title>Com a VirtuaMine, você deposita recursos em uma mina virtual exclusiva que impulsionará seu ganho extra. Aproveite os benefícios imediatos e acelere sua progressão com este recurso único.</Title>
             <SubTitle>Receba o recurso depositado de volta em 30 dias!</SubTitle>
