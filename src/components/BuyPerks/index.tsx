@@ -45,13 +45,16 @@ const BuyPerks = ({id, description, hasMore, cost, type, tax, image, name, setAc
                     <Cost>$ {cost}</Cost>
                 </Item>
                 <Item>
-                    <Label color={theme.colors.azulFck}>Compra com:</Label>
+                    <Label color={theme.colors.azulFck}>Moeda:</Label>
                     <TypeCoin>{formatType(type)}</TypeCoin>
-                    
                 </Item>
                 <Item>
-                    <Label color={theme.colors.success}>+ Taxa Mineração:</Label>
+                    <Label color={theme.colors.success}>+ Bônus:</Label>
                     <Tax>{tax} %</Tax>
+                </Item>
+                <Item>
+                    <Label color={theme.colors.borgonha_intenso}>Validade:</Label>
+                    <Cost>7 dias</Cost>
                 </Item>
                 
            </Content>

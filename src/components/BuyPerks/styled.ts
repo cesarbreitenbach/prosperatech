@@ -28,8 +28,8 @@ color: ${({theme}) => theme.colors.dark_gold};
 `;
 
 export const TypeCoin = styled.View`
-   width: 50px;
-   height: 50px;
+   width: 30px;
+   height: 30px;
    justify-content: center;
    
 
@@ -48,16 +48,16 @@ export const ImageArea = styled.View`
 `;
 
 export const Content = styled.View`
-  justify-content: flex-start;
-  padding:  ${RFValue(8)}px;
-  margin-right: ${RFValue(8)}px;
+  padding:  ${RFValue(6)}px;
+  margin-right: ${RFValue(6)}px;
+  width: auto;
 `;
 
 export const Text = styled.Text`
 font-family: ${({theme}) => theme.fonts.medium};
 font-size: ${RFValue(10)}px;
 color: ${({theme}) => theme.colors.dark_gold};
-max-width: 220px;
+max-width: 200px;
 `;
 
 export const Item = styled.View`

@@ -126,16 +126,16 @@ const InvestmentScreen: React.FC = () => {
   return <Container> 
            <Header hasGoBack backgroundImage={backgroundImage} height={140}/>
            <ScrollView style={{padding: 12}} contentContainerStyle={{paddingBottom: 30}}>
-                <Title>Gerêncie poder de mineração!</Title>
+                <Title>Gerêncie o bonus dos Perks!</Title>
                 
                 <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
                     <View style={{marginLeft: 12}}>
-                        <MineTaxesTitle>Poder de mineração de Perks</MineTaxesTitle>
+                        <MineTaxesTitle>Total de bônus dos Perks</MineTaxesTitle>
                         <MineTaxes>{mineTaxes.toFixed(2)} %</MineTaxes>
                     </View>
                     <SaldoPanel amountBonus={amount.amountBonus} amountReal={amount.amountReal} width={20} height={20} />
                 </View>
-                {grupedPerkList?.length > 0 && <TitlePerkList>Perk's ativos em VirtuaMines:</TitlePerkList>}
+                {grupedPerkList?.length > 0 && <TitlePerkList>Perk's ativos nas suas VirtuaMines:</TitlePerkList>}
                 <FlatList 
                     horizontal
                     data={grupedPerkList}
@@ -147,7 +147,7 @@ const InvestmentScreen: React.FC = () => {
                                                 tax={item.taxPerk}
                                                 />}
                     />
-                <TitlePerksBuy>Perks selecionaveis para mineração</TitlePerksBuy>
+                <TitlePerksBuy>Selecione Perk's para ganhar vantagens:</TitlePerksBuy>
                 <FlatList 
                     horizontal
                     data={perkTypes.sort((a, b) => a.id - b.id)}
