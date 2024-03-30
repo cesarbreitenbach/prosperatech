@@ -151,3 +151,32 @@ font-size: ${RFValue(12)}px;
 color: ${({theme}) => theme.colors.azulFck};
 text-align: center;
 `;
+
+
+export const ClaimArea = styled.View`
+  flex-direction: row;
+  padding: ${RFValue(12)}px;
+  justify-content: space-around;
+  `
+export const ClaimButton = styled.TouchableOpacity<{active: boolean}>`
+background-color: ${({theme, active}) => active ? theme.colors.text : theme.colors.attention};
+justify-content: center;
+align-items: center;
+padding: ${RFValue(6)}px;
+margin-top: ${RFValue(6)}px;
+margin-bottom: ${RFValue(6)}px;
+border-radius: 8px;
+`
+export const ClaimText = styled.Text`
+font-family: ${({theme}) => theme.fonts.SemiBold};
+font-size: ${RFValue(12)}px;
+color: ${({theme}) => theme.colors.white};
+text-align: center;
+`;
+
+export const ClaimText2 = styled.Text`
+font-family: ${({theme}) => theme.fonts.regular};
+font-size: ${RFValue(9)}px;
+color: ${({theme}) => theme.colors.white};
+text-align: center;
+`;

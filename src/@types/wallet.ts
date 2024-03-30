@@ -62,3 +62,8 @@ export interface IActivePerk {
 		tipo: string;
     createdAt: string;
   }
+
+  export interface IDailyBonusStatus {
+    dailybonus: string; 
+    nextBonus: string;
+  }

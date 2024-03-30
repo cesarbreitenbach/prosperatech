@@ -27,4 +27,4 @@ const BetButton = ({label, img, value, setBetValue, selectedBetCoin, setLasValue
          </ButtonArea>
             }
 
-export default BetButton;
+export default React.memo(BetButton);

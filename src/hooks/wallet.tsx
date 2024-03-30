@@ -3,7 +3,7 @@ import { createContext, ReactNode, useContext, useEffect, useState } from 'react
 import { showMessage } from 'react-native-flash-message';
 import useAxios from  '../services/axios'
 import { decode } from "base-64";
-import { AmountProps, IBuyUserPercs, IInvestments, ILastCalculate, IPerks, IPerksTypes, IUserMovimentation } from '../@types/wallet';
+import { AmountProps, IBuyUserPercs, IDailyBonusStatus, IInvestments, ILastCalculate, IPerks, IPerksTypes, IUserMovimentation } from '../@types/wallet';
 import { addMinutes, format } from 'date-fns';
 import { useSettingsContext } from './settings';
 import { useAuthContext } from './auth';
@@ -29,6 +29,8 @@ interface IWalletContextData {
     buyUserPerks: ({idPerk, totalItems}: IBuyUserPercs) => Promise<Boolean> ;
     buyCriptoMine: (body: IPostEarns) => void;
     getMovimentation: () => void;
+    getDailyBonusStatus: () => Promise<IDailyBonusStatus>;
+    claimDailyBonus: () => void;
     userMovimentation: IUserMovimentation[];
     investments: IInvestments[];
     perkList: IPerks[];
@@ -225,6 +227,29 @@ function WalletProvider({children}: WalletProviderProps) {
         }
     }
 
+    async function getDailyBonusStatus(): Promise<IDailyBonusStatus> {
+        try {
+            const res = await client.get(`/verifyDailyBonus`);
+            const { data } = res;
+            const {dailybonus, nextBonus} = data;
+            return {dailybonus, nextBonus}
+        } catch (e: any) {
+            console.log(`erro ao pegar dailyBonusStatus ${JSON.stringify(e.response)}`)
+            return {} as IDailyBonusStatus
+        }
+    }
+
+    async function claimDailyBonus() {
+        try {
+            await client.get(`/claimDailyBonus`);
+            await getSaldo();
+            
+        } catch (e: any) {
+            console.log(`erro ao pegar dailyBonusStatus ${JSON.stringify(e.response)}`)
+            return {} as IDailyBonusStatus
+        }
+    }
+
 
     return (
         <WalletContext.Provider value={{  
@@ -235,6 +260,8 @@ function WalletProvider({children}: WalletProviderProps) {
                                        buyCriptoMine,
                                        getLastCalculated,
                                        getMovimentation,
+                                       getDailyBonusStatus,
+                                       claimDailyBonus,
                                        lastCalculated,
                                        amount,
                                        investments,

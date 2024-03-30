@@ -32,4 +32,4 @@ const ItemMovimentation = ({amountBonus, amountReal, tipo, createdAt}: IUserMovi
          </Container>
 }
 
-export default ItemMovimentation;
+export default React.memo(ItemMovimentation);

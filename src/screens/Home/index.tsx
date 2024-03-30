@@ -1,5 +1,5 @@
 import { useTheme } from 'styled-components';
-import {  Advertise, BetArea,  Container, InfoArea, InvestmentTitle, Item, LastPayment, NewMineArea, NextPayment, PaymentArea, Saldo, SaldoArea, SubTitle, Title, TitleNewMine, TitleSaldo, TitleTax, VirtuaArea, VirtuaText } from './styled';
+import {  Advertise, BetArea,  ClaimArea,  ClaimButton,  ClaimText,  ClaimText2,  Container, InfoArea, InvestmentTitle, Item, LastPayment, NewMineArea, NextPayment, PaymentArea, Saldo, SaldoArea, SubTitle, Title, TitleNewMine, TitleSaldo, TitleTax, VirtuaArea, VirtuaText } from './styled';
 import { useWalletContext } from '../../hooks/wallet';
 import { useEffect, useState } from 'react';
 import Header from '../../components/Header';
@@ -11,7 +11,7 @@ import fichaCem from '../../assets/images/fichaBonus.png'
 import fichaGold from '../../assets/images/fichaGold.png'
 import mine from '../../assets/images/mine.png'
 
-import { FlatList, ScrollView, RefreshControl } from 'react-native';
+import { FlatList, ScrollView, RefreshControl, Text } from 'react-native';
 import InvestmentPanel from '../../components/InvestmentPanel';
 import { useNavigation } from '@react-navigation/native';
 import NewMine from '../../components/NewMine';
@@ -22,10 +22,20 @@ import BannerSlider from '../../components/BannerSlider';
 import PlayNow from '../../components/PlayNow';
 import { formatToPostgresDecimal, formatarMoeda } from '../../services/formatService';
 import Popup from '../../components/Popup';
+import Button from '../../components/Button';
 
 export default function Home() {
   const theme = useTheme();
-  const {getSaldo, amount, getInvestiments, investments, buyCriptoMine, perkList, getLastCalculated, lastCalculated } = useWalletContext();
+  const {getSaldo, 
+         amount, 
+         getInvestiments, 
+         investments, 
+         buyCriptoMine, 
+         perkList, 
+         getLastCalculated,
+         lastCalculated,
+         getDailyBonusStatus, 
+         claimDailyBonus } = useWalletContext();
 
   const [investmentValue, setInvestmentValue] = useState(0);
   const [selectedCoin, setSelectedCoin] = useState("bonus");
@@ -43,12 +53,15 @@ export default function Home() {
   const [showPopup, setShowPopup] = useState(false);
   const [popupTitle, setPopupTitle] = useState("");
   const [popupMessage, setPopupMessage] = useState("");
+  const [disabeDailyButton, setDisableDailyButton] = useState(false);
+  const [timeToEnable, setTimeToEnable] = useState('');
 
   const [refreshing, setRefreshing] = useState(false);
   useEffect(() => {
     getSaldo();
     getInvestiments();
     getLastCalculated();
+    verifyDailyBonus();
   }, [])
 
   useEffect(() => {
@@ -66,6 +79,7 @@ export default function Home() {
     setRefreshing(true);
     await getLastCalculated();
     await getSaldo();
+    await verifyDailyBonus();
     setRefreshing(false);
   };
 
@@ -134,6 +148,22 @@ export default function Home() {
     navigation.navigate('Machine')
   }
 
+  const handleDailyBonus = async () => {
+    await claimDailyBonus()
+    await verifyDailyBonus()
+  }
+
+  const verifyDailyBonus = async () => {
+    const {dailybonus, nextBonus} = await getDailyBonusStatus();
+    if(dailybonus!=='ok'){
+      setDisableDailyButton(true);
+      setTimeToEnable(nextBonus)
+    } else {
+      setDisableDailyButton(false);  
+      setTimeToEnable("")
+    }
+  }
+
   return (
     <Container>
       <ScrollView 
@@ -148,19 +178,27 @@ export default function Home() {
                   showsVerticalScrollIndicator={false}>
           <Header backgroundImage={backgroundImage} height={110}/>
 
-          <BannerSlider />
+      <BannerSlider />
+
+      <ClaimArea>
+        <ClaimButton onPress={handleDailyBonus} activeOpacity={0.7} active={disabeDailyButton} disabled={disabeDailyButton}>
+          {timeToEnable && <ClaimText2>Proximo Bônus</ClaimText2>}
+          <ClaimText>{timeToEnable ? `${timeToEnable}` : `Bônus Diário`}</ClaimText>
+        </ClaimButton>
+
+          <SaldoArea>
+              <TitleSaldo>Saldo Total:</TitleSaldo>
+              <Saldo>$ {formatarMoeda(saldo)}</Saldo>
+          </SaldoArea>
+      </ClaimArea>
         
-      <SaldoArea>
-          <TitleSaldo>Saldo Total:</TitleSaldo>
-          <Saldo>$ {formatarMoeda(saldo)}</Saldo>
-      </SaldoArea>
 
       
       <InfoArea>
          <InfoUser size={20} bonusAmount={fichaBonus} realAmount={gold} selectedCoin={selectedCoin} setSelectedCoin={setSelectedCoin}/>
       </InfoArea>
       <MinningArea>
-          <NewMineArea onPress={handlePlaynow}>
+          <NewMineArea onPress={handlePlaynow} activeOpacity={0.7}>
               <PlayNow />
               <TitleNewMine>Jogue aqui e ganhe</TitleNewMine>
               <TitleNewMine>mais fichas!</TitleNewMine>
