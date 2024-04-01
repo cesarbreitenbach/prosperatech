@@ -1,6 +1,6 @@
 
 export const formatarMoeda = (value: string) => {
-    const paresed = parseFloat(value);
+    const paresed = isNaN(Number(value)) ? 0.00 : parseFloat(value);
     return paresed.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 

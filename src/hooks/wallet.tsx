@@ -220,7 +220,6 @@ function WalletProvider({children}: WalletProviderProps) {
         try {
             const res = await client.get(`/movimentation`);
             const { data } = res;
-            console.log(`esse é o data ${JSON.stringify(data)}`)
             setUserMovimentation(data);
         } catch (e: any) {
             console.log(`erro ao pegar movimentacao ${JSON.stringify(e.response)}`)

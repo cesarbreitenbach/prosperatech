@@ -14,10 +14,6 @@ const MovimentationScreen: React.FC = () => {
     getMovimentation();
   }, [])
 
-  useEffect(() => {
-    console.log(`user movimentation ${JSON.stringify(userMovimentation)}`)
-  }, [userMovimentation])
-
   return <Container> 
             <Header hasGoBack backgroundImage={backgroundImage} height={140}/>
             <FlatList 

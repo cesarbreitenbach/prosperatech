@@ -126,11 +126,11 @@ const InvestmentScreen: React.FC = () => {
   return <Container> 
            <Header hasGoBack backgroundImage={backgroundImage} height={140}/>
            <ScrollView style={{padding: 12}} contentContainerStyle={{paddingBottom: 30}}>
-                <Title>Gerêncie o bonus dos Perks!</Title>
+                <Title>Gerêncie o bonus de equipamentos!</Title>
                 
                 <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
                     <View style={{marginLeft: 12}}>
-                        <MineTaxesTitle>Total de bônus dos Perks</MineTaxesTitle>
+                        <MineTaxesTitle>Total de bônus</MineTaxesTitle>
                         <MineTaxes>{mineTaxes.toFixed(2)} %</MineTaxes>
                     </View>
                     <SaldoPanel amountBonus={amount.amountBonus} amountReal={amount.amountReal} width={20} height={20} />
@@ -147,7 +147,7 @@ const InvestmentScreen: React.FC = () => {
                                                 tax={item.taxPerk}
                                                 />}
                     />
-                <TitlePerksBuy>Selecione Perk's para ganhar vantagens:</TitlePerksBuy>
+                <TitlePerksBuy>Selecione equipamento para comprar:</TitlePerksBuy>
                 <FlatList 
                     horizontal
                     data={perkTypes.sort((a, b) => a.id - b.id)}

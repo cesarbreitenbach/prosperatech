@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Image, Modal } from 'react-native';
 
-import { ButtonArea, Container, Content, Message, NextBonus, Title } from './styled';
+import { ButtonArea, Container, Content, Message, TextFuck, Title } from './styled';
 
 import image from '../../assets/images/monteFicha.png'
-import { Text } from '../BuyPerks/styled';
+import ClaimButton from '../ClaimButton';
+import { useWalletContext } from '../../hooks/wallet';
 
 interface PopupProps {
     visible: boolean;
@@ -18,6 +19,36 @@ interface PopupProps {
 }
 
 const Popup = ({setVisible, visible, title, message, hasBuyButton=false, nextCalc, onPress}: PopupProps) => {
+
+    const {claimDailyBonus, getDailyBonusStatus } = useWalletContext();
+
+    const [disabeDailyButton, setDisableDailyButton] = useState(false);
+
+    const [timeToEnable, setTimeToEnable] = useState('');
+
+    useEffect(() => {
+        const getStatus = async () => {
+            await verifyDailyBonus();
+        }
+        getStatus()
+    }, [])
+
+    const handleDailyBonus = async () => {
+        await claimDailyBonus()
+        await verifyDailyBonus()
+        setVisible(false);
+      }
+
+    const verifyDailyBonus = async () => {
+        const {dailybonus, nextBonus} = await getDailyBonusStatus();
+        if(dailybonus!=='ok'){
+            setDisableDailyButton(true);
+            setTimeToEnable(nextBonus)
+        } else {
+            setDisableDailyButton(false);  
+            setTimeToEnable("")
+        }
+    }
   
     const handleClose = () => {
         setVisible(false);
@@ -30,10 +61,10 @@ const Popup = ({setVisible, visible, title, message, hasBuyButton=false, nextCal
                     <Title>{title}</Title>
                     <Message>{message}</Message>
                     {hasBuyButton && <>
-                        <NextBonus>Proximo Bônus em: {nextCalc}</NextBonus>
+                        <ClaimButton disabeDailyButton={disabeDailyButton} handleDailyBonus={handleDailyBonus} timeToEnable={timeToEnable} />
                         <ButtonArea onPress={onPress} activeOpacity={0.7}>
-                            <Text>comprar</Text>
-                            <Image source={image} style={{width: 60, height: 60}}/>
+                            <TextFuck>Compre já</TextFuck>
+                            <Image source={image} style={{width: 35, height: 35}}/>
                         </ButtonArea>
                     </>}
                 </Content>

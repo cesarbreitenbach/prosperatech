@@ -28,9 +28,8 @@ export const ButtonArea = styled.TouchableOpacity`
   align-items: center;
   border-radius: ${RFValue(6)}px;
   background-color: ${({theme}) => theme.colors.borgonha_intenso};
-  width: ${RFValue(80)}px;
-  height: ${RFValue(80)}px;
-  margin-top: ${RFValue(12)}px;
+  flex-direction: row;
+  padding: ${RFValue(7)}px ${RFValue(12)}px;
 `;
 
 export const Content = styled.View`
@@ -38,14 +37,15 @@ export const Content = styled.View`
   align-items: center;
   padding: ${RFValue(12)}px;
   background-color: ${({theme}) => theme.colors.black};
-  border-radius: 6px;
+  border-radius: 8px;
   border-color: ${({theme}) => theme.colors.gold};
   border-width: 2px;
 `;
 
-export const NextBonus = styled.Text`
+export const TextFuck = styled.Text`
 font-family: ${({theme}) => theme.fonts.SemiBold};
 font-size: ${RFValue(12)}px;
-text-align: center;
 color: ${({theme}) => theme.colors.white};
+text-align: center;
+margin-right: ${RFValue(10)}px;
 `;

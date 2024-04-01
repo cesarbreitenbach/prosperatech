@@ -1,5 +1,5 @@
 import { useTheme } from 'styled-components';
-import {  Advertise, BetArea,  ClaimArea,  ClaimButton,  ClaimText,  ClaimText2,  Container, InfoArea, InvestmentTitle, Item, LastPayment, NewMineArea, NextPayment, PaymentArea, Saldo, SaldoArea, SubTitle, Title, TitleNewMine, TitleSaldo, TitleTax, VirtuaArea, VirtuaText } from './styled';
+import {  Advertise, BetArea,  ClaimArea,  Container, InfoArea, InvestmentTitle, Item, LastPayment, NewMineArea, NextPayment, PaymentArea, Saldo, SaldoArea, SubTitle, Title, TitleNewMine, TitleSaldo, TitleTax, VirtuaArea, VirtuaText } from './styled';
 import { useWalletContext } from '../../hooks/wallet';
 import { useEffect, useState } from 'react';
 import Header from '../../components/Header';
@@ -11,7 +11,7 @@ import fichaCem from '../../assets/images/fichaBonus.png'
 import fichaGold from '../../assets/images/fichaGold.png'
 import mine from '../../assets/images/mine.png'
 
-import { FlatList, ScrollView, RefreshControl, Text } from 'react-native';
+import { FlatList, ScrollView, RefreshControl, Text, Image } from 'react-native';
 import InvestmentPanel from '../../components/InvestmentPanel';
 import { useNavigation } from '@react-navigation/native';
 import NewMine from '../../components/NewMine';
@@ -20,9 +20,9 @@ import InfoUser from '../../components/InfoUser';
 import { showMessage } from 'react-native-flash-message';
 import BannerSlider from '../../components/BannerSlider';
 import PlayNow from '../../components/PlayNow';
-import { formatToPostgresDecimal, formatarMoeda } from '../../services/formatService';
+import {formatarMoeda } from '../../services/formatService';
 import Popup from '../../components/Popup';
-import Button from '../../components/Button';
+import ClaimButton from '../../components/ClaimButton';
 
 export default function Home() {
   const theme = useTheme();
@@ -181,11 +181,7 @@ export default function Home() {
       <BannerSlider />
 
       <ClaimArea>
-        <ClaimButton onPress={handleDailyBonus} activeOpacity={0.7} active={disabeDailyButton} disabled={disabeDailyButton}>
-          {timeToEnable && <ClaimText2>Proximo Bônus</ClaimText2>}
-          <ClaimText>{timeToEnable ? `${timeToEnable}` : `Bônus Diário`}</ClaimText>
-        </ClaimButton>
-
+          <ClaimButton disabeDailyButton={disabeDailyButton} handleDailyBonus={handleDailyBonus} timeToEnable={timeToEnable} />
           <SaldoArea>
               <TitleSaldo>Saldo Total:</TitleSaldo>
               <Saldo>$ {formatarMoeda(saldo)}</Saldo>
