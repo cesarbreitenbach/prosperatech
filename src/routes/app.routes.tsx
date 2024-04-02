@@ -7,6 +7,7 @@ import InvestmentScreen from '../screens/InvestmentScreen';
 import ActivateUserScreen from '../screens/ActivateUserScreen';
 import ChangePassword from '../screens/ChangePassword';
 import MovimentationScreen from '../screens/MovimentationScreen';
+import BuyScreen from '../screens/BuyScreen';
 // import FortuneWheelScreen from '../screens/FortuneWheelScreen';
 
 const {Navigator, Screen} = createStackNavigator();
@@ -37,6 +38,10 @@ export function StackRoutes(){
          <Screen 
             name="investment"
             component={InvestmentScreen}
+        />
+         <Screen 
+            name="buycoins"
+            component={BuyScreen}
         />
     </Navigator>
 )}

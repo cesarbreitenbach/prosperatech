@@ -249,7 +249,6 @@ function WalletProvider({children}: WalletProviderProps) {
         }
     }
 
-
     return (
         <WalletContext.Provider value={{  
                                        buyUserPerks,    

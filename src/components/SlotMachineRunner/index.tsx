@@ -20,6 +20,7 @@ import { useSettingsContext } from '../../hooks/settings';
 import { formatarMoeda } from '../../services/formatService';
 import Popup from '../Popup';
 import { usePlaySoundContext } from '../../hooks/usePlaySound';
+import { useNavigation } from '@react-navigation/native';
 
 
 
@@ -32,6 +33,7 @@ export default function SlotMachineRunner ({symbols}:ISlotMachine) {
     const {roll, syncSaldo} = useSlotMachineContext();
     const {difficult} = useSettingsContext();
     const {user} = useAuthContext();
+    const navigation = useNavigation<any>();
     
     const [slotSettings, setSlotSettings] = useState({duration: 900, slot1: '000'});
     const [counter, setCounter] = useState(0)
@@ -126,6 +128,10 @@ export default function SlotMachineRunner ({symbols}:ISlotMachine) {
         
     }
 
+    const handleBuyGold = () => {
+        navigation.navigate("buycoins")
+      }
+
 
     return (
         <Container behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -174,7 +180,7 @@ export default function SlotMachineRunner ({symbols}:ISlotMachine) {
             </ScrollView>
             <Popup 
                     setVisible={setShowPopup}
-                    onPress={() => console.log(`comprei`)}
+                    onPress={handleBuyGold}
                     hasBuyButton
                     visible={showPopup} 
                     title={popupTitle} 

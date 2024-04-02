@@ -23,6 +23,7 @@ import PlayNow from '../../components/PlayNow';
 import {formatarMoeda } from '../../services/formatService';
 import Popup from '../../components/Popup';
 import ClaimButton from '../../components/ClaimButton';
+import { useBillingContext } from '../../hooks/billing';
 
 export default function Home() {
   const theme = useTheme();
@@ -164,6 +165,10 @@ export default function Home() {
     }
   }
 
+  const handleBuyGold = () => {
+    navigation.navigate("buycoins")
+  }
+
   return (
     <Container>
       <ScrollView 
@@ -254,7 +259,7 @@ export default function Home() {
      
       <Popup 
             setVisible={setShowPopup}
-            onPress={() => console.log(`comprei`)}
+            onPress={handleBuyGold}
             hasBuyButton
             visible={showPopup} 
             title={popupTitle} 

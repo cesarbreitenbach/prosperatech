@@ -6,9 +6,11 @@ import { WalletProvider } from '../hooks/wallet';
 import { SlotMachineProvider } from '../hooks/slotmachine';
 import { SettingsProvider } from '../hooks/settings';
 import { PlaySoundProvider } from '../hooks/usePlaySound';
+import { BillingProvider } from '../hooks/billing';
+import { withIAPContext } from 'react-native-iap';
 
 
-export function Routes() {
+function Routes() {
   const { logged } = useAuthContext();
 
   useEffect(() => {
@@ -23,7 +25,9 @@ export function Routes() {
         <WalletProvider>
           <SlotMachineProvider>
             <PlaySoundProvider>
-              { logged ? <StackRoutes /> : <AuthRoutes /> }
+              <BillingProvider>
+                 { logged ? <StackRoutes /> : <AuthRoutes /> }
+              </BillingProvider>
             </PlaySoundProvider>
           </SlotMachineProvider>
         </WalletProvider>
@@ -32,3 +36,5 @@ export function Routes() {
     
   );
 }
+
+export default withIAPContext(Routes);
