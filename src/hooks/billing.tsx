@@ -37,7 +37,11 @@ function BillingProvider({children}: BillingProviderProps) {
 
 
       useEffect(() => {
+        
+        if(!currentPurchaseError) return;
+        
         console.log(`deu pau??? currentPurchaseError ${JSON.stringify(currentPurchaseError)}`)
+        
         showMessage({
             message: 'Erro ao efetuar compra, valor não debitado!',
             type: 'danger'
