@@ -21,12 +21,21 @@ const BillingContext = createContext({} as IBillingContextData);
 
 function BillingProvider({children}: BillingProviderProps) {
 
-    const {getProducts, connected, products, currentPurchaseError, currentPurchase, requestPurchase} = useIAP();
+    const {  getProducts, 
+             connected, 
+             products, 
+             currentPurchaseError, 
+             currentPurchase, 
+             requestPurchase, 
+             finishTransaction} = useIAP();
+
     const {getSaldo} = useWalletContext()
     const {user} = useAuthContext();
 
     const [productList, setProductList] = useState<ProductItemProps[]>([]);
     const [sku, setSku] = useState('');
+
+    const [buyError, setBuyError] = useState(false);
 
     const { axiosClient: client } = useAxios();
 
@@ -39,20 +48,23 @@ function BillingProvider({children}: BillingProviderProps) {
       useEffect(() => {
         
         if(!currentPurchaseError) return;
-        
+ 
         console.log(`deu pau??? currentPurchaseError ${JSON.stringify(currentPurchaseError)}`)
         
         showMessage({
-            message: 'Erro ao efetuar compra, valor não debitado!',
-            type: 'danger'
+            message: 'Erro ao processar compra!',
+            type: 'warning'
         })
       }, [currentPurchaseError]);
     
       useEffect(() => {
-        if(!currentPurchase?.productId){
+
+        if(!currentPurchase?.transactionId){
             return;
         }
         confirmBuy()
+        finishTransaction({purchase: currentPurchase, isConsumable: true})
+        console.log(`comprei....`)
       }, [currentPurchase]);
 
    
@@ -64,6 +76,7 @@ function BillingProvider({children}: BillingProviderProps) {
 
     async function buyProduct(sku: string) {
         if(connected){
+            setBuyError(false);
             console.log(`entrei aqui com sku ${sku}`)
             setSku(sku)
             await requestPurchase({sku, skus: [sku]});

@@ -27,7 +27,7 @@ export const ButtonArea = styled.TouchableOpacity`
   justify-content: center;
   align-items: center;
   border-radius: ${RFValue(6)}px;
-  background-color: ${({theme}) => theme.colors.borgonha_intenso};
+  background-color: ${({theme}) => theme.colors.success};
   flex-direction: row;
   padding: ${RFValue(7)}px ${RFValue(12)}px;
 `;
@@ -47,5 +47,5 @@ font-family: ${({theme}) => theme.fonts.SemiBold};
 font-size: ${RFValue(12)}px;
 color: ${({theme}) => theme.colors.white};
 text-align: center;
-margin-right: ${RFValue(10)}px;
+margin-right: ${RFValue(16)}px;
 `;

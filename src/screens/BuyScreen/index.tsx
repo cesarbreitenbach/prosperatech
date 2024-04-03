@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 
 import { ButtonArea, BuyText, Container, Title } from './styled';
-import { useIAP } from 'react-native-iap';
+import headerImage from '../../assets/images/banner5.png'
 import { FlatList } from 'react-native-gesture-handler';
 import { ProductItemProps } from '../../@types/billing';
 import BuyGoldItem from '../../components/BuyGoldItem';
 import { useBillingContext } from '../../hooks/billing';
 import { showMessage } from 'react-native-flash-message';
+import Header from '../../components/Header';
 
 const BuyScreen: React.FC = () => {
   const {productList, getAllProducts, buyProduct} = useBillingContext();
@@ -28,8 +29,9 @@ const BuyScreen: React.FC = () => {
   }
 
   return <Container> 
-            <Title>Compre aqui suas</Title>
-            <Title>Fichas Gold!</Title>
+            <Header hasGoBack backgroundImage={headerImage} height={140}/>
+            <Title>Compre suas Fichas Gold</Title>
+            <Title>jogue, invista e saque!</Title>
             <FlatList 
                contentContainerStyle={{padding: 12}}
                data={productList}

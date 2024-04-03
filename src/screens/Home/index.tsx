@@ -167,6 +167,7 @@ export default function Home() {
 
   const handleBuyGold = () => {
     navigation.navigate("buycoins")
+    setShowPopup(false);
   }
 
   return (
@@ -250,7 +251,7 @@ export default function Home() {
                                         />}
           />
 
-          <Advertise>* Aviso: A "VirtuaMine" é um recurso fictício usado para impulsionar a economia dentro do jogo. Não utilizamos seu dispositivo para realizar qualquer tipo de mineração de criptomoedas.</Advertise>
+          <Advertise>* Aviso: A "VirtuaMine" é um recurso usado para impulsionar a economia in-game. A mineração é sobre o recurso depositado, o recurso extraido é disponiblizado no saldo do usuário a cada calculo. Recurso depositado fica travado por 30 dias</Advertise>
           
         
       </MinningArea>

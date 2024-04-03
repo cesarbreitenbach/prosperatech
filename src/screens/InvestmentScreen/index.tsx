@@ -16,6 +16,7 @@ import BuyInfoPanel from '../../components/BuyInfoPanel';
 import { IActivePerk, IPerks } from '../../@types/wallet';
 import { showMessage } from 'react-native-flash-message';
 import Popup from '../../components/Popup';
+import { useNavigation } from '@react-navigation/native';
 
 interface GroupedData {
     [key: string]: {
@@ -29,6 +30,7 @@ interface GroupedData {
 }
 
 const InvestmentScreen: React.FC = () => {
+    const navigation = useNavigation<any>()
     const {getPerkTypes, perkTypes, amount, perkList, buyUserPerks, getInvestiments, getSaldo, lastCalculated} = useWalletContext();
     const [selectedPerk, setSelectedPerk] = useState<IActivePerk>({} as IActivePerk);
     const [qtdSelectedItems, SetQtdSelectedItems] = useState(0)
@@ -123,6 +125,11 @@ const InvestmentScreen: React.FC = () => {
         SetQtdSelectedItems(old => old - 1)
     }
 
+    const handleBuyGold = () => {
+        navigation.navigate('buycoins');
+        setShowPopup(false);
+    }
+
   return <Container> 
            <Header hasGoBack backgroundImage={backgroundImage} height={140}/>
            <ScrollView style={{padding: 12}} contentContainerStyle={{paddingBottom: 30}}>
@@ -173,12 +180,12 @@ const InvestmentScreen: React.FC = () => {
                     onDel={handleDel}
                 />
 
-<Advertise>* Aviso: A "VirtuaMine" é um recurso fictício usado para impulsionar a economia dentro do jogo. Não utilizamos seu dispositivo para realizar qualquer tipo de mineração de criptomoedas.</Advertise>
+<Advertise>* Aviso: A "VirtuaMine" é um recurso usado para impulsionar a economia in-game. A mineração é sobre o recurso depositado, o recurso extraido é disponiblizado no saldo do usuário a cada calculo. Recurso depositado fica travado por 30 dias</Advertise>
                
            </ScrollView>
            <Popup 
                     setVisible={setShowPopup}
-                    onPress={() => console.log(`comprei`)}
+                    onPress={handleBuyGold}
                     hasBuyButton
                     visible={showPopup} 
                     title={popupTitle} 

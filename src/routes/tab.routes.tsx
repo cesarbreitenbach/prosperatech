@@ -45,7 +45,7 @@ export function MyTabs() {
                   name="investment" 
                   component={InvestmentScreen} 
                   options={{
-                    tabBarLabel: "Perk's Mineração",
+                    tabBarLabel: "Bônus Mineração",
                     tabBarIcon: ({ color, size }) => (
                       <MaterialCommunityIcons name="pickaxe" color={color} size={20} />
                     ),

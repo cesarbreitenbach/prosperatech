@@ -130,6 +130,7 @@ export default function SlotMachineRunner ({symbols}:ISlotMachine) {
 
     const handleBuyGold = () => {
         navigation.navigate("buycoins")
+        setShowPopup(false);
       }
 
 
@@ -179,13 +180,13 @@ export default function SlotMachineRunner ({symbols}:ISlotMachine) {
                 </ButtonArea>  
             </ScrollView>
             <Popup 
-                    setVisible={setShowPopup}
-                    onPress={handleBuyGold}
-                    hasBuyButton
-                    visible={showPopup} 
-                    title={popupTitle} 
-                    message={popupMessage}
-                    nextCalc={lastCalculated.nextTimeToCalculate}/>
+                setVisible={setShowPopup}
+                onPress={handleBuyGold}
+                hasBuyButton
+                visible={showPopup} 
+                title={popupTitle} 
+                message={popupMessage}
+                nextCalc={lastCalculated.nextTimeToCalculate}/>
         </Container>
     );
 }
