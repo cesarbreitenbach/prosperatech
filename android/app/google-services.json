@@ -1,9 +1,9 @@
 {
-    "installed": {
-      "client_id": "467136426503-a92g69kpsmqmc6vtd1tcgrkjhpm71shm.apps.googleusercontent.com",
-      "project_id": "sendit-769a3",
-      "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-      "token_uri": "https://oauth2.googleapis.com/token",
-      "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs"
-    }
+  "installed": {
+    "client_id": "833481448293-vqlkarjk8en5ovvm2obipfdh00rc3n9q.apps.googleusercontent.com",
+    "project_id": "ceasars-place",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs"
   }
+}

@@ -46,29 +46,48 @@ function BillingProvider({children}: BillingProviderProps) {
 
 
       useEffect(() => {
-        
-        if(!currentPurchaseError) return;
+            if(!currentPurchaseError) return;
+
+            if (currentPurchaseError.code === "E_USER_CANCELLED") {
+                showMessage({
+                    message: 'Compra não concluida.',
+                    type: 'warning'
+                })
+                return;
+            }
+  
+            if (currentPurchaseError.code === "E_SERVICE_ERROR") {
+                showMessage({
+                    message: 'Erro na compra, serviço indisponivel.',
+                    type: 'danger'
+                })
+                return;
+            }
  
-        console.log(`deu pau??? currentPurchaseError ${JSON.stringify(currentPurchaseError)}`)
-        
-        showMessage({
-            message: 'Erro ao processar compra!',
-            type: 'warning'
-        })
+            console.log(`deu pau??? currentPurchaseError ${JSON.stringify(currentPurchaseError)}`)
+            
+            showMessage({
+                message: 'Aguarde... processando compra.',
+                type: 'info'
+            })
       }, [currentPurchaseError]);
     
       useEffect(() => {
         const confirm = async (currentPurchase: Purchase) => {
             await confirmBuy()
             finishTransaction({purchase: currentPurchase, isConsumable: true})
-            console.log(`comprei....`)
+            console.log(`Finalizando compra de fichas!`)
         }
         if(!currentPurchase?.transactionId){
             return;
         }
 
         confirm(currentPurchase)
-        
+        showMessage({
+            message: 'Item comprado com sucesso!',
+            type: 'success'
+        })
+
       }, [currentPurchase]);
 
    
@@ -81,13 +100,16 @@ function BillingProvider({children}: BillingProviderProps) {
     async function buyProduct(sku: string) {
         if(connected){
             setBuyError(false);
-            console.log(`entrei aqui com sku ${sku}`)
             setSku(sku)
-            await requestPurchase({sku, skus: [sku]});
+            try {
+                await requestPurchase({sku, skus: [sku]});
+            } catch(e) {
+                console.log(`Erro ao comprar: ${JSON.stringify(e)}`)
+            }
         }
     }
 
-    async function confirmBuy(){
+    async function confirmBuy(): Promise<void>{
         const amount = sku === '1' ? 100 : 50;
         try{
             await client.post(`/wallet/depositReal`, {

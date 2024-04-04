@@ -61,7 +61,8 @@ function AuthProvider({children}: AuthProviderProps) {
     useEffect(() => {
       getUserIsLogged();
       GoogleSignin.configure({
-      	
+      	webClientId: '833481448293-k36irqhfassbdjd0utrt7l9qlqd05n95.apps.googleusercontent.com',
+        iosClientId: '833481448293-60q4rupk0t9kosq6vugnln32qi9962lp.apps.googleusercontent.com',
       	scopes: ['profile', 'email'],
       });
     }, [])
