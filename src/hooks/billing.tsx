@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
-import { useIAP } from 'react-native-iap';
+import { Purchase, useIAP } from 'react-native-iap';
 import { showMessage } from 'react-native-flash-message';
 import useAxios from  '../services/axios'
 import { ProductItemProps } from '../@types/billing';
@@ -58,13 +58,17 @@ function BillingProvider({children}: BillingProviderProps) {
       }, [currentPurchaseError]);
     
       useEffect(() => {
-
+        const confirm = async (currentPurchase: Purchase) => {
+            await confirmBuy()
+            finishTransaction({purchase: currentPurchase, isConsumable: true})
+            console.log(`comprei....`)
+        }
         if(!currentPurchase?.transactionId){
             return;
         }
-        confirmBuy()
-        finishTransaction({purchase: currentPurchase, isConsumable: true})
-        console.log(`comprei....`)
+
+        confirm(currentPurchase)
+        
       }, [currentPurchase]);
 
    
