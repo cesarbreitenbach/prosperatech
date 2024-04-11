@@ -15,13 +15,18 @@ const SettingsScreen: React.FC = () => {
   }
 
   const handleBuyFichas = () => {
-    console.log(`aqui compra ficha`)
+    navigate('buycoins')
   }
   const handleAlterarSenha = () => {
     navigate('changePassword')
   }
+  const handleWithdraw = () => {
+    navigate('withdraw')
+  }
 
   return <Container> 
+            <Button title='Saque suas fichas' onPress={handleWithdraw} color={theme.colors.dark_gold}/>
+            <Button title='Comprar fichas' onPress={handleBuyFichas} color={theme.colors.dark_gold}/>
             <Button title='Alterar Senha' onPress={handleAlterarSenha} color={theme.colors.dark_gold}/>
             <Button title='Sair' onPress={handleLogout} color={theme.colors.dark_gold}/>
          </Container>

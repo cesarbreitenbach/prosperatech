@@ -65,4 +65,4 @@ const BuyPerks = ({id, description, hasMore, cost, type, tax, image, name, setAc
          </Container>
 }
 
-export default BuyPerks;
+export default React.memo(BuyPerks);

@@ -35,7 +35,7 @@ export default function SlotMachineRunner ({symbols}:ISlotMachine) {
     const {user} = useAuthContext();
     const navigation = useNavigation<any>();
     
-    const [slotSettings, setSlotSettings] = useState({duration: 900, slot1: '000'});
+    const [slotSettings, setSlotSettings] = useState({duration: 900, slot1: '999'});
     const [counter, setCounter] = useState(0)
     const slotRef: any = useRef(null);
     const [lock, setLock] = useState(false);
@@ -69,7 +69,7 @@ export default function SlotMachineRunner ({symbols}:ISlotMachine) {
         if (betValue > availableAmount) {
             setShowPopup(true);
             setPopupTitle("Você não tem saldo!");
-            setPopupMessage("Compre fichas gold ou aguarde o bônus de sua VirtuaMine!");
+            setPopupMessage("Compre fichas gold ou aguarde o bônus de sua DigtalMine!");
             setBetValue(0);
             return;
         }

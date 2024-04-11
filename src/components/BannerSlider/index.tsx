@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ImageSlider } from "react-native-image-slider-banner";
+// import { ImageSlider } from "react-native-image-slider-banner";
 
 
 import { Container } from './styles';
@@ -7,6 +7,7 @@ import { ImageSourcePropType } from 'react-native';
 import { DataType } from 'react-native-image-slider-banner/src';
 import { useNavigation } from '@react-navigation/native';
 import {banners} from '../../services/bannerImages';
+import ImageSlider from '../ImageSlider';
 
 interface IBannerList {
     img: ImageSourcePropType
@@ -37,7 +38,7 @@ const BannerSlider: React.FC = () => {
 
    
    
-    const handleClick = (item: DataType, index: Number) => {
+    const handleClick = (item: DataType) => {
         const route = getRouteByImage(item.img);
         if(route === "") return;
         navigation.navigate(route)
@@ -46,20 +47,13 @@ const BannerSlider: React.FC = () => {
     return (
     <Container>
         <ImageSlider 
-                        data={bannerList}
-                        autoPlay={true}
-                        closeIconColor="#fff"
-                        localImg
-                        showHeader={false}
-                        caroselImageStyle={{height: 200, marginTop: -35, marginBottom: -35}}
-                        showIndicator={false}
-                        preview={false}
-                        onClick={(item, index) => handleClick(item, index)}
-                        timer={5000}
+                      data={bannerList}
+                      autoPlayInterval={5000}
+                      handleClick={handleClick}
                         
         />
  
     </Container>)
 }
 
-export default BannerSlider;
+export default React.memo(BannerSlider);

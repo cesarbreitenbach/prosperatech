@@ -8,7 +8,9 @@ import ActivateUserScreen from '../screens/ActivateUserScreen';
 import ChangePassword from '../screens/ChangePassword';
 import MovimentationScreen from '../screens/MovimentationScreen';
 import BuyScreen from '../screens/BuyScreen';
-// import FortuneWheelScreen from '../screens/FortuneWheelScreen';
+import Closed from '../components/Closed';
+import WrongVersion from '../components/WrongVersion';
+import WithdrawScreen from '../screens/WithdrawScreen';
 
 const {Navigator, Screen} = createStackNavigator();
 
@@ -20,8 +22,8 @@ export function StackRoutes(){
             component={Splash}
         />
          <Screen 
-               name='activate'
-               component={ActivateUserScreen}
+            name='activate'
+            component={ActivateUserScreen}
           />
          <Screen 
             name="home"
@@ -42,6 +44,18 @@ export function StackRoutes(){
          <Screen 
             name="buycoins"
             component={BuyScreen}
+        />
+        <Screen 
+            name="closed"
+            component={Closed}
+        />
+        <Screen 
+            name="wrongVersion"
+            component={WrongVersion}
+        />
+        <Screen 
+            name="withdraw"
+            component={WithdrawScreen}
         />
     </Navigator>
 )}

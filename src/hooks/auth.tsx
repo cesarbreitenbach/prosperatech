@@ -262,6 +262,10 @@ function AuthProvider({children}: AuthProviderProps) {
       }
     };
 
+    async function verifyAPI() {
+      //TODO: CRIAR UMA FUNÇAO PARA VALIDAR SE A API ESTÁ ONLINE, ABERTA OU FECHADA... TRATAR O ENDPOINT DE PING
+    }
+
     return (
         <AuthContext.Provider value={{  
                                        user: user!,

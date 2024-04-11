@@ -99,7 +99,7 @@ const InvestmentScreen: React.FC = () => {
         if (totlaCost > bonus && totlaCost > gold) {
             setShowPopup(true);
             setPopupTitle("Você não tem saldo!");
-            setPopupMessage("Compre mais fichas ou aguarde o bônus de sua VirtuaMine!");
+            setPopupMessage("Compre mais fichas ou aguarde o bônus de sua DigitalMine!");
             return;
         }
         const resp = await buyUserPerks({idPerk: selectedPerk.id, totalItems: qtdSelectedItems})
@@ -136,13 +136,13 @@ const InvestmentScreen: React.FC = () => {
                 <Title>Gerêncie o bonus de equipamentos!</Title>
                 
                 <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-                    <View style={{marginLeft: 12}}>
+                    <View style={{marginLeft: 16}}>
                         <MineTaxesTitle>Total de bônus</MineTaxesTitle>
                         <MineTaxes>{mineTaxes.toFixed(2)} %</MineTaxes>
                     </View>
                     <SaldoPanel amountBonus={amount.amountBonus} amountReal={amount.amountReal} width={20} height={20} />
                 </View>
-                {grupedPerkList?.length > 0 && <TitlePerkList>Perk's ativos nas suas VirtuaMines:</TitlePerkList>}
+                {grupedPerkList?.length > 0 && <TitlePerkList>Bônus ativos nas suas DigitalMines:</TitlePerkList>}
                 <FlatList 
                     horizontal
                     data={grupedPerkList}
@@ -180,7 +180,7 @@ const InvestmentScreen: React.FC = () => {
                     onDel={handleDel}
                 />
 
-<Advertise>* Aviso: A "VirtuaMine" é um recurso usado para impulsionar a economia in-game. A mineração é sobre o recurso depositado, o recurso extraido é disponiblizado no saldo do usuário a cada calculo. Recurso depositado fica travado por 30 dias</Advertise>
+{/* <Advertise>* Aviso: A "DigitalMine" é um recurso usado para impulsionar a economia in-game. A mineração é sobre o recurso depositado, o recurso extraido é disponiblizado no saldo do usuário a cada calculo. Recurso depositado fica travado por 30 dias</Advertise> */}
                
            </ScrollView>
            <Popup 

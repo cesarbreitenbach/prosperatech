@@ -1,37 +1,46 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { StackRoutes } from './app.routes';
 import { AuthRoutes } from './auth.routes';
 import { useAuthContext } from '../hooks/auth';
 import { WalletProvider } from '../hooks/wallet';
 import { SlotMachineProvider } from '../hooks/slotmachine';
-import { SettingsProvider } from '../hooks/settings';
+import { useSettingsContext } from '../hooks/settings';
 import { PlaySoundProvider } from '../hooks/usePlaySound';
 import { BillingProvider } from '../hooks/billing';
 import { withIAPContext } from 'react-native-iap';
+import Closed from '../components/Closed';
+import WrongVersion from '../components/WrongVersion';
+import DeviceInfo from 'react-native-device-info';
 
 
 function Routes() {
   const { logged } = useAuthContext();
+  const { serverStatus, appVersion } = useSettingsContext();
+  const [userVersion, setUserVersion] = useState('');
 
   useEffect(() => {
+      const userVersion = DeviceInfo.getVersion();
+      setUserVersion(userVersion);
+      console.log(`estou logado?? ${logged }`);
+      console.log(`Server Status: ${serverStatus}`)
+      console.log(`Versão do APP: ${appVersion}`)
+      console.log(`Versão do Usuario: ${userVersion}`)
 
-      console.log(`estou logado?? ${logged }`)
+      
  
-  }, [logged])
+  }, [logged, serverStatus])
 
   return (
   
-    <SettingsProvider>
         <WalletProvider>
           <SlotMachineProvider>
             <PlaySoundProvider>
-              <BillingProvider>
-                 { logged ? <StackRoutes /> : <AuthRoutes /> }
+              <BillingProvider> 
+                 {!serverStatus ? <Closed /> : appVersion !== userVersion ? <WrongVersion /> : logged ? <StackRoutes /> : <AuthRoutes /> }
               </BillingProvider>
             </PlaySoundProvider>
           </SlotMachineProvider>
         </WalletProvider>
-    </SettingsProvider>
  
     
   );

@@ -23,7 +23,8 @@ import PlayNow from '../../components/PlayNow';
 import {formatarMoeda } from '../../services/formatService';
 import Popup from '../../components/Popup';
 import ClaimButton from '../../components/ClaimButton';
-import { useBillingContext } from '../../hooks/billing';
+import { useSettingsContext } from '../../hooks/settings';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 export default function Home() {
   const theme = useTheme();
@@ -38,11 +39,13 @@ export default function Home() {
          getDailyBonusStatus, 
          claimDailyBonus } = useWalletContext();
 
+  const {serverStatus, loading, getSettings, userVersion, appVersion, calculateTime, calculateUnit} = useSettingsContext();
+
   const [investmentValue, setInvestmentValue] = useState(0);
   const [selectedCoin, setSelectedCoin] = useState("bonus");
   const [mineTaxes, setMineTaxes] = useState(0)
 
-  const [saldo, setSaldo] = useState(amount.saldo);
+  const [saldo, setSaldo] = useState(String(Number(amount.amountBonus) + Number(amount.amountReal)));
   const [fichaBonus, setFichaBonus] = useState(amount.amountBonus);
   const [gold, setGold] = useState(amount.amountReal);
   const [calculateTimes, setCalculateTimes] = useState({
@@ -56,6 +59,7 @@ export default function Home() {
   const [popupMessage, setPopupMessage] = useState("");
   const [disabeDailyButton, setDisableDailyButton] = useState(false);
   const [timeToEnable, setTimeToEnable] = useState('');
+  const [strCalculateTime, setStrCalculateTime] = useState('');
 
   const [refreshing, setRefreshing] = useState(false);
   useEffect(() => {
@@ -63,10 +67,11 @@ export default function Home() {
     getInvestiments();
     getLastCalculated();
     verifyDailyBonus();
+    getSettings();
   }, [])
 
   useEffect(() => {
-    setSaldo(amount.saldo)
+    setSaldo(String(Number(amount.amountBonus) + Number(amount.amountReal)))
     setFichaBonus(amount.amountBonus)
     setGold(amount.amountReal)
     setCalculateTimes({lastCalc: lastCalculated.lastTimeCalculated, nextCalc: lastCalculated.nextTimeToCalculate})
@@ -76,11 +81,26 @@ export default function Home() {
     calculateMineHate();
   }, [perkList])
 
+  useEffect(() => {
+    
+      if(!serverStatus && loading){
+          console.log(`fechando servidor....`);
+          navigation.navigate('closed');
+          return;
+      }
+
+      if(userVersion !== appVersion){
+        console.log(`Versão invalida....`);
+        navigation.navigate('wrongVersion')
+      }
+  }, [serverStatus, appVersion]);
+
   const onRefresh = async () => {
     setRefreshing(true);
     await getLastCalculated();
     await getSaldo();
     await verifyDailyBonus();
+    await getSettings();
     setRefreshing(false);
   };
 
@@ -126,7 +146,7 @@ export default function Home() {
     if (investmentValue > availableAmount) {
       setShowPopup(true);
       setPopupTitle("Você não tem saldo!");
-      setPopupMessage("Compre fichas gold ou aguarde o bônus de sua VirtuaMine!");
+      setPopupMessage("Compre fichas gold ou aguarde o bônus de sua DigitalMine!");
       return;
     }
 
@@ -182,7 +202,7 @@ export default function Home() {
                     />}
                   contentContainerStyle={{paddingBottom: 30}} 
                   showsVerticalScrollIndicator={false}>
-          <Header backgroundImage={backgroundImage} height={110}/>
+          <Header backgroundImage={backgroundImage} height={RFValue(110)}/>
 
       <BannerSlider />
 
@@ -202,14 +222,14 @@ export default function Home() {
       <MinningArea>
           <NewMineArea onPress={handlePlaynow} activeOpacity={0.7}>
               <PlayNow />
-              <TitleNewMine>Jogue aqui e ganhe</TitleNewMine>
-              <TitleNewMine>mais fichas!</TitleNewMine>
+              <TitleNewMine>Aqui Rode e Ganhe!</TitleNewMine>
+              <TitleNewMine>Acumule muitas fichas</TitleNewMine>
           </NewMineArea>
-          <InvestmentTitle>Descubra VirtuaMine!</InvestmentTitle>
+          <InvestmentTitle>Descubra a DigitalMine!</InvestmentTitle>
           <VirtuaArea>
-            <Title>Com a VirtuaMine, você deposita recursos em uma mina virtual exclusiva que impulsionará seu ganho extra. Aproveite os benefícios imediatos e acelere sua progressão com este recurso único. Cada VirtuaMine tem um bônus base de mineraçao de 0.01%</Title>
+            <Title>Com a DigitalMine, você deposita recursos em uma mina digital exclusiva que impulsionará seu ganho extra. Aproveite os benefícios imediatos e acelere sua progressão com este recurso único. Cada DigitalMine tem um bônus base de mineraçao de 0.01%. Cada nova mina contratada soma o bônus base para o investimento total. Significa que se você tiver 10 minas, seu bônus inicial sera de 0.10% em poder de mineração</Title>
             <SubTitle>Receba o recurso depositado de volta em 30 dias!</SubTitle>
-            <VirtuaText>Recursos minerados a cada hora vão direto para o saldo do recurso depositado!</VirtuaText> 
+            <VirtuaText>Recursos são extraidos a cada {calculateTime} {calculateUnit === 'M' ? 'minuto(s)' : 'hora(s)'} vão direto para o seu saldo disponivel!</VirtuaText> 
           </VirtuaArea>
           
           <BetArea>
@@ -251,7 +271,7 @@ export default function Home() {
                                         />}
           />
 
-          <Advertise>* Aviso: A "VirtuaMine" é um recurso usado para impulsionar a economia in-game. A mineração é sobre o recurso depositado, o recurso extraido é disponiblizado no saldo do usuário a cada calculo. Recurso depositado fica travado por 30 dias</Advertise>
+          <Advertise>* Aviso: A "DigitalMine" é um recurso usado para impulsionar a economia do Ceasars Place. A mineração é sobre o recurso depositado, o recurso extraido é disponiblizado no saldo do usuário a cada calculo. Recurso depositado fica travado por 30 dias</Advertise>
           
         
       </MinningArea>

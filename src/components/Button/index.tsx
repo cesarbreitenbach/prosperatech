@@ -14,6 +14,7 @@ export interface Props {
     width?: number;
     height?: number;
     radius?: number;
+    disabled?:boolean;
 }
 
 export default function Button({
@@ -26,12 +27,13 @@ export default function Button({
     light=false,
     width,
     height,
-    radius
+    radius,
+    disabled=false,
 }: Props){
     const theme = useTheme();
 
 return (
-   <Container color={color ? color : theme.colors.primary } onPress={loading ? () => {} : onPress} width={width} height={height} radius={radius}> 
-      {loading ? <ActivityIndicator size='small' color="#fff"/> :  <Title light={light} fontFamily={fontFamily}>{title}</Title>} 
+   <Container color={color ? color : theme.colors.primary } onPress={loading ? () => {} : onPress} width={width} height={height} radius={radius} disabled={disabled}> 
+      {loading ? <ActivityIndicator size='small' color="#000"/> :  <Title light={light} fontFamily={fontFamily}>{title}</Title>} 
    </Container> 
 );}

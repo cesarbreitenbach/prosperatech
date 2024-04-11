@@ -119,8 +119,8 @@ export const NewMineArea = styled.TouchableOpacity`
 `
 
 export const TitleNewMine = styled.Text`
-font-family: ${({theme}) => theme.fonts.medium};
-font-size: ${RFValue(12)}px;
+font-family: ${({theme}) => theme.fonts.SemiBold};
+font-size: ${RFValue(11)}px;
 color: ${({theme}) => theme.colors.borgonha_intenso};
 `;
 

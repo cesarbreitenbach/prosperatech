@@ -2,7 +2,6 @@ import React from 'react';
 
 import { Header, MinningTax, PerkArea, PerkName, QtdItems, ValidUntil } from './styled';
 import { Image, ImageSourcePropType } from 'react-native';
-import { mapPerkImages } from '../../services/perkImages';
 
 
 
@@ -27,4 +26,4 @@ const PerksPanel = ({perkImage, descricao, tax, finalizaEm, count}: PerksPanelPr
           </PerkArea>
             }
 
-export default PerksPanel;
+export default React.memo(PerksPanel);

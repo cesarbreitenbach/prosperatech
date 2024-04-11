@@ -9,6 +9,7 @@ import logo from '../../assets/images/ceasarsLogo2.png';
 
 import { Brand, Container, LogoPng } from './styles';
 import { useAuthContext } from '../../hooks/auth';
+import { useSettingsContext } from '../../hooks/settings';
 
 
 export default function Splash(){
@@ -47,6 +48,8 @@ export default function Splash(){
 
     async function startApp(){
 
+
+
       if(user.active){
         if(user.resetPassword) {
           navigation.navigate('changePassword')
@@ -72,7 +75,7 @@ export default function Splash(){
 return (
    <Container> 
       <Animated.View style={[brandStyle, {position: 'absolute'}]}>
-        <Brand>Jogue, lucre e divirta-se!!</Brand>
+        <Brand>Jogue, lucre e $aque!!!</Brand>
       </Animated.View>
       <Animated.View style={[logoStyle, {position: 'absolute'}]}> 
         <LogoPng source={logo} />

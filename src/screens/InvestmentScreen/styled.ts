@@ -4,7 +4,7 @@ import styled from 'styled-components/native';
 export const Container = styled.SafeAreaView`
   flex: 1;
   background-color:  ${({theme}) => theme.colors.black};
-  padding: 0 ${RFValue(12)}px;
+  padding: 0 ${RFValue(4)}px;
 `;
 
 export const Title = styled.Text`

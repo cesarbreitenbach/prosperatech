@@ -6,14 +6,35 @@ import { ProductItemProps } from '../@types/billing';
 import { useWalletContext } from './wallet';
 import { useAuthContext } from './auth';
 
+interface WithdrawProps {
+    amount: string;
+    type: string;
+    document: string;
+}
 
+interface WithDrawnProps {
+        id: number
+        idUser: number
+        document: string
+        amount: string
+        cotation: string
+        type: string
+        status: string
+        createdAt: string
+        updatedAt: string
+}
 interface BillingProviderProps {
     children: ReactNode;
 }
 
 interface IBillingContextData {
+    loading: boolean;
     getAllProducts: () => void; 
     buyProduct: (sku: string) => void;
+    getWithdraw: () => Promise<void>;
+    cancelWithdraw: () => Promise<void>;
+    withDrawn: WithDrawnProps | undefined;
+    requestWithdraw: ({amount, document, type}: WithdrawProps) => Promise<void>;
     productList: ProductItemProps[];
 }
 
@@ -34,6 +55,8 @@ function BillingProvider({children}: BillingProviderProps) {
 
     const [productList, setProductList] = useState<ProductItemProps[]>([]);
     const [sku, setSku] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [withDrawn, setWithDrawn] = useState<WithDrawnProps>();
 
     const [buyError, setBuyError] = useState(false);
 
@@ -127,11 +150,73 @@ function BillingProvider({children}: BillingProviderProps) {
         }
     }
   
+    async function requestWithdraw({amount, document, type}: WithdrawProps): Promise<void>{
+        setLoading(true)
+        try{
+            await client.post(`/withdraw`, {
+                amount,
+                document,
+                type
+            });
+            await getSaldo();
+            showMessage({
+                message: 'Você receberá seu dinheiro em ate 48hrs! Obrigado por usar Ceasars Place',
+                type: 'success',
+                duration: 6000
+            })
+        }catch(e: any){
+            showMessage({
+                message: e?.response?.data?.error || 'Erro ao efetuar solicitação de saque!',
+                type: 'danger'
+            })
+        }finally{
+            setLoading(false);
+        }
+    }
+
+    async function getWithdraw(): Promise<void>{
+        setLoading(true)
+        try{
+            const res = await client.get(`/withdraw`);
+            setWithDrawn(res.data)
+        }catch(e: any){
+            setWithDrawn(undefined)
+        }finally{
+            setLoading(false);
+        }
+    }
+
+    async function cancelWithdraw(): Promise<void>{
+        setLoading(true)
+        try{
+            await client.delete(`/withdraw`);
+            await getSaldo();
+            setWithDrawn(undefined)
+            showMessage({
+                message: 'Sua solicitação foi cancelada com sucesso, saldo devolvido para carteira.',
+                type: 'success',
+                duration: 6000
+            })
+        }catch(e: any){
+            showMessage({
+                message: e?.response?.data?.error || 'Erro ao efetuar solicitação de saque!',
+                type: 'danger'
+            })
+        }finally{
+            setLoading(false);
+        }
+    }
+
     return (
         <BillingContext.Provider value={{  
                                           getAllProducts,
                                           buyProduct,
-                                          productList  
+                                          getWithdraw,
+                                          requestWithdraw,
+                                          cancelWithdraw,
+                                          withDrawn,
+                                          productList,
+                                          loading  
                                         }}> 
             {children}
         </BillingContext.Provider> 

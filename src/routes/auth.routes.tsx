@@ -10,7 +10,7 @@ export function AuthRoutes(){
     return (
         <Navigator screenOptions={{headerShown: false, animationEnabled: true, gestureEnabled: false, gestureDirection: 'horizontal'}} >
             <Screen 
-               name='Signin'
+               name='LoginScreen'
                component={LoginScreen}
             />
             <Screen 

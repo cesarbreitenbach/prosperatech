@@ -1,6 +1,8 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import { showMessage } from 'react-native-flash-message';
 import useAxios from  '../services/axios'
+import { useNavigation } from '@react-navigation/native';
+import {getVersion} from 'react-native-device-info';
 
 
 interface SettingsProviderProps {
@@ -9,7 +11,16 @@ interface SettingsProviderProps {
 
 interface ISettingsContextData {
     difficult: number;
-    calculateTime: number;
+    calculateTime: string;
+    calculateUnit: string;
+    serverStatus: boolean;
+    loading: boolean;
+    appVersion: string;
+    userVersion: string;
+    goldCotation: number;
+    bonusCotation: number;
+    minimumWithdraw: number;
+    getSettings: () => void;
 }
 
 const SettingsContext = createContext({} as ISettingsContextData);
@@ -17,7 +28,15 @@ const SettingsContext = createContext({} as ISettingsContextData);
 function SettingsProvider({children}: SettingsProviderProps) {
 
     const [difficult, setDifficult] = useState(0.5);
-    const [calculateTime, setCalculateTime] = useState(1);
+    const [calculateTime, setCalculateTime] = useState("");
+    const [calculateUnit, setCalculateUnit] = useState("");
+    const [serverStatus, setServerStatus] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [appVersion, setAppVersion] = useState('');
+    const [userVersion, setUserVersion] = useState('');
+    const [goldCotation, setGoldCotation] = useState(0);
+    const [bonusCotation, setBonusCotation] = useState(0);
+    const [minimumWithdraw, setMinimumWithdraw] = useState(1000);
 
     const { axiosClient: client } = useAxios();
 
@@ -25,7 +44,6 @@ function SettingsProvider({children}: SettingsProviderProps) {
    
         const fetchData = async () => {
             await getSettings();
-            
             console.log(`atualizando settings`)
         };
 
@@ -38,15 +56,25 @@ function SettingsProvider({children}: SettingsProviderProps) {
     }, []); 
 
     useEffect(() => {
-        getSettings()
+        const userVersion = getVersion();
+        setUserVersion(userVersion);
+        getSettings();
     }, [])
 
     async function getSettings() {
+        setLoading(true);
         try {
             const res = await client.get('/settings')
-            const {machineDifficult, calculateTime} = res.data.settings;
+            const {machineDifficult, calculateTime, serverStatus, appVersion, bonusCotation, goldCotation, minimumWithdraw} = res.data.settings;
+            const [timeValue, timeUnit] = calculateTime.split(':');
             setDifficult(machineDifficult)
-            setCalculateTime(calculateTime)
+            setCalculateTime(timeValue)
+            setCalculateUnit(timeUnit)
+            setServerStatus(serverStatus)
+            setAppVersion(appVersion)
+            setBonusCotation(bonusCotation)
+            setGoldCotation(goldCotation)
+            setMinimumWithdraw(minimumWithdraw);
         }catch(e: any) {
             console.log(`erro: `, e.response.data)
             showMessage({
@@ -54,12 +82,23 @@ function SettingsProvider({children}: SettingsProviderProps) {
                 type: "danger",
               });
             return;
+        } finally {
+            setLoading(false);
         }
     }
   
     return (
         <SettingsContext.Provider value={{  calculateTime,
-                                            difficult    
+                                            calculateUnit,
+                                            difficult,
+                                            serverStatus,
+                                            loading,
+                                            appVersion,
+                                            userVersion,
+                                            minimumWithdraw,
+                                            bonusCotation,
+                                            goldCotation,
+                                            getSettings   
                                         }}> 
             {children}
         </SettingsContext.Provider> 

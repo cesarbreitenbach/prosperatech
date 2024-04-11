@@ -4,7 +4,7 @@ import { showMessage } from 'react-native-flash-message';
 import useAxios from  '../services/axios'
 import { decode } from "base-64";
 import { AmountProps, IBuyUserPercs, IDailyBonusStatus, IInvestments, ILastCalculate, IPerks, IPerksTypes, IUserMovimentation } from '../@types/wallet';
-import { addMinutes, format } from 'date-fns';
+import { addHours, addMinutes, format } from 'date-fns';
 import { useSettingsContext } from './settings';
 import { useAuthContext } from './auth';
 
@@ -49,7 +49,7 @@ function WalletProvider({children}: WalletProviderProps) {
 
     const {user} = useAuthContext();
 
-    const {calculateTime} = useSettingsContext();
+    const {calculateTime, calculateUnit} = useSettingsContext();
 
     const [amount, setAmount] = useState<AmountProps>({amountBonus: "0.00", amountReal: "0.00", saldo: "0.00", endereco: '', taxaGanho: 0});
 
@@ -118,12 +118,12 @@ function WalletProvider({children}: WalletProviderProps) {
             
             const {createdAt} = res.data;
 
-            console.log(`calculateTime: ${calculateTime}`)
-
-            const nextCalc = addMinutes(new Date(createdAt), calculateTime);
-
+            const nextCalc = calculateUnit === 'M' ? addMinutes(new Date(createdAt), Number(calculateTime)) : addHours(new Date(createdAt), Number(calculateTime));
+            
             const parsedLast = format(new Date(createdAt), 'dd/MM/yyyy HH:mm');
             const parsedNext = format(nextCalc, 'dd/MM/yyyy HH:mm');
+
+            console.log(`calculateTime: ${calculateTime} proximo calculo ${parsedNext} ultimo calculo ${parsedLast}` )
 
             setLastCalculated({
                 lastTimeCalculated: parsedLast,
