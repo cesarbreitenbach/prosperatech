@@ -1,21 +1,14 @@
 import { useTheme } from 'styled-components';
-import {  Advertise, BetArea,  ClaimArea,  Container, InfoArea, InvestmentTitle, Item, LastPayment, NewMineArea, NextPayment, PaymentArea, Saldo, SaldoArea, SubTitle, Title, TitleNewMine, TitleSaldo, TitleTax, VirtuaArea, VirtuaText } from './styled';
+import { ClaimArea,  Container, InfoArea,  InvestmentTitle,  NewMineArea,  Saldo, SaldoArea, SubTitle, TitleNewMine, TitleSaldo, TitleTax, VirtuaArea, VirtuaText } from './styled';
 import { useWalletContext } from '../../hooks/wallet';
 import { useEffect, useState } from 'react';
 import Header from '../../components/Header';
 import backgroundImage from '../../assets/images/monteMoedas.png'
 
 import { MinningArea  } from './styled'
-
-import fichaCem from '../../assets/images/fichaBonus.png'
-import fichaGold from '../../assets/images/fichaGold.png'
-import mine from '../../assets/images/mine.png'
-
-import { FlatList, ScrollView, RefreshControl, Text, Image } from 'react-native';
-import InvestmentPanel from '../../components/InvestmentPanel';
+import MinaBack from '../../assets/images/mineButton.png'
+import {  ScrollView, RefreshControl, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import NewMine from '../../components/NewMine';
-import BetPanel from '../../components/BetPanel';
 import InfoUser from '../../components/InfoUser';
 import { showMessage } from 'react-native-flash-message';
 import BannerSlider from '../../components/BannerSlider';
@@ -25,6 +18,10 @@ import Popup from '../../components/Popup';
 import ClaimButton from '../../components/ClaimButton';
 import { useSettingsContext } from '../../hooks/settings';
 import { RFValue } from 'react-native-responsive-fontsize';
+import MineInvestPanel from '../../components/MineInvestPanel';
+import MinerationList from '../../components/MinerationList';
+import PaymentsSchedule from '../../components/PaymentsSchedule';
+import MiningRatesPanel from '../../components/MiningRatesPanel';
 
 export default function Home() {
   const theme = useTheme();
@@ -35,6 +32,8 @@ export default function Home() {
          buyCriptoMine, 
          perkList, 
          getLastCalculated,
+         calculateMineHate,
+         mineTaxes,
          lastCalculated,
          getDailyBonusStatus, 
          claimDailyBonus } = useWalletContext();
@@ -43,7 +42,6 @@ export default function Home() {
 
   const [investmentValue, setInvestmentValue] = useState(0);
   const [selectedCoin, setSelectedCoin] = useState("bonus");
-  const [mineTaxes, setMineTaxes] = useState(0)
 
   const [saldo, setSaldo] = useState(String(Number(amount.amountBonus) + Number(amount.amountReal)));
   const [fichaBonus, setFichaBonus] = useState(amount.amountBonus);
@@ -59,7 +57,6 @@ export default function Home() {
   const [popupMessage, setPopupMessage] = useState("");
   const [disabeDailyButton, setDisableDailyButton] = useState(false);
   const [timeToEnable, setTimeToEnable] = useState('');
-  const [strCalculateTime, setStrCalculateTime] = useState('');
 
   const [refreshing, setRefreshing] = useState(false);
   useEffect(() => {
@@ -111,19 +108,6 @@ export default function Home() {
     }
   };
 
-  const calculateMineHate = () => {
-    const sumTaxPerk = perkList.reduce((acc, obj) => {
-      const taxPerk = parseFloat(obj.taxPerk);
-      return acc + taxPerk;
-    }, 0);
-
-    const numOfInvestments = investments.length > 0 ? investments.length : 0;
-
-    const baseTax = 0.01 * numOfInvestments;
-
-    setMineTaxes(sumTaxPerk + baseTax)
-  }
-
   const handleBuyMine = () => {
 
     if(investmentValue === 0 || selectedCoin === '') {
@@ -163,6 +147,10 @@ export default function Home() {
 
   const handleMovimentation = () => {
     navigation.navigate('movimentation')
+  }
+
+  const handleDigitalMines = () => {
+    navigation.navigate('aboutDigitalMines')
   }
 
   const handlePlaynow = () => {
@@ -225,54 +213,25 @@ export default function Home() {
               <TitleNewMine>Aqui Rode e Ganhe!</TitleNewMine>
               <TitleNewMine>Acumule muitas fichas</TitleNewMine>
           </NewMineArea>
-          <InvestmentTitle>Descubra a DigitalMine!</InvestmentTitle>
+          <NewMineArea backColor={theme.colors.verde_esmeralda} onPress={handleDigitalMines} activeOpacity={0.7}>
+            <Image source={MinaBack} style={{width: 150, height: 150}} />
+            <InvestmentTitle>Comece sua mina agora mesmo!</InvestmentTitle>
+          </NewMineArea>
+          
           <VirtuaArea>
-            <Title>Com a DigitalMine, você deposita recursos em uma mina digital exclusiva que impulsionará seu ganho extra. Aproveite os benefícios imediatos e acelere sua progressão com este recurso único. Cada DigitalMine tem um bônus base de mineraçao de 0.01%. Cada nova mina contratada soma o bônus base para o investimento total. Significa que se você tiver 10 minas, seu bônus inicial sera de 0.10% em poder de mineração</Title>
-            <SubTitle>Receba o recurso depositado de volta em 30 dias!</SubTitle>
+            <SubTitle>Recursos depositados em DigitalMine são liberados em 30 dias</SubTitle>
             <VirtuaText>Recursos são extraidos a cada {calculateTime} {calculateUnit === 'M' ? 'minuto(s)' : 'hora(s)'} vão direto para o seu saldo disponivel!</VirtuaText> 
           </VirtuaArea>
           
-          <BetArea>
-              <BetPanel mininumValue={50} selectedBetCoin={selectedCoin} title="Recurso a minerar:" setBetValue={setInvestmentValue} betValue={investmentValue} />
-          </BetArea>
-          <NewMineArea onPress={handleBuyMine}>
-              <NewMine />
-              <TitleNewMine>Começe a minerar!</TitleNewMine>
-          </NewMineArea>
-          <PaymentArea>
-            <Item>
-              <Title>Ultima coleta recursos:</Title>
-              <LastPayment>{lastCalculated.lastTimeCalculated}</LastPayment>
-            </Item>
-            <Item>
-              <Title>Proxima coleta recursos:</Title>
-              <NextPayment>{lastCalculated.nextTimeToCalculate}</NextPayment>
-            </Item>
-          </PaymentArea>
-         
+          <MineInvestPanel handleBuyMine={handleBuyMine} investmentValue={investmentValue} selectedCoin={selectedCoin} setInvestmentValue={setInvestmentValue} />
           
+          <PaymentsSchedule lastCalculated={lastCalculated} />      
 
           {investments?.length > 0 && <>
-              <InvestmentTitle>* Suas Minerações:</InvestmentTitle>
-              <TitleTax>Poder de mineração em {mineTaxes.toFixed(2)} %</TitleTax>
+              <MiningRatesPanel mineTaxes={mineTaxes} />
           </>}
-          <FlatList 
-            horizontal
-            data={investments}
-            contentContainerStyle={{backgroundColor: theme.colors.dark_gold, borderRadius: 8, marginTop: 8,}}
-            renderItem={({item}) => <InvestmentPanel 
-                                        onPress={handleMovimentation}
-                                        coinTypeImage={item.type === 'bonus' ? fichaCem : fichaGold } 
-                                        earnedAmount={item.valorInvestido}
-                                        name={item.descricao}
-                                        resourceImage={mine}
-                                        tax={item.taxaBase}
-                                        finalizaEm={item.finalizaEm}
-                                        />}
-          />
 
-          <Advertise>* Aviso: A "DigitalMine" é um recurso usado para impulsionar a economia do Ceasars Place. A mineração é sobre o recurso depositado, o recurso extraido é disponiblizado no saldo do usuário a cada calculo. Recurso depositado fica travado por 30 dias</Advertise>
-          
+          <MinerationList handleMovimentation={handleMovimentation} investments={investments}/>
         
       </MinningArea>
 

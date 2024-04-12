@@ -11,51 +11,60 @@ import BuyScreen from '../screens/BuyScreen';
 import Closed from '../components/Closed';
 import WrongVersion from '../components/WrongVersion';
 import WithdrawScreen from '../screens/WithdrawScreen';
+import PurchaseListener from '../hooks/purchaseLister';
+import AboutDigitalMines from '../screens/AboutDigitalMines';
 
 const {Navigator, Screen} = createStackNavigator();
 
 export function StackRoutes(){
     return (
-    <Navigator screenOptions={{headerShown: false, animationEnabled: true, gestureEnabled: false, gestureDirection: 'horizontal'}} initialRouteName="splash">
-        <Screen 
-            name="splash"
-            component={Splash}
-        />
-         <Screen 
-            name='activate'
-            component={ActivateUserScreen}
-          />
-         <Screen 
-            name="home"
-            component={MyTabs}
-        />
-        <Screen 
-            name="changePassword"
-            component={ChangePassword}
-        />
-        <Screen 
-            name="movimentation"
-            component={MovimentationScreen}
-        />
-         <Screen 
-            name="investment"
-            component={InvestmentScreen}
-        />
-         <Screen 
-            name="buycoins"
-            component={BuyScreen}
-        />
-        <Screen 
-            name="closed"
-            component={Closed}
-        />
-        <Screen 
-            name="wrongVersion"
-            component={WrongVersion}
-        />
-        <Screen 
-            name="withdraw"
-            component={WithdrawScreen}
-        />
-    </Navigator>
+    <> 
+        <Navigator screenOptions={{headerShown: false, animationEnabled: true, gestureEnabled: false, gestureDirection: 'horizontal'}} initialRouteName="splash">
+            <Screen 
+                name="splash"
+                component={Splash}
+            />
+            <Screen 
+                name='activate'
+                component={ActivateUserScreen}
+            />
+            <Screen 
+                name="home"
+                component={MyTabs}
+            />
+            <Screen 
+                name="changePassword"
+                component={ChangePassword}
+            />
+            <Screen 
+                name="movimentation"
+                component={MovimentationScreen}
+            />
+            <Screen 
+                name="investment"
+                component={InvestmentScreen}
+            />
+            <Screen 
+                name="buycoins"
+                component={BuyScreen}
+            />
+            <Screen 
+                name="closed"
+                component={Closed}
+            />
+            <Screen 
+                name="wrongVersion"
+                component={WrongVersion}
+            />
+            <Screen 
+                name="withdraw"
+                component={WithdrawScreen}
+            />
+            <Screen 
+                name="aboutDigitalMines"
+                component={AboutDigitalMines}
+            />
+        </Navigator>
+        <PurchaseListener />
+    </>
 )}

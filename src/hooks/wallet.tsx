@@ -31,11 +31,13 @@ interface IWalletContextData {
     getMovimentation: () => void;
     getDailyBonusStatus: () => Promise<IDailyBonusStatus>;
     claimDailyBonus: () => void;
+    calculateMineHate: () => void;
     userMovimentation: IUserMovimentation[];
     investments: IInvestments[];
     perkList: IPerks[];
     perkTypes: IPerksTypes[];
     lastCalculated: ILastCalculate;
+    mineTaxes: number;
 }
 
 // const valueInCents: number = Math.round(valueFromDatabase * 100);
@@ -55,13 +57,13 @@ function WalletProvider({children}: WalletProviderProps) {
 
     const [investments, setInvestments] = useState<IInvestments[]>([])
     const [perkList, setPerkList] = useState<IPerks[]>([])
-
     const [perkTypes, setPerkTypes] = useState<IPerksTypes[]>([]);
+    const [mineTaxes, setMineTaxes] = useState(0)
 
     const [lastCalculated, setLastCalculated] = useState<ILastCalculate>({} as ILastCalculate)
 
     const [userMovimentation, setUserMovimentation] = useState<IUserMovimentation[]>([{} as IUserMovimentation])
-
+    
     const { axiosClient: client } = useAxios();
 
     useEffect(() => {
@@ -80,6 +82,21 @@ function WalletProvider({children}: WalletProviderProps) {
 
         return () => clearInterval(interval);
     }, []);
+
+    async function calculateMineHate(){
+        if (perkList.length <= 0) return;
+        const sumTaxPerk = perkList.reduce((acc, obj) => {
+          const taxPerk = parseFloat(obj.taxPerk);
+          return acc + taxPerk;
+        }, 0);
+    
+        const numOfInvestments = investments.length > 0 ? investments.length : 0;
+    
+        const baseTax = 0.01 * numOfInvestments;
+    
+        setMineTaxes(sumTaxPerk + baseTax)
+      }
+    
 
     async function getSaldo() {
         try {
@@ -175,6 +192,11 @@ function WalletProvider({children}: WalletProviderProps) {
             const res = await client.post(`/earns`, body);
             getSaldo();
             getInvestiments();
+            showMessage({
+                message: 'DigitalMine comprada por 30 dias!',
+                type: 'success',
+                duration: 3500
+            })
         } catch (e) {
             console.log(`deu pau ao comprar criptomines ${JSON.stringify(e)}`)
         }
@@ -260,6 +282,8 @@ function WalletProvider({children}: WalletProviderProps) {
                                        getMovimentation,
                                        getDailyBonusStatus,
                                        claimDailyBonus,
+                                       calculateMineHate,
+                                       mineTaxes,
                                        lastCalculated,
                                        amount,
                                        investments,

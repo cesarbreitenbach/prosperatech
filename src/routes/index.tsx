@@ -41,8 +41,6 @@ function Routes() {
             </PlaySoundProvider>
           </SlotMachineProvider>
         </WalletProvider>
- 
-    
   );
 }
 

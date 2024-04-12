@@ -41,12 +41,6 @@ font-size: ${RFValue(12)}px;
 color: ${({theme}) => theme.colors.verde_esmeralda};
 `;
 
-export const Title = styled.Text`
-font-family: ${({theme}) => theme.fonts.medium};
-font-size: ${RFValue(10)}px;
-color: ${({theme}) => theme.colors.white};
-`;
-
 export const TitleSaldo = styled.Text`
 font-family: ${({theme}) => theme.fonts.medium};
 font-size: ${RFValue(14)}px;
@@ -70,28 +64,6 @@ margin-top: ${RFValue(12)}px;
 margin-bottom: ${RFValue(6)}px;;
 `;
 
-export const LastPayment = styled.Text`
-font-family: ${({theme}) => theme.fonts.medium};
-font-size: ${RFValue(12)}px;
-color: ${({theme}) => theme.colors.selected};
-`;
-
-export const NextPayment = styled.Text`
-font-family: ${({theme}) => theme.fonts.medium};
-font-size: ${RFValue(12)}px;
-color: ${({theme}) => theme.colors.selected};
-`;
-
-
-export const PaymentArea = styled.View`
-  flex-direction: row;
-  justify-content: space-around;
-`;
-export const Item = styled.View`
-
-  
-`
-
 export const BetArea = styled.View`
    flex: 1;
    justify-content: center;
@@ -103,13 +75,14 @@ export const BetArea = styled.View`
 export const InvestmentTitle = styled.Text`
 text-align: center;
 font-family: ${({theme}) => theme.fonts.SemiBold};
-font-size: ${RFValue(16)}px;
-color: ${({theme}) => theme.colors.white};
+font-size: ${RFValue(12)}px;
+color: ${({theme}) => theme.colors.gold};
+max-width: 200px;
 margin-top: ${RFValue(6)}px;
 `;
 
-export const NewMineArea = styled.TouchableOpacity`
-   background-color: ${({theme}) => theme.colors.dark_gold};
+export const NewMineArea = styled.TouchableOpacity<{backColor?: string}>`
+   background-color: ${({theme, backColor}) => backColor ? backColor : theme.colors.dark_gold};
    justify-content: center;
    align-items: center;
    padding: ${RFValue(6)}px;

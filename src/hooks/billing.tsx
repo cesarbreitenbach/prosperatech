@@ -32,6 +32,7 @@ interface IBillingContextData {
     getAllProducts: () => void; 
     buyProduct: (sku: string) => void;
     getWithdraw: () => Promise<void>;
+    confirm: (currentPurchase: Purchase) => Promise<void>;
     cancelWithdraw: () => Promise<void>;
     withDrawn: WithDrawnProps | undefined;
     requestWithdraw: ({amount, document, type}: WithdrawProps) => Promise<void>;
@@ -67,53 +68,17 @@ function BillingProvider({children}: BillingProviderProps) {
         setProductList(products)
     }, [products])
 
-
-      useEffect(() => {
-            if(!currentPurchaseError) return;
-
-            if (currentPurchaseError.code === "E_USER_CANCELLED") {
-                showMessage({
-                    message: 'Compra não concluida.',
-                    type: 'warning'
-                })
-                return;
-            }
-  
-            if (currentPurchaseError.code === "E_SERVICE_ERROR") {
-                showMessage({
-                    message: 'Erro na compra, serviço indisponivel.',
-                    type: 'danger'
-                })
-                return;
-            }
- 
-            console.log(`deu pau??? currentPurchaseError ${JSON.stringify(currentPurchaseError)}`)
-            
-            showMessage({
-                message: 'Aguarde... processando compra.',
-                type: 'info'
-            })
-      }, [currentPurchaseError]);
-    
-      useEffect(() => {
-        const confirm = async (currentPurchase: Purchase) => {
-            await confirmBuy()
-            finishTransaction({purchase: currentPurchase, isConsumable: true})
-            console.log(`Finalizando compra de fichas!`)
-        }
-        if(!currentPurchase?.transactionId){
-            return;
-        }
-
-        confirm(currentPurchase)
+    async function confirm(currentPurchase: Purchase): Promise<void>{
+        await confirmBuy()
+        finishTransaction({purchase: currentPurchase, isConsumable: true})
+        console.log(`Finalizando compra de fichas!`)
         showMessage({
-            message: 'Item comprado com sucesso!',
-            type: 'success'
+            message: 'Sucesso ao efetuar a compra!',
+            type: 'success',
+            duration: 5000
         })
+    }
 
-      }, [currentPurchase]);
-
-   
     async function getAllProducts() {
         if(connected){
             await getProducts({skus: ["1", "2"]})
@@ -214,6 +179,7 @@ function BillingProvider({children}: BillingProviderProps) {
                                           getWithdraw,
                                           requestWithdraw,
                                           cancelWithdraw,
+                                          confirm,
                                           withDrawn,
                                           productList,
                                           loading  

@@ -60,7 +60,7 @@ const WithdrawScreen: React.FC = () => {
                 message: 'Você não possui esse saldo!',
                 type: 'warning'
             });
-            setExchangeAmount("0");
+            setExchangeAmount("");
             return;
         }
         setExchangeAmount(e);
