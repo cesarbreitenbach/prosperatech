@@ -15,7 +15,7 @@ import DeviceInfo from 'react-native-device-info';
 
 function Routes() {
   const { logged } = useAuthContext();
-  const { serverStatus, appVersion } = useSettingsContext();
+  const { serverStatus, appVersion, liberateVersions } = useSettingsContext();
   const [userVersion, setUserVersion] = useState('');
 
   useEffect(() => {
@@ -30,13 +30,20 @@ function Routes() {
  
   }, [logged, serverStatus])
 
+
   return (
   
         <WalletProvider>
           <SlotMachineProvider>
             <PlaySoundProvider>
               <BillingProvider> 
-                 {!serverStatus ? <Closed /> : appVersion !== userVersion ? <WrongVersion /> : logged ? <StackRoutes /> : <AuthRoutes /> }
+              {!serverStatus ? (
+                  <Closed />
+                ) : liberateVersions ? (
+                  logged ? <StackRoutes /> : <AuthRoutes />
+                ) : (
+                  appVersion !== userVersion ? <WrongVersion /> : logged ? <StackRoutes /> : <AuthRoutes />
+                )}
               </BillingProvider>
             </PlaySoundProvider>
           </SlotMachineProvider>

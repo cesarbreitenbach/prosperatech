@@ -20,6 +20,7 @@ interface WithDrawnProps {
         cotation: string
         type: string
         status: string
+        confirmByUser: boolean;
         createdAt: string
         updatedAt: string
 }
@@ -30,6 +31,7 @@ interface BillingProviderProps {
 interface IBillingContextData {
     loading: boolean;
     getAllProducts: () => void; 
+    confirmWithdraw: (value: string) => Promise<void>;
     buyProduct: (sku: string) => void;
     getWithdraw: () => Promise<void>;
     confirm: (currentPurchase: Purchase) => Promise<void>;
@@ -125,8 +127,8 @@ function BillingProvider({children}: BillingProviderProps) {
             });
             await getSaldo();
             showMessage({
-                message: 'Você receberá seu dinheiro em ate 48hrs! Obrigado por usar Ceasars Place',
-                type: 'success',
+                message: 'Verifique a senha enviada para o seu email e confirme a solicitação.',
+                type: 'info',
                 duration: 6000
             })
         }catch(e: any){
@@ -159,8 +161,30 @@ function BillingProvider({children}: BillingProviderProps) {
             setWithDrawn(undefined)
             showMessage({
                 message: 'Sua solicitação foi cancelada com sucesso, saldo devolvido para carteira.',
+                type: 'warning',
+                duration: 4000
+            })
+        }catch(e: any){
+            showMessage({
+                message: e?.response?.data?.error || 'Erro ao efetuar solicitação de saque!',
+                type: 'danger'
+            })
+        }finally{
+            setLoading(false);
+        }
+    }
+
+    async function confirmWithdraw(code: string): Promise<void>{
+        setLoading(true)
+        try{
+            await client.post(`/withdraw/confirm`, {
+                code
+            });
+            await getWithdraw();
+            showMessage({
+                message: 'Sua solicitação foi confirmada com sucesso.',
                 type: 'success',
-                duration: 6000
+                duration: 3000
             })
         }catch(e: any){
             showMessage({
@@ -180,6 +204,7 @@ function BillingProvider({children}: BillingProviderProps) {
                                           requestWithdraw,
                                           cancelWithdraw,
                                           confirm,
+                                          confirmWithdraw,
                                           withDrawn,
                                           productList,
                                           loading  

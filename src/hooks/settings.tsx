@@ -21,6 +21,7 @@ interface ISettingsContextData {
     goldCotation: number;
     bonusCotation: number;
     minimumWithdraw: number;
+    liberateVersions: boolean;
     getSettings: () => void;
 }
 
@@ -38,7 +39,8 @@ function SettingsProvider({children}: SettingsProviderProps) {
     const [goldCotation, setGoldCotation] = useState(0);
     const [bonusCotation, setBonusCotation] = useState(0);
     const [minimumWithdraw, setMinimumWithdraw] = useState(1000);
-    const [divisorEar, setDivisorEarn] = useState(0)
+    const [divisorEar, setDivisorEarn] = useState(0);
+    const [liberateVersions, setLiberateVersions] = useState(false);
 
     const { axiosClient: client } = useAxios();
 
@@ -67,7 +69,7 @@ function SettingsProvider({children}: SettingsProviderProps) {
         setLoading(true);
         try {
             const res = await client.get('/settings')
-            const {machineDifficult, calculateTime, serverStatus, appVersion, bonusCotation, goldCotation, minimumWithdraw, divisorEarn} = res.data.settings;
+            const {machineDifficult, calculateTime, serverStatus, appVersion, bonusCotation, goldCotation, minimumWithdraw, divisorEarn, liberateVersions} = res.data.settings;
             const [timeValue, timeUnit] = calculateTime.split(':');
             setDifficult(machineDifficult)
             setCalculateTime(timeValue)
@@ -78,6 +80,7 @@ function SettingsProvider({children}: SettingsProviderProps) {
             setGoldCotation(goldCotation)
             setMinimumWithdraw(minimumWithdraw);
             setDivisorEarn(divisorEarn);
+            setLiberateVersions(liberateVersions)
         }catch(e: any) {
             console.log(`erro: `, e.response.data)
             showMessage({
@@ -102,6 +105,7 @@ function SettingsProvider({children}: SettingsProviderProps) {
                                             bonusCotation,
                                             goldCotation,
                                             divisorEar,
+                                            liberateVersions,
                                             getSettings   
                                         }}> 
             {children}

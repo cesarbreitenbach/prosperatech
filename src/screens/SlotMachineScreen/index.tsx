@@ -14,7 +14,7 @@ import { useNavigation } from '@react-navigation/native';
 export default function SlotMachineScreen() {
   const theme = useTheme();
   const {getSaldo} = useWalletContext();
-  const {serverStatus, loading, userVersion, appVersion} = useSettingsContext();
+  const {serverStatus, loading, userVersion, appVersion, liberateVersions} = useSettingsContext();
   const navigation = useNavigation<any>();
 
   useEffect(() => {
@@ -24,7 +24,7 @@ export default function SlotMachineScreen() {
         navigation.navigate('closed');
         return;
     }
-
+    if(liberateVersions) return;
     if(userVersion !== appVersion){
       console.log(`Versão invalida....`);
       navigation.navigate('wrongVersion')

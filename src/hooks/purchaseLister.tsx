@@ -62,7 +62,7 @@ const PurchaseListener = () => {
     console.log(`Finalizando compra de fichas!`);
 };
 
-  return null; // Ou você pode retornar algum elemento JSX aqui, se desejar
+  return null; 
 };
 
 export default PurchaseListener;

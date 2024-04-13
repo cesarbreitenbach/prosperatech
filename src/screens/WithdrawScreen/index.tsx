@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
-import { AmountArea, AmountArea2, AmountArea3, ButtonArea, Container, ExchangeArea, Footer, InfoArea, InputAmountValue, LeftArea, RightArea, Text } from './styles';
+import { AmountArea, AmountArea2, AmountArea3, ButtonArea, ConfirmArea, ConfirmLeft, ConfirmRight, Container, ExchangeArea, Footer, InfoArea, InputAmountValue, InputCode, LeftArea, RightArea, Text } from './styles';
 import { useWalletContext } from '../../hooks/wallet';
 import InfoUser from '../../components/InfoUser';
 import Header from '../../components/Header';
 import saque from '../../assets/images/saque.png'
-import { ActivityIndicator, Image } from 'react-native';
+import { ActivityIndicator, Image, View } from 'react-native';
 import fakeMoney from '../../assets/images/fichaBonus.png'
 import fichaGold from '../../assets/images/fichaGold.png'
 import real from '../../assets/images/real.png'
@@ -23,7 +23,7 @@ import { useSettingsContext } from '../../hooks/settings';
 
 
 const WithdrawScreen: React.FC = () => {
-    const {requestWithdraw, loading, withDrawn, getWithdraw} = useBillingContext();
+    const {requestWithdraw, loading, withDrawn, getWithdraw, cancelWithdraw, confirmWithdraw} = useBillingContext();
     const {goldCotation, bonusCotation, minimumWithdraw} = useSettingsContext();
     const {amount} = useWalletContext();
     const [selectedCoin, setSelectedCoin] = useState("ficha");
@@ -33,6 +33,7 @@ const WithdrawScreen: React.FC = () => {
     const [convertedAmount, setConvertedAmount] = useState("0");
     const [document, setDocument] = useState('')
     const [error, setError] = useState(false);
+    const [code, setCode] = useState("");
 
     useEffect(() => {
         setExchangeAmount("");
@@ -111,6 +112,15 @@ const WithdrawScreen: React.FC = () => {
             type: selectedCoin === 'bonus' ? 'bonus' : 'gold'
         })
     }
+    
+    const handleConfirm = () => {
+        if(!code) return;
+        confirmWithdraw(code);
+    }
+
+    const handleCancel = () => {
+        cancelWithdraw();
+    }
 
   return <Container> 
             <Header backgroundImage={saque} height={100} width={400} hasGoBack/>
@@ -162,7 +172,32 @@ const WithdrawScreen: React.FC = () => {
                                   loading={loading} 
                                   disabled={error}/>
                         </ButtonArea>}
-                        {withDrawn && <WithDrawnSolicitation 
+                        {withDrawn && !withDrawn.confirmByUser && <ConfirmArea >
+                            <ConfirmLeft>
+                                <Text>Senha recebida no email</Text>
+                                <InputCode value={code} onChangeText={setCode} textAlign='right' keyboardType='numeric'/>    
+                            </ConfirmLeft>
+                            <ConfirmRight >
+                                 <Button 
+                                  width={150}
+                                  height={30}
+                                  title='confirmar' 
+                                  onPress={handleConfirm} 
+                                  color={theme.colors.gold} 
+                                  loading={loading} 
+                                  disabled={error}/>
+                                  <Button 
+                                  width={150}
+                                  height={30}
+                                  title='cancelar' 
+                                  onPress={handleCancel} 
+                                  color={theme.colors.borgonha_intenso} 
+                                  loading={loading} 
+                                  light
+                                  disabled={error}/>
+                            </ConfirmRight>
+                        </ConfirmArea>}
+                        {withDrawn && withDrawn.confirmByUser &&<WithDrawnSolicitation 
                             amount={withDrawn?.amount!}
                             cotation={withDrawn?.cotation!}
                             created={withDrawn?.createdAt!}

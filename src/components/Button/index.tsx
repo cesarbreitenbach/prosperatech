@@ -33,7 +33,7 @@ export default function Button({
     const theme = useTheme();
 
 return (
-   <Container color={color ? color : theme.colors.primary } onPress={loading ? () => {} : onPress} width={width} height={height} radius={radius} disabled={disabled}> 
+   <Container activeOpacity={0.7} color={color ? color : theme.colors.primary } onPress={loading ? () => {} : onPress} width={width} height={height} radius={radius} disabled={disabled}> 
       {loading ? <ActivityIndicator size='small' color="#000"/> :  <Title light={light} fontFamily={fontFamily}>{title}</Title>} 
    </Container> 
 );}

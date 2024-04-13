@@ -123,7 +123,7 @@ const AboutDigitalMines: React.FC = () => {
                         <Item>- Lucros Potenciais: Com um investimento inicial inteligente e estratégico, você pode desbloquear um fluxo constante de recompensas. </Item>
                         <Item>- Já se imaginou vivendo de renda com minas digitais na internet? </Item>
                         <Item>- Comunidade Vibrante: Junte-se a outros jogadores que também estão mudando de vida com as Digital Mines!</Item>
-                        <Item>- Indique e ganhe pack de fichas bônus e uma porcentagem das fichas gold's que seu indicado comprar!</Item>
+                        <Item>- Indique e ganhe um pack de fichas bônus e 5% de todas as fichas gold que seu indicado comprar. Obtenha uma renda passiva, indique já!</Item>
                     </WhyItemArea>
                     <UpgradeImageArea>
                        <Image source={PicaretaFerro} style={{width: 90, height: 90, marginBottom: 24}}/>

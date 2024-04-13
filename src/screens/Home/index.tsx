@@ -38,7 +38,7 @@ export default function Home() {
          getDailyBonusStatus, 
          claimDailyBonus } = useWalletContext();
 
-  const {serverStatus, loading, getSettings, userVersion, appVersion, calculateTime, calculateUnit} = useSettingsContext();
+  const {serverStatus, loading, getSettings, userVersion, appVersion, calculateTime, calculateUnit, liberateVersions} = useSettingsContext();
 
   const [investmentValue, setInvestmentValue] = useState(0);
   const [selectedCoin, setSelectedCoin] = useState("bonus");
@@ -86,11 +86,13 @@ export default function Home() {
           return;
       }
 
+      if(liberateVersions) return;
+
       if(userVersion !== appVersion){
         console.log(`Versão invalida....`);
         navigation.navigate('wrongVersion')
       }
-  }, [serverStatus, appVersion]);
+  }, [serverStatus, appVersion, liberateVersions]);
 
   const onRefresh = async () => {
     setRefreshing(true);

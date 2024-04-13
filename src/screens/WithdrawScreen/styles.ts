@@ -79,3 +79,24 @@ export const ButtonArea = styled.View`
   align-items: center;
 `
 
+export const InputCode = styled.TextInput`
+    width: 90%;
+    height: ${RFValue(30)}px;
+    border-color: ${({theme}) => theme.colors.white};
+    border-width: 1px;
+    border-radius: 7px;
+
+`
+
+export const ConfirmArea = styled.View`
+    flex-direction: row;
+    margin-bottom: 12px;
+`
+
+export const ConfirmLeft = styled.View`
+  flex: 1;
+`
+export const ConfirmRight = styled.View`
+   justify-content: center;
+   align-items: center;
+`
